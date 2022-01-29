@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres:9.5
+    container_name: rlsp_shoponline_postgres9_5
+
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres # The PostgreSQL user (useful to connect to the database)
+      POSTGRES_PASSWORD: postgres # The PostgreSQL password (useful to connect to the database)
+      POSTGRES_DB: rlsp_shoponline_db # The PostgreSQL default database (automatically created at first launch)
+
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
