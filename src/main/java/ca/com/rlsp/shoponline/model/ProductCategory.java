@@ -10,7 +10,7 @@ public class ProductCategory implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_product_category")
     private Long id;
 
     @Column(nullable = false)
