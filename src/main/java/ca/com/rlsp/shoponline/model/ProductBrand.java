@@ -2,6 +2,7 @@ package ca.com.rlsp.shoponline.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product_brand")
@@ -13,6 +14,7 @@ public class ProductBrand implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(nullable = false)
     private String description;
 
     public Long getId() {
@@ -29,5 +31,20 @@ public class ProductBrand implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductBrand that = (ProductBrand) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }
