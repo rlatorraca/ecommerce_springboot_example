@@ -1,10 +1,10 @@
-package ca.com.rlsp.shoponline;
+package ca.com.rlsp.ecommerce;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ShoponlineSpringbootExampleApplicationTests {
+class EcommercepringbootExampleApplicationTests {
 
     @Test
     void contextLoads() {

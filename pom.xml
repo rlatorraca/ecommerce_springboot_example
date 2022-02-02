@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ca.com.rlsp</groupId>
-    <artifactId>shoponline_springboot</artifactId>
+    <artifactId>ecommerce_springboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>shoponline_springboot_example</name>
-    <description>shoponline_springboot_example</description>
+    <name>ecommerce_springboot_example</name>
+    <description>ecommerce_springboot_example</description>
     <properties>
         <java.version>11</java.version>
     </properties>

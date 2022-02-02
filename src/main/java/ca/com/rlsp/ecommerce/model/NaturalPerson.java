@@ -1,4 +1,4 @@
-package ca.com.rlsp.shoponline.model;
+package ca.com.rlsp.ecommerce.model;
 
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;

@@ -1,4 +1,4 @@
-package ca.com.rlsp.shoponline.model;
+package ca.com.rlsp.ecommerce.model;
 
 import org.springframework.security.core.GrantedAuthority;
 

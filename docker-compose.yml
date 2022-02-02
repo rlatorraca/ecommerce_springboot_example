@@ -3,7 +3,7 @@ version: '3.5'
 services:
   db:
     image: postgres:9.5
-    container_name: rlsp_shoponline_postgres9_5
+    container_name: rlsp_ecommerce_postgres9_5
 
     ports:
       - "5432:5432"
@@ -14,3 +14,7 @@ services:
 
     volumes:
       - ./db-data/:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  database_data:
+    driver: local
