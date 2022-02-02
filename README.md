@@ -1,1 +1,1 @@
-# shoponline_springboot_example
+# ecommerce_springboot_example
