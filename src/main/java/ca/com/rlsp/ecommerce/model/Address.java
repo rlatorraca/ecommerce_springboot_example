@@ -1,5 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
+import ca.com.rlsp.ecommerce.enums.AddressType;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -27,6 +29,9 @@ public class Address implements Serializable {
     @ManyToOne(targetEntity = Person.class)
     @JoinColumn(name = "person_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "person_fk"))
     private Person person;
+
+    @Enumerated(EnumType.STRING)
+    private AddressType addressType;
 
     public Long getId() {
         return id;
@@ -98,6 +103,22 @@ public class Address implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public AddressType getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(AddressType addressType) {
+        this.addressType = addressType;
     }
 
     @Override
