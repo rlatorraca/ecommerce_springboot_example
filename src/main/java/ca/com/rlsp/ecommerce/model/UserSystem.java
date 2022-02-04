@@ -4,11 +4,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
+o
 @Entity
 @Table(name = "user_system")
 @SequenceGenerator(name = "seq_user_system", sequenceName = "seq_user_system", initialValue = 1, allocationSize = 1)
@@ -28,7 +27,7 @@ public class UserSystem implements UserDetails {
     @JoinTable(name = "user_role_access",
 
                uniqueConstraints = @UniqueConstraint(
-                       columnNames = {"users_system_id", "role_access_id"},
+                       columnNames = {"user_system_id", "role_access_id"},
                        name = "unique_access_user"),
 
                joinColumns = @JoinColumn(
