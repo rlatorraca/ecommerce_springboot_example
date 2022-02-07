@@ -27,10 +27,13 @@ public class Creditor implements Serializable {
     private Date dueDate;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "payment_date")
     private Date paymentDate;
 
+    @Column(name = "total_value")
     private BigDecimal totalValue;
 
+    @Column(name = "total_discoutn")
     private BigDecimal totalDiscount;
 
     @ManyToOne(targetEntity = Person.class)
