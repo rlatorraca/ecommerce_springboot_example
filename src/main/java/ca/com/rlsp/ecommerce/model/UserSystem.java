@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-o
+
 @Entity
 @Table(name = "user_system")
 @SequenceGenerator(name = "seq_user_system", sequenceName = "seq_user_system", initialValue = 1, allocationSize = 1)
