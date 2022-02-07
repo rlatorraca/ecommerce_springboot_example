@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) /* Criar tabelas para as classes concretas / filhas */
+@Table(name = "address")
 @SequenceGenerator(name = "seq_address", sequenceName = "seq_address", initialValue = 1 , allocationSize = 1)
 public class Address implements Serializable {
     @Id

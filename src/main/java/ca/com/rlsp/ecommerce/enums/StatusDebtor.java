@@ -1,15 +1,16 @@
 package ca.com.rlsp.ecommerce.enums;
 
-public enum StatusDebtors {
+public enum StatusDebtor {
 
     OPEN("Open bill"),
     OVERDUE("Overdue bill"),
     PAYABLE("Payable bill"),
-    PAID("Paid bill");
+    PAID("Paid bill"),
+    RENEGOTIATED("Renegotiated bill");
 
     private String description;
 
-    private StatusDebtors(String description) {
+    private StatusDebtor(String description) {
         this.description = description;
     }
 
