@@ -1,6 +1,6 @@
 package ca.com.rlsp.ecommerce.enums;
 
-public enum StatusCreditor {
+public enum StatusPayable {
 
     OPEN("Open bill"),
     OVERDUE("Overdue bill"),
@@ -10,7 +10,7 @@ public enum StatusCreditor {
 
     private String description;
 
-    private StatusCreditor(String description) {
+    private StatusPayable(String description) {
         this.description = description;
     }
 

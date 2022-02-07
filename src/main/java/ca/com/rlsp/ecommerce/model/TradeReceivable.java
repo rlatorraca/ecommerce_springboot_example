@@ -1,7 +1,6 @@
 package ca.com.rlsp.ecommerce.model;
 
-import ca.com.rlsp.ecommerce.enums.AddressType;
-import ca.com.rlsp.ecommerce.enums.StatusDebtor;
+import ca.com.rlsp.ecommerce.enums.StatusReceivable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,44 +9,75 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "debtor")
-@SequenceGenerator(name = "seq_debtor", sequenceName = "seq_debtor", initialValue = 1 , allocationSize = 1)
-public class Debtor implements Serializable {
+@Table(name = "creditor")
+@SequenceGenerator(name = "seq_creditor", sequenceName = "seq_creditor", initialValue = 1 , allocationSize = 1)
+public class TradeReceivable implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_debtor")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_creditor")
     private Long id;
 
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private StatusDebtor statusDebtor;
+    private StatusReceivable statusCreditor;
 
     @Temporal(TemporalType.DATE)
     private Date dueDate;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "payment_date")
     private Date paymentDate;
 
+    @Column(name = "total_value")
     private BigDecimal totalValue;
 
+    @Column(name = "total_discoutn")
     private BigDecimal totalDiscount;
 
     @ManyToOne(targetEntity = Person.class)
-    @JoinColumn(name = "person_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "person_fk"))
+    @JoinColumn(name = "person_id",
+                nullable = false,
+                foreignKey = @ForeignKey(
+                        value = ConstraintMode.CONSTRAINT,
+                        name = "person_fk"))
     private Person person;
+
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "person_provider_id",
+                nullable = false,
+                foreignKey = @ForeignKey(
+                        value = ConstraintMode.CONSTRAINT,
+                        name = "person_provider_fk"))
+    private Person person_provider;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Debtor debtor = (Debtor) o;
-        return Objects.equals(id, debtor.id);
+        TradeReceivable that = (TradeReceivable) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public StatusReceivable getStatusCreditor() {
+        return statusCreditor;
+    }
+
+    public Person getPerson_provider() {
+        return person_provider;
+    }
+
+    public void setPerson_provider(Person person_provider) {
+        this.person_provider = person_provider;
+    }
+
+    public void setStatusCreditor(StatusReceivable statusCreditor) {
+        this.statusCreditor = statusCreditor;
     }
 
     public Long getId() {
@@ -64,14 +94,6 @@ public class Debtor implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public StatusDebtor getStatusDebtor() {
-        return statusDebtor;
-    }
-
-    public void setStatusDebtor(StatusDebtor statusDebtor) {
-        this.statusDebtor = statusDebtor;
     }
 
     public Date getDueDate() {
