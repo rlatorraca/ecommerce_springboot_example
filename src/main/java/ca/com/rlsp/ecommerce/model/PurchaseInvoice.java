@@ -48,7 +48,7 @@ public class PurchaseInvoice implements Serializable {
                         name = "person_fk"))
     private Person person;
 
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = TradePayable.class)
     @JoinColumn(name = "trade_payable_id",
                 nullable = false,
                 foreignKey = @ForeignKey(
