@@ -20,7 +20,7 @@ public class ProductImage implements Serializable {
     @Column(columnDefinition = "text")
     private String thumbnail;
 
-    @ManyToOne(targetEntity = Product.class)
+    @ManyToOne
     @JoinColumn(name = "product_id",
             nullable = false,
             foreignKey = @ForeignKey(

@@ -30,6 +30,14 @@ public class SalesInvoice implements Serializable {
     @Column(columnDefinition = "text")
     private String pdf;
 
+    @OneToOne
+    @JoinColumn(name = "product_sales_ecommerce_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "product_sales_ecommerce_fk"))
+    private ProductSalesEcommerce productSalesEcommerce;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,5 +99,13 @@ public class SalesInvoice implements Serializable {
 
     public void setPdf(String pdf) {
         this.pdf = pdf;
+    }
+
+    public ProductSalesEcommerce getProductSalesEcommerce() {
+        return productSalesEcommerce;
+    }
+
+    public void setProductSalesEcommerce(ProductSalesEcommerce productSalesEcommerce) {
+        this.productSalesEcommerce = productSalesEcommerce;
     }
 }

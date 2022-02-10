@@ -23,6 +23,14 @@ public class TrackingStatus implements Serializable {
 
     private String status;
 
+    @ManyToOne
+    @JoinColumn(name = "product_sales_ecommerce_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "product_sales_ecommerce_fk"))
+    private ProductSalesEcommerce productSalesEcommerce;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,6 +92,14 @@ public class TrackingStatus implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public ProductSalesEcommerce getProductSalesEcommerce() {
+        return productSalesEcommerce;
+    }
+
+    public void setProductSalesEcommerce(ProductSalesEcommerce productSalesEcommerce) {
+        this.productSalesEcommerce = productSalesEcommerce;
     }
 }
 

@@ -17,7 +17,7 @@ public class InvoiceItemProduct implements Serializable {
     @Column(nullable = false)
     private Double quantity;
 
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne
     @JoinColumn(name = "product_id",
             nullable = false,
             foreignKey = @ForeignKey(
@@ -25,7 +25,7 @@ public class InvoiceItemProduct implements Serializable {
                     name = "product_fk"))
     private Product product;
 
-    @ManyToOne(targetEntity = PurchaseInvoice.class)
+    @ManyToOne
     @JoinColumn(name = "purchase_invoice_id",
             nullable = false,
             foreignKey = @ForeignKey(
