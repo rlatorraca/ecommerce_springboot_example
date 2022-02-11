@@ -27,7 +27,11 @@ public class Address implements Serializable {
     private String city;
 
     @ManyToOne(targetEntity = Person.class)
-    @JoinColumn(name = "person_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "person_fk"))
+    @JoinColumn(name = "person_id",
+                nullable = false,
+                foreignKey = @ForeignKey(
+                        value = ConstraintMode.CONSTRAINT,
+                        name = "person_fk"))
     private Person person;
 
     @Enumerated(EnumType.STRING)
