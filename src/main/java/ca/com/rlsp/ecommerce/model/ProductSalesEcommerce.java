@@ -73,6 +73,16 @@ public class ProductSalesEcommerce implements Serializable {
                     name = "sales_invoice_fk"))
     private SalesInvoice salesInvoice;
 
+    @ManyToOne
+    @JoinColumn(name = "discount_coupon_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "discount_coupon_fk"))
+    private DiscountCoupon discountCoupon;
+
+
+
     public Long getId() {
         return id;
     }
@@ -167,5 +177,13 @@ public class ProductSalesEcommerce implements Serializable {
 
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
+    }
+
+    public DiscountCoupon getDiscountCoupon() {
+        return discountCoupon;
+    }
+
+    public void setDiscountCoupon(DiscountCoupon discountCoupon) {
+        this.discountCoupon = discountCoupon;
     }
 }
