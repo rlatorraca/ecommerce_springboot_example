@@ -15,6 +15,8 @@ public class ProductEvaluation implements Serializable {
 
     private Integer grade;
 
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "product_id",
             nullable = false,
@@ -76,5 +78,13 @@ public class ProductEvaluation implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
