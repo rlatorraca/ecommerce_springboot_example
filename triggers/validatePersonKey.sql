@@ -18,6 +18,7 @@ BEGIN
 END;
 $$
 
+/* Product Evaluation */
 CREATE TRIGGER validatePersonKey_ProductEvaluation_Update
     BEFORE UPDATE
     ON product_evaluation
@@ -27,5 +28,33 @@ CREATE TRIGGER validatePersonKey_ProductEvaluation_Update
 CREATE TRIGGER validatePersonKey_ProductEvaluation_Insert
     BEFORE INSERT
     ON product_evaluation
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+/* Trade Payable */
+
+CREATE TRIGGER validatePersonKey_TradePayable_Person_Update
+    BEFORE UPDATE
+    ON trade_payable
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+CREATE TRIGGER validatePersonKey_TradePayable_Person_Insert
+    BEFORE INSERT
+    ON trade_payable
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+/* Trade Receivable */
+
+CREATE TRIGGER validatePersonKey_TradeReceivable_Person_Update
+    BEFORE UPDATE
+    ON trade_receivable
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+CREATE TRIGGER validatePersonKey_TradeReceivable_Person_Insert
+    BEFORE INSERT
+    ON trade_receivable
     FOR EACH ROW
     EXECUTE PROCEDURE validatePersonKey();
