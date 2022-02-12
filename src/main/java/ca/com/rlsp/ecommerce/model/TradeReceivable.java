@@ -47,13 +47,7 @@ public class TradeReceivable implements Serializable {
                         name = "person_fk"))
     private Person person;
 
-    @ManyToOne(targetEntity = Person.class)
-    @JoinColumn(name = "person_provider_id",
-                nullable = false,
-                foreignKey = @ForeignKey(
-                        value = ConstraintMode.CONSTRAINT,
-                        name = "person_provider_fk"))
-    private Person person_provider;
+
 
     @Override
     public boolean equals(Object o) {
@@ -70,14 +64,6 @@ public class TradeReceivable implements Serializable {
 
     public StatusReceivable getStatusCreditor() {
         return statusCreditor;
-    }
-
-    public Person getPerson_provider() {
-        return person_provider;
-    }
-
-    public void setPerson_provider(Person person_provider) {
-        this.person_provider = person_provider;
     }
 
     public void setStatusCreditor(StatusReceivable statusCreditor) {
