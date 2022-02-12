@@ -17,31 +17,33 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_product")
     private Long id;
 
+    @Column(nullable = false)
     private UnitType unitType;
 
+    @Column(nullable = false)
     private String name;
 
-    @Column(columnDefinition = "text", length = 2000)
+    @Column(columnDefinition = "text", length = 2000, nullable = false)
     private String description;
 
     /* NOT ITEM NOT Producto - Associar */
 
-    @Column(name = "product_weight")
+    @Column(name = "product_weight", nullable = false)
     private Double weight;
 
-    @Column(name = "product_width")
+    @Column(name = "product_width", nullable = false)
     private Double width;
 
-    @Column(name = "product_height")
+    @Column(name = "product_height", nullable = false)
     private Double height;
 
-    @Column(name = "product_depth")
+    @Column(name = "product_depth", nullable = false)
     private Double depth;
 
-    @Column(name = "product_value")
+    @Column(name = "product_value", nullable = false)
     private BigDecimal value = BigDecimal.ZERO;
 
-    @Column(name = "stock_quantity")
+    @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity = 0;
 
     @Column(name = "link_youtube")
@@ -53,7 +55,7 @@ public class Product implements Serializable {
     @Column(name = "click_quantity")
     private Integer clickQuantity = 0;
 
-    @Column(name = "product_active")
+    @Column(name = "product_active", nullable = false)
     private Boolean active = Boolean.TRUE;
 
 
