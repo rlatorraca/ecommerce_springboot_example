@@ -14,10 +14,10 @@ public class ProductImage implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_product_image")
     private Long id;
 
-    @Column(name = "source_image", columnDefinition = "text")
+    @Column(name = "source_image", columnDefinition = "text", nullable = false)
     private String sourceImage;
 
-    @Column(columnDefinition = "text")
+    @Column(columnDefinition = "text", nullable = false)
     private String thumbnail;
 
     @ManyToOne

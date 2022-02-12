@@ -13,6 +13,9 @@ public class ItemSaleEcommerce implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_item_sale_ecommerce")
     private Long id;
 
+    @Column(nullable = false)
+    private Double quantity;
+
     @ManyToOne
     @JoinColumn(name = "product_id",
             nullable = false,
@@ -66,6 +69,14 @@ public class ItemSaleEcommerce implements Serializable {
 
     public void setProductSalesEcommerce(ProductSalesEcommerce productSalesEcommerce) {
         this.productSalesEcommerce = productSalesEcommerce;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
     }
 }
 

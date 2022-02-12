@@ -18,12 +18,24 @@ public class Address implements Serializable {
     private String addressLine01;
     @Column(name = "address_line_02")
     private String addressLine02;
-    @Column(name = "zip_postal_code")
+
+
+    @Column(name = "zip_postal_code", nullable = false)
     private String zipPostalCode;
+
+    @Column(nullable = false)
     private String number;
+
+    @Column(nullable = false)
     private String neighborhood;
+
+    @Column(nullable = false)
     private String country;
+
+    @Column(nullable = false)
     private String province;
+
+    @Column(nullable = false)
     private String city;
 
     @ManyToOne(targetEntity = Person.class)
@@ -34,6 +46,7 @@ public class Address implements Serializable {
                         name = "person_fk"))
     private Person person;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
 
