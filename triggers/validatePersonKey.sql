@@ -58,3 +58,55 @@ CREATE TRIGGER validatePersonKey_TradeReceivable_Person_Insert
     ON trade_receivable
     FOR EACH ROW
     EXECUTE PROCEDURE validatePersonKey();
+
+/* Address */
+CREATE TRIGGER validatePersonKey_Address_Person_Update
+    BEFORE UPDATE
+    ON address
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+CREATE TRIGGER validatePersonKey_Address_Person_Insert
+    BEFORE INSERT
+    ON address
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+/* Purchase Invoice*/
+CREATE TRIGGER validatePersonKey_PurchaseInvoice_Person_Update
+    BEFORE UPDATE
+    ON purchase_invoice
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+CREATE TRIGGER validatePersonKey_PurchaseInvoice_Person_Insert
+    BEFORE INSERT
+    ON purchase_invoice
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+/* User System */
+CREATE TRIGGER validatePersonKey_UserSystem_Person_Update
+    BEFORE UPDATE
+    ON user_system
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+CREATE TRIGGER validatePersonKey_UserSystem_Person_Insert
+    BEFORE INSERT
+    ON user_system
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+/* Product Sales Ecommerce*/
+CREATE TRIGGER validatePersonKey_ProductSalesEcommerce_Person_Update
+    BEFORE UPDATE
+    ON product_sales_ecommerce
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
+
+CREATE TRIGGER validatePersonKey_ProductSalesEcommerce_Person_Insert
+    BEFORE INSERT
+    ON product_sales_ecommerce
+    FOR EACH ROW
+    EXECUTE PROCEDURE validatePersonKey();
