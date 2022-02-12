@@ -18,9 +18,10 @@ public class Product implements Serializable {
     private Long id;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private UnitType unitType;
 
-    @Column(nullable = false)
+    @Column(name = "ṕroduct_name", nullable = false)
     private String name;
 
     @Column(columnDefinition = "text", length = 2000, nullable = false)

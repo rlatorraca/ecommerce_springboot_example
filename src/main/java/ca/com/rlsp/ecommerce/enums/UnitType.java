@@ -2,10 +2,11 @@ package ca.com.rlsp.ecommerce.enums;
 
 public enum UnitType {
 
-    ITERM("item"),
+    ITEM("item"),
     KG("ilogram"),
     G("gram"),
-    PERCENTUAL("Percentaul");
+    PERC("Percentaul");
+
 
 
     private String description;
