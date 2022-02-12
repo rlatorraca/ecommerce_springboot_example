@@ -9,25 +9,29 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "debtor")
-@SequenceGenerator(name = "seq_debtor", sequenceName = "seq_debtor", initialValue = 1 , allocationSize = 1)
+@Table(name = "trade_payable")
+@SequenceGenerator(name = "seq_trade_payable", sequenceName = "seq_trade_payable", initialValue = 1 , allocationSize = 1)
 public class TradePayable implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_debtor")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_trade_payable")
     private Long id;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusPayable statusDebtor;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dueDate;
 
     @Temporal(TemporalType.DATE)
     private Date paymentDate;
 
+    @Column(nullable = false)
     private BigDecimal totalValue;
 
     private BigDecimal totalDiscount;

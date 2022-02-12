@@ -13,8 +13,10 @@ public class ProductEvaluation implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_item_sale_ecommerce")
     private Long id;
 
+    @Column(nullable = false)
     private Integer grade;
 
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne
