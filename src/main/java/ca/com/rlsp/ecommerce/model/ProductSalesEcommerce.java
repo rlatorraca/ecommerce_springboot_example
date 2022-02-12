@@ -39,22 +39,22 @@ public class ProductSalesEcommerce implements Serializable {
                     name = "shipping_address_fk"))
     private Address shippingAddress ;
 
-    @Column(name = "total_value")
+    @Column(name = "total_value" , nullable = false)
     private BigDecimal totalValue;
 
     @Column(name = "total_discount")
     private BigDecimal totalDiscount;
 
-    @Column(name = "delivery_value")
+    @Column(name = "delivery_value", nullable = false)
     private BigDecimal deliveryValue;
 
-    @Column(name = "days_to_delivery")
+    @Column(name = "days_to_delivery", nullable = false)
     private Integer daysToDelivery;
 
-    @Column(name = "sale_date")
+    @Column(name = "sale_date", nullable = false)
     private Date saleDate;
 
-    @Column(name = "delivery_date")
+    @Column(name = "delivery_date", nullable = false)
     private Date deliveryDate;
 
     @ManyToOne
@@ -75,7 +75,6 @@ public class ProductSalesEcommerce implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "discount_coupon_id",
-            nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "discount_coupon_fk"))

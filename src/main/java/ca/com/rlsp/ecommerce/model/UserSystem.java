@@ -17,9 +17,13 @@ public class UserSystem implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user_system")
     private Long id;
 
+    @Column(nullable = false)
     private String login;
+
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date lastPasswordDate;
 
