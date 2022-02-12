@@ -8,7 +8,7 @@ import java.util.Date;
 @PrimaryKeyJoinColumn(name = "id")
 public class NaturalPerson extends Person{
 
-    @Column(name = "sin_number")
+    @Column(name = "sin_number", nullable = false)
     private String sinNumber;
 
     @Temporal(TemporalType.DATE)

@@ -7,19 +7,19 @@ import javax.persistence.*;
 @PrimaryKeyJoinColumn(name = "id")
 public class LegalPerson extends Person{
 
-    @Column(name = "business_number")
+    @Column(name = "business_number", nullable = false)
     private String businessNumber;
 
-    @Column(name = "province_registration")
+    @Column(name = "province_registration", nullable = false)
     private String provinceRegistration;
 
     @Column(name = "city_registration")
     private String cityRegistration;
 
-    @Column(name = "comercial_name")
+    @Column(name = "comercial_name", nullable = false)
     private String comercialName;
 
-    @Column(name = "legal_name")
+    @Column(name = "legal_name", nullable = false)
     private String legalName;
 
     private String category;

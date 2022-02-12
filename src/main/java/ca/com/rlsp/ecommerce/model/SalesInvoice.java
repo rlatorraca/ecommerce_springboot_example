@@ -15,19 +15,19 @@ public class SalesInvoice implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_sales_invoice")
     private Long id;
 
-    @Column(name = "invoice_number")
+    @Column(name = "invoice_number", nullable = false)
     private String invoiceNumber;
 
-    @Column(name = "invoice_serie")
+    @Column(name = "invoice_serie", nullable = false)
     private String invoiceSerie;
 
-    @Column(name = "invoice_type")
+    @Column(name = "invoice_type", nullable = false)
     private String invoiceType;
 
-    @Column(columnDefinition = "text")
+    @Column(columnDefinition = "text", nullable = false)
     private String xml;
 
-    @Column(columnDefinition = "text")
+    @Column(columnDefinition = "text", nullable = false)
     private String pdf;
 
     @OneToOne

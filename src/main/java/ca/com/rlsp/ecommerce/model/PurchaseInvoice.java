@@ -15,29 +15,30 @@ public class PurchaseInvoice implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_purchase_invoice")
     private Long id;
 
-    @Column(name = "invoice_number")
+    @Column(name = "invoice_number", nullable = false)
     private String invoiceNumber;
 
-    @Column(name = "invoice_serie")
+    @Column(name = "invoice_serie", nullable = false)
     private String invoiceSerie;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "total_value")
+    @Column(name = "total_value", nullable = false)
     private BigDecimal totalValue;
 
     @Column(name = "discount_value")
     private BigDecimal discountValue;
 
-    @Column(name = "provincial_taxes")
+    @Column(name = "provincial_taxes", nullable = false)
     private BigDecimal provincial_taxes;
 
-    @Column(name = "federal_taxes")
+    @Column(name = "federal_taxes", nullable = false)
     private BigDecimal federal_taxes;
 
+
     @Temporal(TemporalType.DATE)
-    @Column(name = "date_sale")
+    @Column(name = "date_sale", nullable = false)
     private Date dateSale;
 
     @ManyToOne(targetEntity = Person.class)

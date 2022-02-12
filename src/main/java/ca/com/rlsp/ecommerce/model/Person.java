@@ -14,8 +14,13 @@ public abstract class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_person")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String telephone;
 
     @OneToMany(mappedBy = "person", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
