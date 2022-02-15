@@ -25,9 +25,9 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers(HttpMethod.GET, "/saveRoleAccess")
-                .antMatchers(HttpMethod.POST, "/saveRoleAccess");
+                .antMatchers(HttpMethod.GET, "/roleAccess/**")
+                .antMatchers(HttpMethod.DELETE, "/roleAccess/**")
+                .antMatchers(HttpMethod.POST, "/roleAccess/**");
     }
-
 
 }
