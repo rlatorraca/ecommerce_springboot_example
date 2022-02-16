@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -64,9 +66,9 @@ class EcommercepringbootExampleApplicationTests {
 
         roleAccess_01 = roleAccessController.saveRoleAccess(roleAccess_01).getBody();
 
-        //List<RoleAccess> roleAccessList = roleAccessRepository.buscarAcessoDesc("STUDENT".trim().toUpperCase());
+        List<RoleAccess> roleAccessList = roleAccessRepository.findDescriptionAccess("STUDENT".trim().toUpperCase());
 
-        //assertEquals(1, roleAccessList.size());
+        assertEquals(1, roleAccessList.size());
 
         roleAccessRepository.deleteById(roleAccess_01.getId());
 
