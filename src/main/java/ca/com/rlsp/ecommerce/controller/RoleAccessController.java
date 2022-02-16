@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Optional;
 
-@Controller
 @RestController
 public class RoleAccessController {
 
