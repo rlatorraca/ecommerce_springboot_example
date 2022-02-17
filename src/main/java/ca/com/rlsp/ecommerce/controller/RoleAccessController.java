@@ -38,8 +38,8 @@ public class RoleAccessController {
     }
 
     @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
-    @PostMapping(value = "/roleAccess")
-    public ResponseEntity<RoleAccess> saveRoleAccess(@PathVariable RoleAccess roleAccess){
+    @PostMapping(path = "/roleAccess")
+    public ResponseEntity<RoleAccess> saveRoleAccess(@RequestBody RoleAccess roleAccess){
 
         RoleAccess roleAccessSaved  = roleAccessService.save(roleAccess);
         return new ResponseEntity<>(roleAccessSaved, HttpStatus.OK);

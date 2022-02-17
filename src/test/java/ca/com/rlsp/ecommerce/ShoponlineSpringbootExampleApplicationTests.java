@@ -1,20 +1,34 @@
 package ca.com.rlsp.ecommerce;
 
+
 import ca.com.rlsp.ecommerce.controller.RoleAccessController;
 import ca.com.rlsp.ecommerce.model.RoleAccess;
 import ca.com.rlsp.ecommerce.repository.RoleAccessRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import junit.framework.TestCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
+
+import javax.management.relation.Role;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // To show that I want to test EcommerceSpringbootExampleApplication.class (project)
 @SpringBootTest(classes = EcommerceSpringbootExampleApplication.class)
-class EcommercepringbootExampleApplicationTests {
+class EcommercepringbootExampleApplicationTests extends TestCase {
 
 
     @Autowired
@@ -22,6 +36,39 @@ class EcommercepringbootExampleApplicationTests {
 
     @Autowired
     private RoleAccessRepository roleAccessRepository;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
+    @Test
+    public void testRestApiSaveRoleAccessController() throws JsonProcessingException, Exception {
+
+
+        DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
+        MockMvc mockMvc = builder.build();
+
+        RoleAccess roleAccess = new RoleAccess();
+
+        roleAccess.setDescription("ROLE_TESTING");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        ResultActions retornoApi = mockMvc.perform(MockMvcRequestBuilders.post("/roleAccess")
+                        .content(objectMapper.writeValueAsString(roleAccess))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON));
+
+        System.out.println("Retorno da API: " + retornoApi.andReturn().getResponse().getContentAsString());
+
+        /*Conveter o retorno da API para um objeto de acesso*/
+
+        RoleAccess objReturn = objectMapper.
+                readValue(retornoApi.andReturn().getResponse().getContentAsString(),
+                        RoleAccess.class);
+
+        assertEquals(roleAccess.getDescription(), objReturn.getDescription());
+
+    }
 
 
     @Test

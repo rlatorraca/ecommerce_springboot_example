@@ -1,5 +1,6 @@
 package ca.com.rlsp.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class RoleAccess implements GrantedAuthority {
         this.description = description;
     }
 
+    @JsonIgnore
     @Override
     public String getAuthority() {
         return this.description;
