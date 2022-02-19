@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.relation.Role;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -61,5 +63,14 @@ public class RoleAccessController {
         roleAccessService.deleteById(roleAccessId);
 
         return new ResponseEntity<>("Deleted Role Access By Id", HttpStatus.OK);
+    }
+
+    @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
+    @GetMapping(value = "/roleAccess/desc/{description}")
+    public ResponseEntity<List<RoleAccess>> getByDescriptionRoleAccess(@PathVariable String description){
+
+        List<RoleAccess> roleAccessList = roleAccessService.getByDescription(description);
+
+        return new ResponseEntity<List<RoleAccess>>(roleAccessList, HttpStatus.OK);
     }
 }

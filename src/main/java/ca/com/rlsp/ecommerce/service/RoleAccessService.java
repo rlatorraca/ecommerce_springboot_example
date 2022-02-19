@@ -5,6 +5,7 @@ import ca.com.rlsp.ecommerce.repository.RoleAccessRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,5 +38,9 @@ public class RoleAccessService {
     public void deleteById(Long roleAccessId) {
 
         roleAccessRepository.deleteById(roleAccessId);
+    }
+
+    public List<RoleAccess> getByDescription(String description) {
+        return roleAccessRepository.findDescriptionAccess((description));
     }
 }

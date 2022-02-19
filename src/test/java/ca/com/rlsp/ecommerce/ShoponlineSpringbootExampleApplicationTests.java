@@ -5,8 +5,10 @@ import ca.com.rlsp.ecommerce.controller.RoleAccessController;
 import ca.com.rlsp.ecommerce.model.RoleAccess;
 import ca.com.rlsp.ecommerce.repository.RoleAccessRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,13 +20,7 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-
-import javax.management.relation.Role;
 import java.util.List;
-import java.util.Locale;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // To show that I want to test EcommerceSpringbootExampleApplication.class (project)
 @SpringBootTest(classes = EcommerceSpringbootExampleApplication.class)
@@ -105,6 +101,87 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
         /*Conveter o retorno da API para um objeto de acesso */
         assertEquals("Deleted Role Access By Id", returnApi.andReturn().getResponse().getContentAsString());
         assertEquals(200,  returnApi.andReturn().getResponse().getStatus());
+
+    }
+
+    /* Endpoint Get Object By Id to Role Access */
+    @Test
+    public void testRestApiGetObjectByIdRoleAccessController() throws JsonProcessingException, Exception {
+
+
+        /* Responsaveis por efetuar os testes*/
+        DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
+        MockMvc mockMvc = builder.build();
+
+        RoleAccess roleAccess = new RoleAccess();
+
+        roleAccess.setDescription("ROLE_TESTING_GET_BY_ID");
+
+        /* Save a entitu on Role Access */
+        roleAccess = roleAccessRepository.save(roleAccess);
+
+        /* Trabalhar com JSON */
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        /* returnApi é um JSON*/
+        ResultActions returnApi = mockMvc.perform(MockMvcRequestBuilders.get("/roleAccess/{roleAccessId}", roleAccess.getId())
+                .content(objectMapper.writeValueAsString(roleAccess))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        System.out.println("Retorno da API: " + returnApi.andReturn().getResponse().getContentAsString());
+        System.out.println("Status da API: " + returnApi.andReturn().getResponse().getStatus());
+
+        /*Conveter o retorno da API para um objeto de acesso */
+
+        RoleAccess objReturn = objectMapper.
+                readValue(returnApi.andReturn().getResponse().getContentAsString(),
+                        RoleAccess.class);
+
+        assertEquals(objReturn.getDescription(), roleAccess.getDescription());
+        assertEquals(200,  returnApi.andReturn().getResponse().getStatus());
+
+    }
+
+    /* Endpoint Get Object By Description to Role Access */
+    @Test
+    public void testRestApiGetObjectByDescriptionRoleAccessController() throws JsonProcessingException, Exception {
+
+
+        /* Responsaveis por efetuar os testes*/
+        DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
+        MockMvc mockMvc = builder.build();
+
+        RoleAccess roleAccess = new RoleAccess();
+
+        roleAccess.setDescription("ROLE_TESTING_GET_BY_DESCRIPTION");
+
+        /* Save a entitu on Role Access */
+        roleAccess = roleAccessRepository.save(roleAccess);
+
+        /* Trabalhar com JSON */
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        /* returnApi é um JSON*/
+        ResultActions returnApi = mockMvc.perform(MockMvcRequestBuilders.get("/roleAccess/desc/{description}", "BY_DESCRIP")
+                .content(objectMapper.writeValueAsString(roleAccess))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        System.out.println("Retorno da API: " + returnApi.andReturn().getResponse().getContentAsString());
+        System.out.println("Status da API: " + returnApi.andReturn().getResponse().getStatus());
+
+        /*Conveter o retorno da API para um objeto de acesso */
+
+        List<RoleAccess> objReturnList = objectMapper.
+                readValue(returnApi.andReturn().getResponse().getContentAsString(),
+                        new TypeReference<List<RoleAccess>>() { });
+
+        assertEquals(true,objReturnList.size() > 1);
+        assertEquals(roleAccess.getDescription(), objReturnList.get(0).getDescription());
+        assertEquals(200,  returnApi.andReturn().getResponse().getStatus());
+
+        roleAccessRepository.deleteById(roleAccess.getId());
 
     }
 
