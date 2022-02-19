@@ -1,5 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
+import ca.com.rlsp.ecommerce.enums.PersonType;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +24,10 @@ public abstract class Person implements Serializable {
 
     @Column(nullable = false)
     private String telephone;
+
+    @Column(name = "person_type")
+    @Enumerated(EnumType.STRING)
+    private PersonType personType;
 
     @OneToMany(mappedBy = "person", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Address> addresses = new ArrayList<Address>();
@@ -57,6 +63,22 @@ public abstract class Person implements Serializable {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public PersonType getPersonType() {
+        return personType;
+    }
+
+    public void setPersonType(PersonType personType) {
+        this.personType = personType;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     @Override
