@@ -46,13 +46,20 @@ public class RoleAccessController {
     }
 
 
+    @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
+    @DeleteMapping(path = "/roleAccess")
+    public ResponseEntity<?> deleteObjectRoleAccess(@RequestBody RoleAccess roleAccess){
+
+        roleAccessService.deleteById(roleAccess.getId());
+        return new ResponseEntity<>("Deleted Role Access By Object", HttpStatus.OK);
+    }
 
     @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
     @DeleteMapping(value = "/roleAccess/{roleAccessId}")
-    public ResponseEntity<?> deleteRoleAccess(@PathVariable Long roleAccessId){
+    public ResponseEntity<?> deleteByIdRoleAccess(@PathVariable Long roleAccessId){
 
         roleAccessService.deleteById(roleAccessId);
 
-        return new ResponseEntity<>("Deleted Role Access", HttpStatus.OK);
+        return new ResponseEntity<>("Deleted Role Access By Id", HttpStatus.OK);
     }
 }

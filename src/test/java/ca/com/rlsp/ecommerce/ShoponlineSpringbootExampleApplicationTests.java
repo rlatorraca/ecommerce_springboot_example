@@ -75,9 +75,42 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
 
     }
 
-    /* Endpoint Delete to Role Access */
+    /* Endpoint Delete By Id to Role Access */
     @Test
     public void testRestApiDeleteByIdRoleAccessController() throws JsonProcessingException, Exception {
+
+
+        /* Responsaveis por efetuar os testes*/
+        DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
+        MockMvc mockMvc = builder.build();
+
+        RoleAccess roleAccess = new RoleAccess();
+
+        roleAccess.setDescription("ROLE_TESTING_DELETE_BY_ID");
+
+        /* Save a entitu on Role Access */
+        roleAccess = roleAccessRepository.save(roleAccess);
+
+        /* Trabalhar com JSON */
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        /* returnApi é um JSON*/
+        ResultActions returnApi = mockMvc.perform(MockMvcRequestBuilders.delete("/roleAccess/{roleAccessId}", roleAccess.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        System.out.println("Retorno da API: " + returnApi.andReturn().getResponse().getContentAsString());
+        System.out.println("Status da API: " + returnApi.andReturn().getResponse().getStatus());
+
+        /*Conveter o retorno da API para um objeto de acesso */
+        assertEquals("Deleted Role Access By Id", returnApi.andReturn().getResponse().getContentAsString());
+        assertEquals(200,  returnApi.andReturn().getResponse().getStatus());
+
+    }
+
+    /* Endpoint Delete Object to Role Access */
+    @Test
+    public void testRestApiDeleteObjectRoleAccessController() throws JsonProcessingException, Exception {
 
 
         /* Responsaveis por efetuar os testes*/
@@ -95,7 +128,8 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
         ObjectMapper objectMapper = new ObjectMapper();
 
         /* returnApi é um JSON*/
-        ResultActions returnApi = mockMvc.perform(MockMvcRequestBuilders.delete("/roleAccess/{roleAccessId}", roleAccess.getId())
+        ResultActions returnApi = mockMvc.perform(MockMvcRequestBuilders.delete("/roleAccess")
+                .content(objectMapper.writeValueAsString(roleAccess))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -103,7 +137,7 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
         System.out.println("Status da API: " + returnApi.andReturn().getResponse().getStatus());
 
         /*Conveter o retorno da API para um objeto de acesso */
-        assertEquals("Deleted Role Access", returnApi.andReturn().getResponse().getContentAsString());
+        assertEquals("Deleted Role Access By Object", returnApi.andReturn().getResponse().getContentAsString());
         assertEquals(200,  returnApi.andReturn().getResponse().getStatus());
 
     }
