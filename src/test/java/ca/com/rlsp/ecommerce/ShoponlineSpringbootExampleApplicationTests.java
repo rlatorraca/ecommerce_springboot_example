@@ -8,10 +8,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import junit.framework.TestCase;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,8 +22,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
-// To show that I want to test EcommerceSpringbootExampleApplication.class (project)
-@SpringBootTest(classes = EcommerceSpringbootExampleApplication.class)
+@Profile("ut")
+@SpringBootTest(classes = EcommerceSpringbootExampleApplication.class) // To show that we want to test EcommerceSpringbootExampleApplication.class (project)
 class EcommercepringbootExampleApplicationTests extends TestCase {
 
 
