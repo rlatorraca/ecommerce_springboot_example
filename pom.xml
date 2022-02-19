@@ -17,7 +17,9 @@
         <java.version>11</java.version>
         <junit.version>4.13.2</junit.version>
         <jackson.version>2.13.1</jackson.version>
+        <flyway.version>7.3.1</flyway.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -71,6 +73,13 @@
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Flyway- Versionador de DB -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>${flyway.version}</version>
         </dependency>
 
     </dependencies>
