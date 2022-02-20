@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +66,8 @@ public class UserSystem implements UserDetails {
     /* AUTHORITES => are the ROLES , ex: ROLE_ADMIN; ROLE_*/
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        //return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -105,4 +107,6 @@ public class UserSystem implements UserDetails {
     public void setId(Long id) {
         this.id = id;
     }
+
+
 }
