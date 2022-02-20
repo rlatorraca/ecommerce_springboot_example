@@ -20,7 +20,7 @@ public class JWTTokenAuthenticationService{
     private static final Long EXPIRATINN_TIME = 2592000000L;
 
     /* Chave de seguranca para ser usada na criptografia (Md5, base64 ,etc)*/
-    private static final String SECRET = "ZWNvbW1lcmNl";
+    private static final String SECRET = "db96ff26706a1a3d595ecb67266c2d94";
 
     /* Prefixo do TOKEN (Bearer ,API key )*/
     private static final String TOKEN_PREFIX = "Bearer";
