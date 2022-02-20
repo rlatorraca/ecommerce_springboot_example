@@ -3,6 +3,7 @@ package ca.com.rlsp.ecommerce.security;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpSessionListener;
 public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements HttpSessionListener {
 
 
-    /* Ignora autenticacao das URLS abaixo para GET e POST*/
+    /* Ignora autenticacao das URLS abaixo para GET, DELETE e POST*/
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -30,4 +31,9 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
                 .antMatchers(HttpMethod.POST, "/roleAccess/**");
     }
 
+    /* Parte de Seguranca da API*/
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+    }
 }

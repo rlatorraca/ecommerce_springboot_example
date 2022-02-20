@@ -70,6 +70,42 @@ public class UserSystem implements UserDetails {
         return Collections.emptyList();
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getLastPasswordDate() {
+        return lastPasswordDate;
+    }
+
+    public void setLastPasswordDate(Date lastPasswordDate) {
+        this.lastPasswordDate = lastPasswordDate;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public List<RoleAccess> getAccessList() {
+        return accessList;
+    }
+
+    public void setAccessList(List<RoleAccess> accessList) {
+        this.accessList = accessList;
+    }
+
     @Override
     public String getPassword() {
         return this.password;
