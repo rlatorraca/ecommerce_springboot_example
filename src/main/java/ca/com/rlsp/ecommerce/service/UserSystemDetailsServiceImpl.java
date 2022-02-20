@@ -33,7 +33,7 @@ public class UserSystemDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(MSG_NO_USER_FOUND);
         }
 
-
+        /* Passamos como deve ser consultado o UserSystems*/
         return new User(userSystem.getLogin(),userSystem.getPassword(),userSystem.getAuthorities()); /* Retorna as info do User*/
     }
 }
