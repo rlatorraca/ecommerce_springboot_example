@@ -35,7 +35,7 @@ public class JWTTokenAuthenticationService{
         /* Montagem do Token*/
 
         /* JWT part*/
-        String JWT = Jwts
+        String jwt = Jwts
                         .builder() /* Chama o gerador de Token */
                         .setSubject(username)  /* Adiciona o user */
                         .setExpiration(new Date(System.currentTimeMillis() + EXPIRATINN_TIME)) /* Tempo de Expiracao */
@@ -43,8 +43,9 @@ public class JWTTokenAuthenticationService{
 
         /* Agrupa toda informacao do Token */
         /* Ex: Bearer ajdofijasoijfdaiojsdoajsodjaoisjdoaijsdasdoajsd */
-        String token = TOKEN_PREFIX + " " + JWT;
+        String token = TOKEN_PREFIX + " " + jwt;
 
+        handleCORSErrorsByBrowser(response);
 
         /* Retorna para a TELA e para o CLIENTE (API, browser, app, JS, Java App, etc) */
         /* 1) No Cabecalho*/
@@ -52,6 +53,27 @@ public class JWTTokenAuthenticationService{
 
         /* 2) No corpo da resposta  (USADO no POSTMAN */
         response.getWriter().write("{\"Authorization\": \"" + token + "\"}");
+    }
+
+    /* Autoriza ou Libera acesso quando existe problema de CORS no browser */
+    private void handleCORSErrorsByBrowser(HttpServletResponse response) {
+
+        /* Verifica parametros de CORS */
+        if(response.getHeader("Access-Control-Allow-Origin") == null) {
+            response.addHeader("Access-Control-Allow-Origin", "*"); /* * => acesso total */
+        }
+
+        if(response.getHeader("Access-Control-Allow-Headers") == null) {
+            response.addHeader("Access-Control-Allow-Headers", "*"); /* * => acesso total */
+        }
+
+        if(response.getHeader("Access-Control-Request-Headers") == null) {
+            response.addHeader("Access-Control-Request-Headers", "*"); /* * => acesso total */
+        }
+
+        if(response.getHeader("Access-Control-Allow-Methods") == null) {
+            response.addHeader("Access-Control-Allow-Methods", "*"); /* * => acesso total */
+        }
     }
 
 
