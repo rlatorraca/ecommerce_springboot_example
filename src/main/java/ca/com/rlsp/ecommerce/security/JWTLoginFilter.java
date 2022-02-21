@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /* Filtro para usar o servico da aplicacao  */
-public class JWTFilter extends AbstractAuthenticationProcessingFilter {
+public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 
     /* Configura o gerenciador de Autenticacao */
-    protected JWTFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager) {
+    protected JWTLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager) {
 
         /* Obriga a autenticacao da URL */
         super(new AntPathRequestMatcher(defaultFilterProcessesUrl));
