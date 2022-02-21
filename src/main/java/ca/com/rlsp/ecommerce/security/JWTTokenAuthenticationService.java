@@ -1,9 +1,15 @@
 package ca.com.rlsp.ecommerce.security;
 
+import ca.com.rlsp.ecommerce.ApplicationContextLoad;
+import ca.com.rlsp.ecommerce.model.UserSystem;
+import ca.com.rlsp.ecommerce.repository.UserSystemRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
@@ -54,6 +60,39 @@ public class JWTTokenAuthenticationService{
         /* 2) No corpo da resposta  (USADO no POSTMAN */
         response.getWriter().write("{\"Authorization\": \"" + token + "\"}");
     }
+
+    /* Retorna o USUARIO ja VERIFICADO e VAlIDADO ou caso nao seja valido Retornara NULL */
+    public Authentication getAuthtentication(HttpServletRequest request, HttpServletResponse response) {
+
+        String token = request.getHeader(HEADER_STRING);
+
+        if(token != null) {
+            String tokenCleaned = token.replace(TOKEN_PREFIX, "").trim();
+
+            /* Extrai do token do USERNAME que veio pela requisicao (request) */
+            String user = Jwts.parser()
+                              .setSigningKey(SECRET)
+                              .parseClaimsJws(tokenCleaned)
+                              .getBody()
+                              .getSubject(); /* O username esta no corpo da requisicao do token*/
+
+            if(user != null) {
+                UserSystem userSystem = ApplicationContextLoad.getApplicationContext()
+                                                              .getBean(UserSystemRepository.class)
+                                                              .findUserSystemByLogin(user);
+                if(userSystem != null) {
+                    return new UsernamePasswordAuthenticationToken(
+                            userSystem.getLogin(),
+                            userSystem.getPassword(),
+                            userSystem.getAuthorities());
+
+                }
+            }
+        }
+        handleCORSErrorsByBrowser(response);
+        return null;
+    }
+
 
     /* Autoriza ou Libera acesso quando existe problema de CORS no browser */
     private void handleCORSErrorsByBrowser(HttpServletResponse response) {
