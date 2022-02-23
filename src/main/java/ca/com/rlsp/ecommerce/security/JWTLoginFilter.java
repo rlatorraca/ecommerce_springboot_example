@@ -3,6 +3,7 @@ package ca.com.rlsp.ecommerce.security;
 import ca.com.rlsp.ecommerce.model.UserSystem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,6 +19,9 @@ import java.io.IOException;
 /* Filtro para usar o servico da aplicacao  */
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
+
+    private static final String LOGIN_FAILED = "Erro logging [RLSP]";
+    private static final String USER_NOT_FOUND = "Login not found [RLSP]";
 
     /* Configura o gerenciador de Autenticacao */
     protected JWTLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager) {
@@ -53,5 +57,18 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /* Pega a excecao no caso de ERROR no Login do usuario */
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+
+        if(failed instanceof BadCredentialsException) {
+            response.getWriter().write(USER_NOT_FOUND);
+        } else {
+            response.getWriter().write(LOGIN_FAILED + failed.getMessage());
+        }
+
     }
 }
