@@ -3,6 +3,7 @@ package ca.com.rlsp.ecommerce.security;
 import ca.com.rlsp.ecommerce.ApplicationContextLoad;
 import ca.com.rlsp.ecommerce.model.UserSystem;
 import ca.com.rlsp.ecommerce.repository.UserSystemRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
@@ -37,6 +38,7 @@ public class JWTTokenAuthenticationService{
     private static final String HEADER_STRING = "Authorization";
 
     private static final String INVALID_TOKEN = "TOKEN IS INVALID [RLSP]";
+    private static final String EXPIRED_LOGIN = "LOGIN TIME IS EXPIRED. Get a new TOKEN! [RLSP]";
 
     /* Gera o Token e envia a resposta para o cliente com JWT*/
     /* Recebe o username mas a validacao e manda um retorno para o cliente*/
@@ -97,6 +99,8 @@ public class JWTTokenAuthenticationService{
             }
         } catch (SignatureException e){
                 response.getWriter().write(INVALID_TOKEN);
+        } catch (ExpiredJwtException e){
+            response.getWriter().write(EXPIRED_LOGIN);
         } finally {
             handleCORSErrorsByBrowser(response);
         }
