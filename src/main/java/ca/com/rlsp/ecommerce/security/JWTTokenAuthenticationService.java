@@ -5,12 +5,14 @@ import ca.com.rlsp.ecommerce.model.UserSystem;
 import ca.com.rlsp.ecommerce.repository.UserSystemRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 
 /*
@@ -33,6 +35,8 @@ public class JWTTokenAuthenticationService{
 
     /* Prefixo do Cabecalho de Retorno do pedido de autenticacao (Header) */
     private static final String HEADER_STRING = "Authorization";
+
+    private static final String INVALID_TOKEN = "TOKEN IS INVALID [RLSP]";
 
     /* Gera o Token e envia a resposta para o cliente com JWT*/
     /* Recebe o username mas a validacao e manda um retorno para o cliente*/
@@ -62,34 +66,41 @@ public class JWTTokenAuthenticationService{
     }
 
     /* Retorna o USUARIO ja VERIFICADO e VAlIDADO ou caso nao seja valido Retornara NULL */
-    public Authentication getAuthtentication(HttpServletRequest request, HttpServletResponse response) {
+    public Authentication getAuthtentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String token = request.getHeader(HEADER_STRING);
 
-        if(token != null) {
-            String tokenCleaned = token.replace(TOKEN_PREFIX, "").trim();
+        try{
 
-            /* Extrai do token do USERNAME que veio pela requisicao (request) */
-            String user = Jwts.parser()
-                              .setSigningKey(SECRET)
-                              .parseClaimsJws(tokenCleaned)
-                              .getBody()
-                              .getSubject(); /* O username esta no corpo da requisicao do token*/
+            if(token != null) {
+                String tokenCleaned = token.replace(TOKEN_PREFIX, "").trim();
 
-            if(user != null) {
-                UserSystem userSystem = ApplicationContextLoad.getApplicationContext()
-                                                              .getBean(UserSystemRepository.class)
-                                                              .findUserSystemByLogin(user);
-                if(userSystem != null) {
-                    return new UsernamePasswordAuthenticationToken(
-                            userSystem.getLogin(),
-                            userSystem.getPassword(),
-                            userSystem.getAuthorities());
+                /* Extrai do token do USERNAME que veio pela requisicao (request) */
+                String user = Jwts.parser()
+                        .setSigningKey(SECRET)
+                        .parseClaimsJws(tokenCleaned)
+                        .getBody()
+                        .getSubject(); /* O username esta no corpo da requisicao do token*/
 
+                if(user != null) {
+                    UserSystem userSystem = ApplicationContextLoad.getApplicationContext()
+                            .getBean(UserSystemRepository.class)
+                            .findUserSystemByLogin(user);
+                    if(userSystem != null) {
+                        return new UsernamePasswordAuthenticationToken(
+                                userSystem.getLogin(),
+                                userSystem.getPassword(),
+                                userSystem.getAuthorities());
+
+                    }
                 }
             }
+        } catch (SignatureException e){
+                response.getWriter().write(INVALID_TOKEN);
+        } finally {
+            handleCORSErrorsByBrowser(response);
         }
-        handleCORSErrorsByBrowser(response);
+
         return null;
     }
 
