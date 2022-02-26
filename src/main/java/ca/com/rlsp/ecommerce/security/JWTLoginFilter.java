@@ -34,7 +34,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     }
 
 
-
     /* Retorna o USUARIO ao processar a autenticacao */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
