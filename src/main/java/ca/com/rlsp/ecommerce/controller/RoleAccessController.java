@@ -1,5 +1,6 @@
 package ca.com.rlsp.ecommerce.controller;
 
+import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.RoleAccess;
 import ca.com.rlsp.ecommerce.service.RoleAccessService;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RestController
 public class RoleAccessController {
 
+    private static final String ERRO_GETTING_ROLEACESS_BY_ID = "Error getting ROLE_ACESS by id/code [RLSP] : ";
     private final RoleAccessService roleAccessService;
 
     public RoleAccessController(RoleAccessService roleAccessService) {
@@ -33,9 +35,13 @@ public class RoleAccessController {
 
     @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
     @GetMapping(value = "/roleAccess/{roleAccessId}")
-    public ResponseEntity<RoleAccess> getByIdRoleAccess(@PathVariable Long roleAccessId){
+    public ResponseEntity<RoleAccess> getByIdRoleAccess(@PathVariable Long roleAccessId) throws EcommerceException {
 
-        Optional<RoleAccess> getOneRolesSaved = roleAccessService.getById(roleAccessId);
+        RoleAccess getOneRolesSaved = roleAccessService.getById(roleAccessId).orElse(null);
+
+        if(getOneRolesSaved == null) {
+            throw new EcommerceException(ERRO_GETTING_ROLEACESS_BY_ID + roleAccessId);
+        }
         return new ResponseEntity(getOneRolesSaved, HttpStatus.OK);
     }
 

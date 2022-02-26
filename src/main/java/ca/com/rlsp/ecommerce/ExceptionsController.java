@@ -1,5 +1,6 @@
 package ca.com.rlsp.ecommerce;
 
+import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.dto.ErrorObjectDTO;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,6 +24,18 @@ public class ExceptionsController extends ResponseEntityExceptionHandler {
     private static final String DB_INTEGRATY_ERROR = "Database Integraty Error";
     private static final String DB_CONSTRAINT_VIOLATION_ERROR = "Database Constrant Violation Error (Foreeign key error)";
     private static final String DB_SQL_ERROR = "Database SQL Error";
+
+    /* Captura a EXCECAO Customizada EcommerceException */
+    @ExceptionHandler(EcommerceException.class)
+    public ResponseEntity<Object> handleEcommerceException(EcommerceException ecommerceException) {
+
+        ErrorObjectDTO errorObjectDTO = new ErrorObjectDTO();
+
+        errorObjectDTO.setError(ecommerceException.getMessage());
+        errorObjectDTO.setCode(HttpStatus.OK.toString());
+
+        return new ResponseEntity<>(errorObjectDTO, HttpStatus.OK);
+    }
 
     /* Captura Excecoes Genericas do Projeto */
     @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class}) // Pegas as Exxceooes mais genericas do JAVA
