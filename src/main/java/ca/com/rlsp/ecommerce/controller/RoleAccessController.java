@@ -5,13 +5,10 @@ import ca.com.rlsp.ecommerce.model.RoleAccess;
 import ca.com.rlsp.ecommerce.service.RoleAccessService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.relation.Role;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class RoleAccessController {
@@ -32,7 +29,6 @@ public class RoleAccessController {
 
     }
 
-
     @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
     @GetMapping(value = "/roleAccess/{roleAccessId}")
     public ResponseEntity<RoleAccess> getByIdRoleAccess(@PathVariable Long roleAccessId) throws EcommerceException {
@@ -42,7 +38,7 @@ public class RoleAccessController {
         if(getOneRolesSaved == null) {
             throw new EcommerceException(ERRO_GETTING_ROLEACESS_BY_ID + roleAccessId);
         }
-        return new ResponseEntity(getOneRolesSaved, HttpStatus.OK);
+        return new ResponseEntity<>(getOneRolesSaved, HttpStatus.OK);
     }
 
     @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
@@ -75,8 +71,8 @@ public class RoleAccessController {
     @GetMapping(value = "/roleAccess/desc/{description}")
     public ResponseEntity<List<RoleAccess>> getByDescriptionRoleAccess(@PathVariable String description){
 
-        List<RoleAccess> roleAccessList = roleAccessService.getByDescription(description);
+        List<RoleAccess> roleAccessList = roleAccessService.getByDescription(description.toUpperCase());
 
-        return new ResponseEntity<List<RoleAccess>>(roleAccessList, HttpStatus.OK);
+        return new ResponseEntity<>(roleAccessList, HttpStatus.OK);
     }
 }
