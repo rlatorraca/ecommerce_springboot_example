@@ -13,7 +13,8 @@ import java.util.List;
 @RestController
 public class RoleAccessController {
 
-    private static final String ERRO_GETTING_ROLEACESS_BY_ID = "Error getting ROLE_ACESS by id/code [RLSP] : ";
+    private static final String ERROR_GETTING_ROLE_ACCESS_BY_ID = "Error getting ROLE_ACESS by id/code [RLSP] : ";
+    private static final String ERROR_ROLE_ACCESS_EXIST_ON_DB = "Role Access already existed on DB [RLSP] : ";
     private final RoleAccessService roleAccessService;
 
     public RoleAccessController(RoleAccessService roleAccessService) {
@@ -36,15 +37,22 @@ public class RoleAccessController {
         RoleAccess getOneRolesSaved = roleAccessService.getById(roleAccessId).orElse(null);
 
         if(getOneRolesSaved == null) {
-            throw new EcommerceException(ERRO_GETTING_ROLEACESS_BY_ID + roleAccessId);
+            throw new EcommerceException(ERROR_GETTING_ROLE_ACCESS_BY_ID + roleAccessId);
         }
         return new ResponseEntity<>(getOneRolesSaved, HttpStatus.OK);
     }
 
     @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
     @PostMapping(path = "/roleAccess")
-    public ResponseEntity<RoleAccess> saveRoleAccess(@RequestBody RoleAccess roleAccess){
+    public ResponseEntity<RoleAccess> saveRoleAccess(@RequestBody RoleAccess roleAccess) throws EcommerceException {
 
+        if(roleAccess.getId() == null) {
+            List<RoleAccess> roleAccessList = roleAccessService.getByDescription(roleAccess.getDescription().toUpperCase());
+
+            if(!roleAccessList.isEmpty()) {
+                throw new EcommerceException(ERROR_ROLE_ACCESS_EXIST_ON_DB);
+            }
+        }
         RoleAccess roleAccessSaved  = roleAccessService.save(roleAccess);
         return new ResponseEntity<>(roleAccessSaved, HttpStatus.OK);
     }

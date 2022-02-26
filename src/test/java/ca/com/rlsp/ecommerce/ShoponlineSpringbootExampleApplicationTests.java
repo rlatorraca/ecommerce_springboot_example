@@ -2,6 +2,7 @@ package ca.com.rlsp.ecommerce;
 
 
 import ca.com.rlsp.ecommerce.controller.RoleAccessController;
+import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.RoleAccess;
 import ca.com.rlsp.ecommerce.repository.RoleAccessRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -221,7 +222,7 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
 
 
     @Test
-    public void testSaveRoleAccessController() {
+    public void testSaveRoleAccessController() throws EcommerceException {
 
         RoleAccess roleAccess_01 = new RoleAccess();
 
