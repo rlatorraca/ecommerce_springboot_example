@@ -50,7 +50,7 @@ public class RoleAccessController {
             List<RoleAccess> roleAccessList = roleAccessService.getByDescription(roleAccess.getDescription().toUpperCase());
 
             if(!roleAccessList.isEmpty()) {
-                throw new EcommerceException(ERROR_ROLE_ACCESS_EXIST_ON_DB);
+                throw new EcommerceException(ERROR_ROLE_ACCESS_EXIST_ON_DB + roleAccess.getDescription());
             }
         }
         RoleAccess roleAccessSaved  = roleAccessService.save(roleAccess);
