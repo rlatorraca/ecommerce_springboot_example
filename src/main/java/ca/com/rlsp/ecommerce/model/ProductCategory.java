@@ -16,6 +16,15 @@ public class ProductCategory implements Serializable {
     @Column(nullable = false)
     private String description;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "company_fk"))
+    private Person company;
+
     public Long getId() {
         return id;
     }
@@ -30,5 +39,13 @@ public class ProductCategory implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Person getCompany() {
+        return company;
+    }
+
+    public void setCompany(Person company) {
+        this.company = company;
     }
 }
