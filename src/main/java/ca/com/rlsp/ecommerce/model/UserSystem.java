@@ -18,7 +18,7 @@ public class UserSystem implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user_system")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
     @Column(nullable = false)
@@ -39,11 +39,11 @@ public class UserSystem implements UserDetails {
 
     /* COMPANY | EMPRESA */
     @ManyToOne(targetEntity = Person.class)
-    @JoinColumn(name = "company_id",
+    @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
-                    name = "company_fk"))
+                    name = "ecommerce_company_fk"))
     private Person ecommerceCompany;
 
     @OneToMany(fetch = FetchType.LAZY)

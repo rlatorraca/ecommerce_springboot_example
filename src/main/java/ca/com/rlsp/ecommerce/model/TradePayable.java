@@ -54,11 +54,11 @@ public class TradePayable implements Serializable {
 
     /* COMPANY | EMPRESA */
     @ManyToOne(targetEntity = Person.class)
-    @JoinColumn(name = "company_id",
+    @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
-                    name = "company_fk"))
+                    name = "ecommerce_company_fk"))
     private Person ecommerceCompany;
 
     @Override
