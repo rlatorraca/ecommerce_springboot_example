@@ -31,6 +31,15 @@ public class TrackingStatus implements Serializable {
                     name = "product_sales_ecommerce_fk"))
     private ProductSalesEcommerce productSalesEcommerce;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -100,6 +109,14 @@ public class TrackingStatus implements Serializable {
 
     public void setProductSalesEcommerce(ProductSalesEcommerce productSalesEcommerce) {
         this.productSalesEcommerce = productSalesEcommerce;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 }
 

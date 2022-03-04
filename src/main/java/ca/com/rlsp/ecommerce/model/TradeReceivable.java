@@ -48,6 +48,14 @@ public class TradeReceivable implements Serializable {
     private Person person;
 
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "company_fk"))
+    private Person company;
 
     @Override
     public boolean equals(Object o) {
@@ -124,5 +132,13 @@ public class TradeReceivable implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public Person getCompany() {
+        return company;
+    }
+
+    public void setCompany(Person company) {
+        this.company = company;
     }
 }

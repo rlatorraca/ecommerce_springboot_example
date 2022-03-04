@@ -17,6 +17,15 @@ public class ProductBrand implements Serializable {
     @Column(nullable = false)
     private String description;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
+
     public Long getId() {
         return id;
     }
@@ -31,6 +40,14 @@ public class ProductBrand implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 
     @Override

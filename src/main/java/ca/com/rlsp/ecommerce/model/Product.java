@@ -59,6 +59,14 @@ public class Product implements Serializable {
     @Column(name = "product_active", nullable = false)
     private Boolean active = Boolean.TRUE;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
 
     @Override
     public boolean equals(Object o) {

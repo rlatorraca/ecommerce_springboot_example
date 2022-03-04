@@ -29,6 +29,15 @@ public abstract class Person implements Serializable {
     @Enumerated(EnumType.STRING)
     private PersonType personType;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
+
     @OneToMany(mappedBy = "person", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Address> addresses = new ArrayList<Address>();
 
@@ -79,6 +88,14 @@ public abstract class Person implements Serializable {
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 
     @Override

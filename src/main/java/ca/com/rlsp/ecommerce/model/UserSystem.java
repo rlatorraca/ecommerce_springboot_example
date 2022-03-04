@@ -44,7 +44,7 @@ public class UserSystem implements UserDetails {
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "company_fk"))
-    private Person company;
+    private Person ecommerceCompany;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role_access",
@@ -116,12 +116,12 @@ public class UserSystem implements UserDetails {
         this.accessList = accessList;
     }
 
-    public Person getCompany() {
-        return company;
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
     }
 
-    public void setCompany(Person company) {
-        this.company = company;
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 
     @Override

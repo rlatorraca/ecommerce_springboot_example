@@ -52,6 +52,15 @@ public class TradePayable implements Serializable {
                     name = "person_provider_fk"))
     private Person person_provider;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "company_fk"))
+    private Person ecommerceCompany;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -135,5 +144,13 @@ public class TradePayable implements Serializable {
 
     public void setPerson_provider(Person person_provider) {
         this.person_provider = person_provider;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 }

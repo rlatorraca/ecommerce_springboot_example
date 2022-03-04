@@ -46,6 +46,15 @@ public class Address implements Serializable {
                         name = "person_fk"))
     private Person person;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
@@ -132,6 +141,14 @@ public class Address implements Serializable {
 
     public AddressType getAddressType() {
         return addressType;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 
     public void setAddressType(AddressType addressType) {

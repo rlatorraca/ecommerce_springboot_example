@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity(name = "legal_person")
 @Table(name = "legal_person")
 @PrimaryKeyJoinColumn(name = "id")
-public class LegalPerson extends Person{
+public class LegalPerson extends Person {
 
     @Column(name = "business_number", nullable = false)
     private String businessNumber;
@@ -23,6 +23,7 @@ public class LegalPerson extends Person{
     private String legalName;
 
     private String category;
+
 
     public String getBusinessNumber() {
         return businessNumber;

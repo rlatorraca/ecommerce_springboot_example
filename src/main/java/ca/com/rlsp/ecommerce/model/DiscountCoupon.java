@@ -27,6 +27,15 @@ public class DiscountCoupon implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date couponValidate;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,6 +75,14 @@ public class DiscountCoupon implements Serializable {
 
     public BigDecimal getPercentualValueDiscount() {
         return percentualValueDiscount;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 
     public void setPercentualValueDiscount(BigDecimal percentualValueDiscount) {

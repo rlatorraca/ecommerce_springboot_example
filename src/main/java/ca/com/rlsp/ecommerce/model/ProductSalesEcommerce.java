@@ -23,6 +23,15 @@ public class ProductSalesEcommerce implements Serializable {
                     name = "person_fk"))
     private Person person;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
+
     @ManyToOne
     @JoinColumn(name = "billing_address_id",
             nullable = false,
@@ -184,5 +193,13 @@ public class ProductSalesEcommerce implements Serializable {
 
     public void setDiscountCoupon(DiscountCoupon discountCoupon) {
         this.discountCoupon = discountCoupon;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 }

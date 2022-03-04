@@ -37,12 +37,12 @@ public class ProductEvaluation implements Serializable {
 
     /* COMPANY | EMPRESA */
     @ManyToOne(targetEntity = Person.class)
-    @JoinColumn(name = "company_id",
+    @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
-                    name = "company_fk"))
-    private Person company;
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
 
     @Override
     public boolean equals(Object o) {
@@ -99,11 +99,11 @@ public class ProductEvaluation implements Serializable {
         this.description = description;
     }
 
-    public Person getCompany() {
-        return company;
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
     }
 
-    public void setCompany(Person company) {
-        this.company = company;
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 }

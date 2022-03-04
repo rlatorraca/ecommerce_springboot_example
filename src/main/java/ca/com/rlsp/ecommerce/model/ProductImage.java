@@ -28,6 +28,15 @@ public class ProductImage implements Serializable {
                     name = "product_fk"))
     private Product product;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,5 +80,13 @@ public class ProductImage implements Serializable {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 }

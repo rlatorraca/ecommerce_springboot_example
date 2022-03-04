@@ -49,6 +49,15 @@ public class PurchaseInvoice implements Serializable {
                         name = "person_fk"))
     private Person person;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
+
     @ManyToOne
     @JoinColumn(name = "trade_payable_id",
                 nullable = false,
@@ -158,5 +167,13 @@ public class PurchaseInvoice implements Serializable {
 
     public void setTradePayable(TradePayable tradePayable) {
         this.tradePayable = tradePayable;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 }

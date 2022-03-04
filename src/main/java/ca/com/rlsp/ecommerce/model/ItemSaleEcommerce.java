@@ -24,6 +24,15 @@ public class ItemSaleEcommerce implements Serializable {
                     name = "product_fk"))
     private Product product;
 
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ecommerce_company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "ecommerce_company_fk"))
+    private Person ecommerceCompany;
+
     @ManyToOne
     @JoinColumn(name = "product_sales_ecommerce_id",
             nullable = false,
@@ -77,6 +86,14 @@ public class ItemSaleEcommerce implements Serializable {
 
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public Person getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(Person ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
     }
 }
 
