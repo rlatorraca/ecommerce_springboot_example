@@ -28,6 +28,7 @@ public class UserSystem implements UserDetails {
     @Temporal(TemporalType.DATE)
     private Date lastPasswordDate;
 
+    /* PERSON TYPE - Natuarl or Legal */
     @ManyToOne(targetEntity = Person.class)
     @JoinColumn(name = "person_id",
             nullable = false,
@@ -35,6 +36,15 @@ public class UserSystem implements UserDetails {
                     value = ConstraintMode.CONSTRAINT,
                     name = "person_fk"))
     private Person person;
+
+    /* COMPANY | EMPRESA */
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "company_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "company_fk"))
+    private Person company;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role_access",
@@ -104,6 +114,14 @@ public class UserSystem implements UserDetails {
 
     public void setAccessList(List<RoleAccess> accessList) {
         this.accessList = accessList;
+    }
+
+    public Person getCompany() {
+        return company;
+    }
+
+    public void setCompany(Person company) {
+        this.company = company;
     }
 
     @Override
