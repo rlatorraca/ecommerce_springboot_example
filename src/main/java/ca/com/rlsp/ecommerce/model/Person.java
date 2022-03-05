@@ -32,7 +32,7 @@ public abstract class Person implements Serializable {
     /* COMPANY | EMPRESA */
     @ManyToOne(targetEntity = Person.class)
     @JoinColumn(name = "ecommerce_company_id",
-            nullable = false,
+            nullable = true,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
