@@ -43,6 +43,9 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
     @Test
     public void testRestApiSaveRoleAccessController() throws JsonProcessingException, Exception {
 
+        Random random = new Random();
+
+        Long randomForTesting = random.nextLong();
 
         /* Responsaveis por efetuar os testes*/
         DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
@@ -50,7 +53,7 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
 
         RoleAccess roleAccess = new RoleAccess();
 
-        roleAccess.setDescription("ROLE_TESTING_SAVE");
+        roleAccess.setDescription("ROLE_TESTING_SAVE_" + randomForTesting);
 
         /* Trabalhar com JSON */
         ObjectMapper objectMapper = new ObjectMapper();
