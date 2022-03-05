@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
+import java.util.Random;
 
 @Profile("ut")
 @SpringBootTest(classes = EcommerceSpringbootExampleApplication.class) // To show that we want to test EcommerceSpringbootExampleApplication.class (project)
@@ -148,6 +149,7 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
     @Test
     public void testRestApiGetObjectByDescriptionRoleAccessController() throws JsonProcessingException, Exception {
 
+        Random random = new Random();
 
         /* Responsaveis por efetuar os testes*/
         DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
@@ -155,16 +157,17 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
 
         RoleAccess roleAccess = new RoleAccess();
 
-        roleAccess.setDescription("ROLE_TESTING_GET_BY_DESCRIPTION");
+        Long randomForTesting = random.nextLong();
+        roleAccess.setDescription("ROLE_TESTING_" + randomForTesting);
 
-        /* Save a entitu on Role Access */
+        /* Save a entity on Role Access */
         roleAccess = roleAccessRepository.save(roleAccess);
 
         /* Trabalhar com JSON */
         ObjectMapper objectMapper = new ObjectMapper();
 
         /* returnApi é um JSON*/
-        ResultActions returnApi = mockMvc.perform(MockMvcRequestBuilders.get("/roleAccess/desc/{description}", "BY_DESCRIP")
+        ResultActions returnApi = mockMvc.perform(MockMvcRequestBuilders.get("/roleAccess/desc/{description}", randomForTesting)
                 .content(objectMapper.writeValueAsString(roleAccess))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON));
@@ -178,7 +181,7 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
                 readValue(returnApi.andReturn().getResponse().getContentAsString(),
                         new TypeReference<List<RoleAccess>>() { });
 
-        assertEquals(true,objReturnList.size() > 1);
+        assertEquals(true,objReturnList.size() > 0);
         assertEquals(roleAccess.getDescription(), objReturnList.get(0).getDescription());
         assertEquals(200,  returnApi.andReturn().getResponse().getStatus());
 
