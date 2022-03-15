@@ -98,6 +98,7 @@ public abstract class Person implements Serializable {
         this.ecommerceCompany = ecommerceCompany;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

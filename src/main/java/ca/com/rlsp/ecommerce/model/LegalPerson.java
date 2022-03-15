@@ -72,4 +72,6 @@ public class LegalPerson extends Person {
     public void setCategory(String category) {
         this.category = category;
     }
+
+
 }

@@ -12,4 +12,7 @@ public interface UserSystemRepository extends JpaRepository<UserSystem, Long> {
 
     @Query(value = "select us from UserSystem us where us.login = ?1")
     UserSystem findUserSystemByLogin(String login);
+
+    @Query(value = "select us from UserSystem us where us.person = ?1 or us.login = ?2")
+    UserSystem findUserSystemByPerson(Long id, String email);
 }
