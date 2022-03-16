@@ -4,7 +4,8 @@ public enum PersonType {
 
     MANAGER("Manager"),
     CLIENT("Client"),
-    EMPLOYEE("Employee");
+    EMPLOYEE("Employee"),
+    USER("USER");
 
     private String description;
 

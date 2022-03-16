@@ -11,6 +11,9 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) /* Criar tabelas para as classes concretas / filhas */
 @SequenceGenerator(name = "seq_person", sequenceName = "seq_person", initialValue = 1 , allocationSize = 1)
 public abstract class Person implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_person")
@@ -99,6 +102,7 @@ public abstract class Person implements Serializable {
     }
 
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,4 +117,6 @@ public abstract class Person implements Serializable {
     public int hashCode() {
         return id.hashCode();
     }
+
+
 }

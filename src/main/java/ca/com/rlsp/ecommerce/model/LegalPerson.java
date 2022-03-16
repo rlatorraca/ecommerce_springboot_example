@@ -1,11 +1,14 @@
 package ca.com.rlsp.ecommerce.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "legal_person")
 @Table(name = "legal_person")
 @PrimaryKeyJoinColumn(name = "id")
-public class LegalPerson extends Person {
+public class LegalPerson extends Person implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "business_number", nullable = false)
     private String businessNumber;

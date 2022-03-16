@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface PersonRepository extends JpaRepository<LegalPerson, Long> {
 
-    @Query(value = "select lp from  legal_person  lp where lp.businessNumber = ?1")
+    @Query(value = "SELECT lp FROM  legal_person lp WHERE lp.businessNumber = ?1")
     public LegalPerson existBusinessNumberRegistered(String businessNumber);
+
 }
