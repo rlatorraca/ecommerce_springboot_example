@@ -2,6 +2,7 @@ package ca.com.rlsp.ecommerce.controller;
 
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.LegalPerson;
+import ca.com.rlsp.ecommerce.model.UserSystem;
 import ca.com.rlsp.ecommerce.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class PersonController {
 
     public static final String LEGAL_PERSON_CANT_BE_NULL = "Legal Person can't be NULL";
+
     @Autowired
     private PersonRepository personRepository;
 
+
+    @Autowired
+    private UserSystem
 
 
     /*end-point é microsservicos é um API*/

@@ -1,36 +1,28 @@
 package ca.com.rlsp.ecommerce;
 
+import ca.com.rlsp.ecommerce.controller.PersonController;
 import ca.com.rlsp.ecommerce.enums.AddressType;
+import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.Address;
 import ca.com.rlsp.ecommerce.model.LegalPerson;
-import ca.com.rlsp.ecommerce.model.NaturalPerson;
 import ca.com.rlsp.ecommerce.model.Person;
-import ca.com.rlsp.ecommerce.repository.LegalPersonRepository;
-import ca.com.rlsp.ecommerce.repository.NaturalPersonRepository;
-import ca.com.rlsp.ecommerce.service.PersonUserSystemService;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 
-import java.util.List;
 
 @Profile("ut")
 @SpringBootTest(classes = EcommerceSpringbootExampleApplication.class)
-public class TestsPersonUserSystem  extends TestCase {
+public class TestsPersonUserSystem extends TestCase {
+
 
     @Autowired
-    private PersonUserSystemService personUserSystemService;
-
-    @Autowired
-    private NaturalPersonRepository naturalPersonRepository;
-
-    @Autowired
-    private LegalPersonRepository legalPersonRepository;
+    private PersonController personController;
 
     @Test
-    public void testRestRegisterUserSystem() {
+    public void testRestRegisterUserSystem() throws EcommerceException {
 
         LegalPerson legalPerson = new LegalPerson();
         Address address = new Address();
@@ -54,6 +46,6 @@ public class TestsPersonUserSystem  extends TestCase {
         legalPerson.setProvinceRegistration("13123212");
         legalPerson.setTelephone("(647) 333-44444");
 
-        legalPersonRepository.save(legalPerson);
+        personController.saveLegalPerson(legalPerson);
     }
 }

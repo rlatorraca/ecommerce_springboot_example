@@ -6,7 +6,10 @@ import ca.com.rlsp.ecommerce.repository.PersonRepository;
 import ca.com.rlsp.ecommerce.repository.UserSystemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Calendar;
 
 @Service
 public class PersonUserSystemService {
@@ -39,31 +42,31 @@ public class PersonUserSystemService {
 
         if (userLegalPerson == null) {
 
-            String constraint = usuarioRepository.consultaConstraintAcesso();
+            String constraint = personRepository.consultaConstraintAcesso();
             if (constraint != null) {
                 jdbcTemplate.execute("begin; alter table usuarios_acesso drop constraint " + constraint +"; commit;");
             }
 
-            usuarioPj = new Usuario();
-            usuarioPj.setDataAtualSenha(Calendar.getInstance().getTime());
-            usuarioPj.setEmpresa(juridica);
-            usuarioPj.setPessoa(juridica);
-            usuarioPj.setLogin(juridica.getEmail());
+            userLegalPerson = new UserSystem();
+            userLegalPerson.setLastPasswordDate(Calendar.getInstance().getTime());
+            userLegalPerson.setEcommerceCompany(legalPerson);
+            userLegalPerson.setPerson(legalPerson);
+            userLegalPerson.setLogin(legalPerson.getEmail());
 
             String senha = "" + Calendar.getInstance().getTimeInMillis();
             String senhaCript = new BCryptPasswordEncoder().encode(senha);
 
-            usuarioPj.setSenha(senhaCript);
+            userLegalPerson.setPassword(senhaCript);
 
-            usuarioPj = usuarioRepository.save(usuarioPj);
+            userLegalPerson = userSystemRepository.save(userLegalPerson);
 
-            usuarioRepository.insereAcessoUserPj(usuarioPj.getId());
+            userSystemRepository.insereAcessoUserPj(userLegalPerson.getId());
 
             /*Fazer o envio de e-mail do login e da senha*/
 
         }
 
-        return juridica;
+        return legalPerson;
 
     }
 
