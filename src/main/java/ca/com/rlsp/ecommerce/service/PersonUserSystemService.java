@@ -28,7 +28,7 @@ public class PersonUserSystemService {
 
 
         // Salva empresa no BD
-        legalPerson = personRepository.save(legalPerson);
+        //legalPerson = personRepository.save(legalPerson);
 
         for (int i = 0; i< legalPerson.getAddresses().size(); i++) {
            legalPerson.getAddresses().get(i).setPerson(legalPerson);
