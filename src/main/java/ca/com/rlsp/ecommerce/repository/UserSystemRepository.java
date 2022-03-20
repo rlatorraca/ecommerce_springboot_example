@@ -13,22 +13,29 @@ import javax.transaction.Transactional;
 @Repository
 public interface UserSystemRepository extends JpaRepository<UserSystem, Long> {
 
-    @Query(value = "select us from UserSystem us where us.login = ?1")
+    @Query(value = "SELECT us FROM UserSystem us " +
+                   "WHERE us.login = ?1")
     UserSystem findUserSystemByLogin(String login);
 
-    @Query(value = "select us from UserSystem us where us.person.id = ?1 or us.login = ?2")
+    @Query(value = "SELECT us FROM UserSystem us " +
+                   "WHERE us.person.id = ?1 or us.login = ?2")
     UserSystem findUserSystemByPerson(Long id, String email);
 
-    @Query(value = "select constraint_name from information_schema.constraint_column_usage " +
-                   "where table_name='user_role_access' and column_name='role_access_id' " +
-                   "and constraint_name <> 'unique_access_user';",
-           nativeQuery = true)
+    // RAW SQL
+    @Query(nativeQuery = true,
+           value = "SELECT constraint_name FROM information_schema.constraint_column_usage " +
+                   "WHERE table_name='user_role_access' AND column_name='role_access_id' " +
+                   "AND constraint_name <> 'unique_access_user';"
+           )
     String queryConstraintUserRoleAcessoTable();
+
 
     @Transactional
     @Modifying // Deve-se usar para INSERT, DELETE, UPDATE
-    @Query(value = "INSERT INTO user_role_access(user_system_id, role_access_id) " +
-                   " values (?1, (SELECT id FROM role_access WHERE description = 'ROLE_USER' ))",
-           nativeQuery = true)
+    // RAW SQL
+    @Query(nativeQuery = true,
+           value = "INSERT INTO user_role_access(user_system_id, role_access_id) " +
+                   "VALUES (?1, (SELECT id FROM role_access WHERE description='ROLE_USER'))"
+          )
     void insertStandardUserLegalPerson(Long id);
 }

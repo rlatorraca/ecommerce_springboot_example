@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +25,7 @@ public class ExceptionsController extends ResponseEntityExceptionHandler {
     private static final String DB_INTEGRATY_ERROR = "Database Integraty Error";
     private static final String DB_CONSTRAINT_VIOLATION_ERROR = "Database Constrant Violation Error (Foreeign key error)";
     private static final String DB_SQL_ERROR = "Database SQL Error";
+    public static final String NO_MESSAGE_SENT_INTO_THE_REQUEST_BODY = "No message sent into the Request Body [RLSP]";
 
     /* Captura a EXCECAO Customizada EcommerceException */
     @ExceptionHandler(EcommerceException.class)
@@ -53,7 +55,9 @@ public class ExceptionsController extends ResponseEntityExceptionHandler {
                 message += error.getDefaultMessage() + "\n";
             }
 
-        } else {
+        } if(ex instanceof HttpMessageNotReadableException) {
+            message = NO_MESSAGE_SENT_INTO_THE_REQUEST_BODY;
+        }else {
             message = ex.getMessage();
         }
 
