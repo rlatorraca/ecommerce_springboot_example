@@ -72,6 +72,14 @@ class TestsPersonUserSystem extends TestCase {
         legalPerson.getAddresses().add(address02);
 
 
-        personController.saveLegalPerson(legalPerson);
+        legalPerson = personController.saveLegalPerson(legalPerson).getBody();
+
+        assertEquals(true, legalPerson.getId() > 0);
+
+        for(Address address : legalPerson.getAddresses()) {
+            assertEquals(true, address.getId() > 0);
+        }
+
+        assertEquals(2, legalPerson.getAddresses().size());
     }
 }
