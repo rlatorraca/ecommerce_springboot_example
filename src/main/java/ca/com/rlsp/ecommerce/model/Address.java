@@ -1,6 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
 import ca.com.rlsp.ecommerce.enums.AddressType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -38,6 +39,7 @@ public class Address implements Serializable {
     @Column(nullable = false)
     private String city;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Person.class)
     @JoinColumn(name = "person_id",
                 nullable = false,
@@ -47,6 +49,7 @@ public class Address implements Serializable {
     private Person person;
 
     /* COMPANY | EMPRESA */
+    @JsonIgnore
     @ManyToOne(targetEntity = Person.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = true,
