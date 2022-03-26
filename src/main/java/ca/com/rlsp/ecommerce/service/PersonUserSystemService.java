@@ -32,7 +32,7 @@ public class PersonUserSystemService {
 
         for (int i = 0; i< legalPerson.getAddresses().size(); i++) {
            legalPerson.getAddresses().get(i).setPerson(legalPerson);
-            legalPerson.getAddresses().get(i).setEcommerceCompany(legalPerson);
+           legalPerson.getAddresses().get(i).setEcommerceCompany(legalPerson);
         }
 
         legalPerson = personRepository.save(legalPerson);
