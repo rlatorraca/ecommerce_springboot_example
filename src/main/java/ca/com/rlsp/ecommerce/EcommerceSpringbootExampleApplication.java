@@ -32,7 +32,7 @@ public class EcommerceSpringbootExampleApplication implements AsyncConfigurer {
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(20);
         executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("Assyncrono Thread");
+        executor.setThreadNamePrefix("Email Async Thread [RLSP]");
         executor.initialize();
 
         return executor;

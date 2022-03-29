@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 
 @Service
@@ -17,14 +19,19 @@ public class PersonUserSystemService {
     private UserSystemRepository userSystemRepository;
     private PersonRepository personRepository;
     private JdbcTemplate jdbcTemplate;
+    private SendEmailService sendEmailService;
 
-    public PersonUserSystemService(UserSystemRepository userSystemRepository, PersonRepository personRepository, JdbcTemplate jdbcTemplate) {
+    public PersonUserSystemService(UserSystemRepository userSystemRepository,
+                                   PersonRepository personRepository,
+                                   JdbcTemplate jdbcTemplate,
+                                   SendEmailService sendEmailService) {
         this.userSystemRepository = userSystemRepository;
         this.personRepository = personRepository;
         this.jdbcTemplate = jdbcTemplate;
+        this.sendEmailService = sendEmailService;
     }
 
-    public LegalPerson saveLegalPerson(LegalPerson legalPerson) {
+    public LegalPerson saveLegalPerson(LegalPerson legalPerson) throws MessagingException {
 
 
         // Salva empresa no BD
@@ -74,12 +81,30 @@ public class PersonUserSystemService {
             // Cria um Usuario STANDARD (para acessar o sistema)
             userSystemRepository.insertStandardUserLegalPerson(userLegalPerson.getId());
 
+            StringBuilder messageHtml = new StringBuilder();
             /*Fazer o envio de e-mail do login e da senha*/
+
+            try {
+                sendEmailService.sendEmailHtml("Generated access to e-Commerce", createEmailHtml(legalPerson, password), legalPerson.getEmail());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
 
         }
 
         return legalPerson;
 
+    }
+
+    public String createEmailHtml(LegalPerson legalPerson, String password) {
+        StringBuilder messageHtml = new StringBuilder();
+        messageHtml.append("<b>Segue abaixo seus dados de acesso para a loja virtual</b>");
+        messageHtml.append("<b>Login: </b>"+legalPerson.getEmail()+"</b><br/>");
+        messageHtml.append("<b>Senha: </b>").append(password).append("<br/><br/>");
+        messageHtml.append("Obrigado!");
+
+        return messageHtml.toString();
     }
 
 }
