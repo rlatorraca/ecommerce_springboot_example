@@ -6,13 +6,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.concurrent.Executor;
 
 @SpringBootApplication
-@EnableAsync
+@EnableScheduling // habitlita a possibilidade de taregas automatizadasautomatedAutomAu
+@EnableAsync // Permite Asincronia para o EMAIL
 @EnableJpaRepositories(basePackages = {"ca.com.rlsp.ecommerce.repository"}) // Gerencia e aponta para o base de pacotes de repositorios
 @EnableTransactionManagement// Gerencia as transacoes com o BD
 public class EcommerceSpringbootExampleApplication implements AsyncConfigurer {

@@ -36,4 +36,5 @@ public class UserSystemDetailsServiceImpl implements UserDetailsService {
         /* Passamos como deve ser consultado o UserSystems*/
         return new User(userSystem.getLogin(),userSystem.getPassword(),userSystem.getAuthorities()); /* Retorna as info do User*/
     }
+
 }

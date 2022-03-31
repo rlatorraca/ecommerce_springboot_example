@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface UserSystemRepository extends JpaRepository<UserSystem, Long> {
@@ -47,5 +48,9 @@ public interface UserSystemRepository extends JpaRepository<UserSystem, Long> {
                     "VALUES (?1, (SELECT id FROM role_access WHERE description=?2 limit 1))"
     )
     void insertStandardUserLegalPerson(Long id, String role);
+
+    /* Pega todos os usuarios que ja tem 90 dias sem trocar a senha*/
+    @Query(value = "SELECT us from UserSystem us WHERE us.lastPasswordDate > (current_date - 90)")
+    List<UserSystem> userPasswordMoreThan90Days();
 
 }
