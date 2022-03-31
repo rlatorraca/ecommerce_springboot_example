@@ -38,4 +38,14 @@ public interface UserSystemRepository extends JpaRepository<UserSystem, Long> {
                    "VALUES (?1, (SELECT id FROM role_access WHERE description='ROLE_USER'))"
           )
     void insertStandardUserLegalPerson(Long id);
+
+    @Transactional
+    @Modifying // Deve-se usar para INSERT, DELETE, UPDATE
+    // RAW SQL
+    @Query(nativeQuery = true,
+            value = "INSERT INTO user_role_access(user_system_id, role_access_id) " +
+                    "VALUES (?1, (SELECT id FROM role_access WHERE description=?2 limit 1))"
+    )
+    void insertStandardUserLegalPerson(Long id, String role);
+
 }

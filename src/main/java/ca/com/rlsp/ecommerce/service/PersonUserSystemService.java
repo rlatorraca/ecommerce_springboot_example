@@ -100,7 +100,7 @@ public class PersonUserSystemService {
     public String createEmailHtml(LegalPerson legalPerson, String password) {
         StringBuilder messageHtml = new StringBuilder();
         messageHtml.append("<b>Segue abaixo seus dados de acesso para a loja virtual</b>");
-        messageHtml.append("<b>Login: </b>"+legalPerson.getEmail()+"</b><br/>");
+        messageHtml.append("<b>Login: </b>"+legalPerson.getEmail()+"<br/>");
         messageHtml.append("<b>Senha: </b>").append(password).append("<br/><br/>");
         messageHtml.append("Obrigado!");
 
