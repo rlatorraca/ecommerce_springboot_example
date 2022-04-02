@@ -19,6 +19,7 @@ public class PersonController {
 
     public static final String LEGAL_PERSON_CANT_BE_NULL = "Legal Person can't be NULL [RLSP]: ";
     public static final String EXIST_BUSINESS_NUMBER_INTO_DB = "BUSINESS NUMBER already exist on Database [RLSP]: ";
+    public static final String EXIST_PROVINCE_REGISTRATION_NUMBER_INTO_DB  = "PROVINCIAL NUMBER already exist on Database [RLSP]: ";
 
     public PersonController(PersonRepository personRepository, PersonUserSystemService personUserSystemService) {
         this.personRepository = personRepository;
@@ -45,7 +46,13 @@ public class PersonController {
             throw new EcommerceException(EXIST_BUSINESS_NUMBER_INTO_DB + legalPerson.getBusinessNumber());
         }
 
-        legalPerson = personUserSystemService.saveLegalPerson(legalPerson);
+        // Verifica se Legal Person é um nova pessoa (por ter id = null); OR
+        // Se Legal Person com o PROVINCIAL REGISTRATION NUMBER ja esta cadastrada no DB
+        if (legalPerson.getId() == null && personRepository.existProvincialRegistration(legalPerson.getBusinessNumber()) != null) {
+            throw new EcommerceException(EXIST_PROVINCE_REGISTRATION_NUMBER_INTO_DB + legalPerson.getBusinessNumber());
+        }
+
+            legalPerson = personUserSystemService.saveLegalPerson(legalPerson);
 
         return new ResponseEntity<LegalPerson>(legalPerson, HttpStatus.OK);
     }
