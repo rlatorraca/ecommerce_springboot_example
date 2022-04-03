@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+
 @RestController
 public class PersonController {
 
@@ -33,7 +35,7 @@ public class PersonController {
     /* end-point é microsservicos numa API*/
     @ResponseBody
     @PostMapping(value = "/saveLegalPerson")
-    public ResponseEntity<LegalPerson> saveLegalPerson(@RequestBody LegalPerson legalPerson) throws EcommerceException{
+    public ResponseEntity<LegalPerson> saveLegalPerson(@RequestBody LegalPerson legalPerson) throws EcommerceException, MessagingException {
 
 
         if (legalPerson == null) {

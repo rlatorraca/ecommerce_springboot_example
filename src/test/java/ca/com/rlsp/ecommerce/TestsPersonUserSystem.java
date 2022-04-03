@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 
+import javax.mail.MessagingException;
 import java.util.Calendar;
 
 
@@ -24,7 +25,7 @@ class TestsPersonUserSystem extends TestCase {
     private PersonController personController;
 
     @Test
-    public void testRestRegisterUserSystem() throws EcommerceException {
+    public void testRestRegisterUserSystem() throws EcommerceException, MessagingException {
 
         LegalPerson legalPerson = new LegalPerson();
         Address address01 = new Address();

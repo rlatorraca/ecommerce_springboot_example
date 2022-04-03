@@ -6,6 +6,7 @@ import ca.com.rlsp.ecommerce.repository.UserSystemRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class AutomatedTasksService {
 
     //@Scheduled(cron = "0 0 11 * * * ", zone = "America/Halifax") - com o CRON
     @Scheduled(initialDelay = 2000, fixedDelay = 86400000)
-    public void notifyUserChangePassword() throws UnsupportedEncodingException, InterruptedException {
+    public void notifyUserChangePassword() throws UnsupportedEncodingException, InterruptedException, MessagingException {
 
         List<UserSystem> allUsersMore90Days = userSystemRepository.userPasswordMoreThan90Days();
 
