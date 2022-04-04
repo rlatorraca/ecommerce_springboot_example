@@ -79,6 +79,7 @@ public class PersonUserSystemService {
 
             // Cria um Usuario STANDARD (para acessar o sistema)
             userSystemRepository.insertStandardUserLegalPerson(userLegalPerson.getId());
+            userSystemRepository.insertStandardUserLegalPerson(userLegalPerson.getId(), "ROLE_ADMIN");
 
             StringBuilder messageHtml = new StringBuilder();
             /*Fazer o envio de e-mail do login e da senha*/

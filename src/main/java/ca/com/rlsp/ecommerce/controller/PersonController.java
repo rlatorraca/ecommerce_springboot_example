@@ -2,9 +2,11 @@ package ca.com.rlsp.ecommerce.controller;
 
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.LegalPerson;
+import ca.com.rlsp.ecommerce.model.NaturalPerson;
 import ca.com.rlsp.ecommerce.repository.PersonRepository;
 import ca.com.rlsp.ecommerce.service.PersonUserSystemService;
 import ca.com.rlsp.ecommerce.util.BusinessNumberValidator;
+import ca.com.rlsp.ecommerce.util.SinNumberValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,13 +26,14 @@ public class PersonController {
     public static final String EXIST_BUSINESS_NUMBER_INTO_DB = "BUSINESS NUMBER already exist on Database [RLSP]: ";
     public static final String EXIST_PROVINCE_REGISTRATION_NUMBER_INTO_DB  = "PROVINCIAL NUMBER already exist on Database [RLSP]: ";
     public static final String INVALID_BUSINESS_NUMBER  = "Business Number inserted is INVALID [RLSP]: ";
+    public static final String NATURAL_PERSON_CANT_BE_NULL = "Natural Person can't be NULL [RLSP]: ";
+    public static final String EXIST_SIN_NUMBER_INTO_DB = "SIN NUMBER already exist on Database [RLSP]: ";
+    public static final String INVALID_SIN_NUMBER  = "Sin Number is INVALID [RLSP]: ";
 
     public PersonController(PersonRepository personRepository, PersonUserSystemService personUserSystemService) {
         this.personRepository = personRepository;
         this.personUserSystemService = personUserSystemService;
     }
-
-
 
 
 
@@ -68,4 +71,29 @@ public class PersonController {
     }
 
 
+    @ResponseBody
+    @PostMapping(value = "/saveNaturalPerson")
+    public ResponseEntity<NaturalPerson> saveNaturalPerson(@RequestBody NaturalPerson naturalPerson) throws EcommerceException, MessagingException {
+
+
+        if (naturalPerson == null) {
+            throw new EcommerceException(NATURAL_PERSON_CANT_BE_NULL);
+        }
+
+        // Verifica se Legal Person é um nova pessoa (por ter id = null); OR
+        // Se Legal Person com o BUSINNES NUMBER ja esta cadastrada no DB
+        if (naturalPerson.getId() == null && personRepository.existBusinessNumberRegistered(naturalPerson.getSinNumber()) != null) {
+            throw new EcommerceException(EXIST_SIN_NUMBER_INTO_DB + naturalPerson.getSinNumber());
+        }
+
+        // Veriica se Business Number is true/false
+        // Se false lancara uma excecao
+        if ( !SinNumberValidator.isCPF(naturalPerson.getSinNumber())) {
+            throw new EcommerceException(INVALID_SIN_NUMBER + "[" + naturalPerson.getSinNumber() + "]");
+        }
+
+        //naturalPerson = personUserSystemService.(naturalPerson);
+
+        return new ResponseEntity<NaturalPerson>(naturalPerson, HttpStatus.OK);
+    }
 }
