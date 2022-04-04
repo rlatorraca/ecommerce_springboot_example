@@ -5,6 +5,10 @@ import java.util.InputMismatchException;
 public class SinNumberValidator {
 
     public static boolean isCPF(String CPF) {
+
+        CPF = CPF.replaceAll("\\.", "")
+                .replaceAll("\\/", "")
+                .replaceAll("\\-", "");
         // considera-se erro CPF's formados por uma sequencia de numeros iguais
         if (CPF.equals("00000000000") ||
                 CPF.equals("11111111111") ||

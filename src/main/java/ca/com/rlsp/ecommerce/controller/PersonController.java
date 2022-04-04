@@ -4,6 +4,7 @@ import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.LegalPerson;
 import ca.com.rlsp.ecommerce.repository.PersonRepository;
 import ca.com.rlsp.ecommerce.service.PersonUserSystemService;
+import ca.com.rlsp.ecommerce.util.BusinessNumberValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ public class PersonController {
     public static final String LEGAL_PERSON_CANT_BE_NULL = "Legal Person can't be NULL [RLSP]: ";
     public static final String EXIST_BUSINESS_NUMBER_INTO_DB = "BUSINESS NUMBER already exist on Database [RLSP]: ";
     public static final String EXIST_PROVINCE_REGISTRATION_NUMBER_INTO_DB  = "PROVINCIAL NUMBER already exist on Database [RLSP]: ";
+    public static final String INVALID_BUSINESS_NUMBER  = "Business Number inserted is INVALID [RLSP]: ";
 
     public PersonController(PersonRepository personRepository, PersonUserSystemService personUserSystemService) {
         this.personRepository = personRepository;
@@ -54,8 +56,16 @@ public class PersonController {
             throw new EcommerceException(EXIST_PROVINCE_REGISTRATION_NUMBER_INTO_DB + legalPerson.getBusinessNumber());
         }
 
+        // Veriica se Business Number is true/false
+        // Se false lancara uma excecao
+        if ( !BusinessNumberValidator.isCNPJ(legalPerson.getBusinessNumber())) {
+            throw new EcommerceException(INVALID_BUSINESS_NUMBER + "[" + legalPerson.getBusinessNumber() + "]");
+        }
+
             legalPerson = personUserSystemService.saveLegalPerson(legalPerson);
 
         return new ResponseEntity<LegalPerson>(legalPerson, HttpStatus.OK);
     }
+
+
 }
