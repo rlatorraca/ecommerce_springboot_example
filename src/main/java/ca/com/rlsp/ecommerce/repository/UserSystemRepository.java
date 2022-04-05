@@ -38,7 +38,7 @@ public interface UserSystemRepository extends JpaRepository<UserSystem, Long> {
            value = "INSERT INTO user_role_access(user_system_id, role_access_id) " +
                    "VALUES (?1, (SELECT id FROM role_access WHERE description='ROLE_USER'))"
           )
-    void insertStandardUserLegalPerson(Long id);
+    void insertStandardUserNatualAndLegalPerson(Long id);
 
     @Transactional
     @Modifying // Deve-se usar para INSERT, DELETE, UPDATE

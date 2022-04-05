@@ -3,7 +3,7 @@ package ca.com.rlsp.ecommerce.controller;
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.LegalPerson;
 import ca.com.rlsp.ecommerce.model.NaturalPerson;
-import ca.com.rlsp.ecommerce.repository.PersonRepository;
+import ca.com.rlsp.ecommerce.repository.LegalPersonRepository;
 import ca.com.rlsp.ecommerce.service.PersonUserSystemService;
 import ca.com.rlsp.ecommerce.util.BusinessNumberValidator;
 import ca.com.rlsp.ecommerce.util.SinNumberValidator;
@@ -19,7 +19,7 @@ import javax.mail.MessagingException;
 @RestController
 public class PersonController {
 
-    private PersonRepository personRepository;
+    private LegalPersonRepository personRepository;
     private PersonUserSystemService personUserSystemService;
 
     public static final String LEGAL_PERSON_CANT_BE_NULL = "Legal Person can't be NULL [RLSP]: ";
@@ -30,7 +30,7 @@ public class PersonController {
     public static final String EXIST_SIN_NUMBER_INTO_DB = "SIN NUMBER already exist on Database [RLSP]: ";
     public static final String INVALID_SIN_NUMBER  = "Sin Number is INVALID [RLSP]: ";
 
-    public PersonController(PersonRepository personRepository, PersonUserSystemService personUserSystemService) {
+    public PersonController(LegalPersonRepository personRepository, PersonUserSystemService personUserSystemService) {
         this.personRepository = personRepository;
         this.personUserSystemService = personUserSystemService;
     }
@@ -65,7 +65,7 @@ public class PersonController {
             throw new EcommerceException(INVALID_BUSINESS_NUMBER + "[" + legalPerson.getBusinessNumber() + "]");
         }
 
-            legalPerson = personUserSystemService.saveLegalPerson(legalPerson);
+        legalPerson = personUserSystemService.saveLegalPerson(legalPerson);
 
         return new ResponseEntity<LegalPerson>(legalPerson, HttpStatus.OK);
     }
@@ -92,7 +92,7 @@ public class PersonController {
             throw new EcommerceException(INVALID_SIN_NUMBER + "[" + naturalPerson.getSinNumber() + "]");
         }
 
-        //naturalPerson = personUserSystemService.(naturalPerson);
+        naturalPerson = personUserSystemService.saveNaturalPerson(naturalPerson);
 
         return new ResponseEntity<NaturalPerson>(naturalPerson, HttpStatus.OK);
     }
