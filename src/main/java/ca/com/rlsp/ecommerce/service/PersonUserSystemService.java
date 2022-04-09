@@ -145,7 +145,7 @@ public class PersonUserSystemService {
             // Cria o novo usuario para Empresa que foi criada e cadastrada
             userNaturalPerson = new UserSystem();
             userNaturalPerson.setLastPasswordDate(Calendar.getInstance().getTime());
-            userNaturalPerson.setEcommerceCompany(naturalPerson);
+            userNaturalPerson.setEcommerceCompany(naturalPerson.getEcommerceCompany());
             userNaturalPerson.setPerson(naturalPerson);
             userNaturalPerson.setLogin(naturalPerson.getEmail());
 

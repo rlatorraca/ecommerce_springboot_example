@@ -45,7 +45,7 @@ class TestsPersonUserSystem extends TestCase {
         legalPerson.setLegalName("Simple Test");
         legalPerson.setEmail("email"+ Calendar.getInstance().getTimeInMillis()+"@simpletest.com.ca");
 
-        String legalNumber = "33.401.503/0001-28";
+        String legalNumber = "38.355.481/0001-20";
         Boolean isBusinessNumber = BusinessNumberValidator.isCNPJ(legalNumber);
         if(isBusinessNumber) {
             legalPerson.setBusinessNumber(removeSpecialCharacters(legalNumber));
@@ -111,7 +111,7 @@ class TestsPersonUserSystem extends TestCase {
 
         naturalPerson.setName("Test Name");
 
-        String naturalNumber = "055.808.785-08";
+        String naturalNumber = "241.303.982-10";
         Boolean isBusinessNumber = SinNumberValidator.isCPF(naturalNumber);
         if(isBusinessNumber) {
             naturalPerson.setSinNumber(removeSpecialCharacters(naturalNumber));
