@@ -118,7 +118,7 @@ public class PersonUserSystemService {
 
         for (int i = 0; i< naturalPerson.getAddresses().size(); i++) {
             naturalPerson.getAddresses().get(i).setPerson(naturalPerson);
-            naturalPerson.getAddresses().get(i).setEcommerceCompany(naturalPerson);
+            //naturalPerson.getAddresses().get(i).setEcommerceCompany(naturalPerson);
         }
 
         naturalPerson = naturalPersonRepository.save(naturalPerson);
