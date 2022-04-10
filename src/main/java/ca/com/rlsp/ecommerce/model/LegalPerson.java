@@ -1,5 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
+import org.hibernate.validator.constraints.br.CNPJ;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -10,6 +12,7 @@ public class LegalPerson extends Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @CNPJ(message = "Businness number is not valid")
     @Column(name = "business_number", nullable = false)
     private String businessNumber;
 

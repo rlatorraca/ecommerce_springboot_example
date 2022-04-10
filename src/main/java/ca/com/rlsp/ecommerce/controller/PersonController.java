@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 
 @RestController
 public class PersonController {
@@ -40,7 +41,7 @@ public class PersonController {
     /* end-point é microsservicos numa API*/
     @ResponseBody
     @PostMapping(value = "/saveLegalPerson")
-    public ResponseEntity<LegalPerson> saveLegalPerson(@RequestBody LegalPerson legalPerson) throws EcommerceException, MessagingException {
+    public ResponseEntity<LegalPerson> saveLegalPerson(@RequestBody @Valid LegalPerson legalPerson) throws EcommerceException, MessagingException {
 
 
         if (legalPerson == null) {
@@ -73,7 +74,7 @@ public class PersonController {
 
     @ResponseBody
     @PostMapping(value = "/saveNaturalPerson")
-    public ResponseEntity<NaturalPerson> saveNaturalPerson(@RequestBody NaturalPerson naturalPerson) throws EcommerceException, MessagingException {
+    public ResponseEntity<NaturalPerson> saveNaturalPerson(@RequestBody @Valid NaturalPerson naturalPerson) throws EcommerceException, MessagingException {
 
 
         if (naturalPerson == null) {

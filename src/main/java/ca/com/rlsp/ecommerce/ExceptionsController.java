@@ -55,7 +55,7 @@ public class ExceptionsController extends ResponseEntityExceptionHandler {
                 message += error.getDefaultMessage() + "\n";
             }
 
-        } if(ex instanceof HttpMessageNotReadableException) {
+        } else if(ex instanceof HttpMessageNotReadableException) {
             message = NO_MESSAGE_SENT_INTO_THE_REQUEST_BODY;
         }else {
             message = ex.getMessage();

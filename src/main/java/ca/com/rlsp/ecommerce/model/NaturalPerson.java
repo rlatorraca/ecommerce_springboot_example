@@ -1,5 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ import java.util.Date;
 @PrimaryKeyJoinColumn(name = "id")
 public class NaturalPerson extends Person{
 
+    @CPF(message = "Sin Number is not valid")
     @Column(name = "sin_number", nullable = false)
     private String sinNumber;
 

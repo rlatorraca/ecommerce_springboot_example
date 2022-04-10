@@ -3,6 +3,9 @@ package ca.com.rlsp.ecommerce.model;
 import ca.com.rlsp.ecommerce.enums.PersonType;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +22,12 @@ public abstract class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_person")
     private Long id;
 
+    @Size(min = 4, message = "Name must have at least 3 characters")
+    @NotBlank(message = "Name must be included")
     @Column(nullable = false)
     private String name;
 
+    @Email
     @Column(nullable = false)
     private String email;
 
