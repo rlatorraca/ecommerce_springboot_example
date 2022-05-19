@@ -3,16 +3,14 @@ package ca.com.rlsp.ecommerce.controller;
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.LegalPerson;
 import ca.com.rlsp.ecommerce.model.NaturalPerson;
+import ca.com.rlsp.ecommerce.model.dto.PostalCodeDTO;
 import ca.com.rlsp.ecommerce.repository.LegalPersonRepository;
 import ca.com.rlsp.ecommerce.service.PersonUserSystemService;
 import ca.com.rlsp.ecommerce.util.BusinessNumberValidator;
 import ca.com.rlsp.ecommerce.util.SinNumberValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -36,7 +34,14 @@ public class PersonController {
         this.personUserSystemService = personUserSystemService;
     }
 
+    @ResponseBody
+    @GetMapping(name = "/getPostalCode/{postalCode}")
+    public ResponseEntity<PostalCodeDTO> getPostalCode(@PathVariable String postalCode){
 
+        PostalCodeDTO postalCodeDTO = personUserSystemService.fetchPostalCode(postalCode);
+
+        return new ResponseEntity<PostalCodeDTO>(postalCodeDTO, HttpStatus.OK);
+    }
 
     /* end-point é microsservicos numa API*/
     @ResponseBody

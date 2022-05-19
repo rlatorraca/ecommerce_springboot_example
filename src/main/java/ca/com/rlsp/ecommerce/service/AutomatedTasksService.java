@@ -16,8 +16,9 @@ public class AutomatedTasksService {
     private UserSystemRepository userSystemRepository;
     private SendEmailService sendEmailService;
 
-    public AutomatedTasksService(UserSystemRepository userSystemRepository) {
+    public AutomatedTasksService(UserSystemRepository userSystemRepository, SendEmailService sendEmailService) {
         this.userSystemRepository = userSystemRepository;
+        this.sendEmailService = sendEmailService;
     }
 
     // Inicia apos 2 segundos do projeto deployed [initialDelay]

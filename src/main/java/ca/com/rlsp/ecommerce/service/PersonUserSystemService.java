@@ -4,12 +4,14 @@ import ca.com.rlsp.ecommerce.model.LegalPerson;
 import ca.com.rlsp.ecommerce.model.NaturalPerson;
 import ca.com.rlsp.ecommerce.model.Person;
 import ca.com.rlsp.ecommerce.model.UserSystem;
+import ca.com.rlsp.ecommerce.model.dto.PostalCodeDTO;
 import ca.com.rlsp.ecommerce.repository.LegalPersonRepository;
 import ca.com.rlsp.ecommerce.repository.NaturalPersonRepository;
 import ca.com.rlsp.ecommerce.repository.UserSystemRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
 import java.util.Calendar;
@@ -173,5 +175,11 @@ public class PersonUserSystemService {
         }
 
         return naturalPerson;
+    }
+
+    public PostalCodeDTO fetchPostalCode(String postalCode) {
+        return new RestTemplate()
+                        .getForEntity("https://viacep.com.br/ws/"+ postalCode +"/json/", PostalCodeDTO.class)
+                        .getBody();
     }
 }
