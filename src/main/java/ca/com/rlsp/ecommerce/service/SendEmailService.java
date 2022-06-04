@@ -1,5 +1,11 @@
 package ca.com.rlsp.ecommerce.service;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +16,16 @@ import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 @Service
+@Configuration
+@PropertySource(value="classpath:email.properties")
 public class SendEmailService {
 
-    private String userName = "rlsprojects.ca@gmail.com";
-    private String pwd = "";
+    @Autowired
+    private Environment env; // carrega o @PropertySource aqui dentro
+    private String userName = "rodrigo.latorraca@outlook.com";
+
+    @Value("${email.pwd}")
+    private String pwd;
 
     @Async
     public void sendEmailHtml(String subject, String msg, String destination)
@@ -21,20 +33,17 @@ public class SendEmailService {
 
         // Parametros para enviar email por meio do gmail
         Properties properties = new Properties();
-        properties.put("mail.smtp.ssl.trust", "*");
+        properties.put("mail.smtp.host", "smtp-mail.outlook.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.starttls.enable","true");
         properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls", "false");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtp.socketFactory.port", "465");
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+;
+                Session session = Session.getInstance(properties, new Authenticator() {
 
-        Session session = Session.getInstance(properties, new Authenticator() {
-
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-
-                return new PasswordAuthentication(userName, pwd);
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(userName, env.getRequiredProperty("email.pwd"));
+                //return new PasswordAuthentication(userName,paswword );
             }
 
         });
@@ -50,5 +59,17 @@ public class SendEmailService {
         message.setContent(msg,"text/html; charset=utf-8");
 
         Transport.send(message);
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+   public Environment getEnv() {
+        return env;
+    }
+
+    public void setEnv(Environment env) {
+        this.env = env;
     }
 }
