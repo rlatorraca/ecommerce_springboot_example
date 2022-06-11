@@ -36,7 +36,7 @@ public class AutomatedTasksService {
             msg.append("Passed 90 days of your last password update, That is time to change it for your security").append("<br/>");
             msg.append("A reminder of RLSP - eCommerce");
 
-            sendEmailService.sendEmailHtml("Change your password", msg.toString(), userSystem.getLogin());
+            sendEmailService.sendEmailHtml("Change your password", msg.toString(), userSystem.getPerson().getEmail());
 
             Thread.sleep(500);
 

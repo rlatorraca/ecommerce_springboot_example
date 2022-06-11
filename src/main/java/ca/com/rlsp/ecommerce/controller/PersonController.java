@@ -35,7 +35,7 @@ public class PersonController {
     }
 
     @ResponseBody
-    @GetMapping(name = "/getPostalCode/{postalCode}")
+    @GetMapping(value = "/getPostalCode/{postalCode}")
     public ResponseEntity<PostalCodeDTO> getPostalCode(@PathVariable String postalCode){
 
         PostalCodeDTO postalCodeDTO = personUserSystemService.fetchPostalCode(postalCode);

@@ -22,7 +22,8 @@ public class SendEmailService {
 
     @Autowired
     private Environment env; // carrega o @PropertySource aqui dentro
-    private String userName = "rodrigo.latorraca@outlook.com";
+    @Value("${email.username}")
+    private String userName;
 
     @Value("${email.pwd}")
     private String pwd;
@@ -42,9 +43,11 @@ public class SendEmailService {
 
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(userName, env.getRequiredProperty("email.pwd"));
-                //return new PasswordAuthentication(userName,paswword );
-            }
+                       // return new PasswordAuthentication(env.getRequiredProperty("email.username"), env.getRequiredProperty("email.pwd"));
+                        System.out.println(userName);
+                        System.out.println(pwd);
+                        return new PasswordAuthentication(userName, pwd );
+                    }
 
         });
 
@@ -61,15 +64,12 @@ public class SendEmailService {
         Transport.send(message);
     }
 
-    public String getPwd() {
-        return pwd;
-    }
-
-   public Environment getEnv() {
+    public Environment getEnv() {
         return env;
     }
 
     public void setEnv(Environment env) {
         this.env = env;
     }
+
 }

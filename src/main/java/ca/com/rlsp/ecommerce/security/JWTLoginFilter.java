@@ -21,7 +21,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 
     private static final String LOGIN_FAILED = "Erro logging [RLSP]";
-    private static final String USER_NOT_FOUND = "Login not found [RLSP]";
+    private static final String USER_NOT_FOUND = "USER not found [RLSP]";
 
     /* Configura o gerenciador de Autenticacao */
     protected JWTLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager) {

@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /* FILTRA todos os REQUEST, capturando para ser usado na Autenticacao */
 public class JwtApiAuthenticationFilter extends GenericFilterBean {
-    private static final String SYSTEM_ERROR_ADMINISTRATOR_MESSAGE = "SYSTEM ERROR CONTACT AN ADMINSITRATOR [RLSP]";
+    private static final String SYSTEM_ERROR_ADMINISTRATOR_MESSAGE = "SYSTEM ERROR CONTACT AN ADMINISTRATOR [RLSP]";
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
