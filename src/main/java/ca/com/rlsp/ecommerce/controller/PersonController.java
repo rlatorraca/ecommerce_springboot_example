@@ -71,6 +71,20 @@ public class PersonController {
             throw new EcommerceException(INVALID_BUSINESS_NUMBER + "[" + legalPerson.getBusinessNumber() + "]");
         }
 
+        // Atraves do CEP/PostalCode completa automaticamente os valores do endereco da PJ
+        if(legalPerson.getId() == null || legalPerson.getId() < 0 ) {
+            for(int position=0; position < legalPerson.getAddresses().size(); position++) {
+                PostalCodeDTO postalCodeDTO = personUserSystemService.fetchPostalCode(legalPerson.getAddresses().get(position).getZipPostalCode());
+
+                legalPerson.getAddresses().get(position).setAddressLine01(postalCodeDTO.getLogradouro());
+                legalPerson.getAddresses().get(position).setAddressLine02(postalCodeDTO.getComplemento());
+                legalPerson.getAddresses().get(position).setCity(postalCodeDTO.getLocalidade());
+                legalPerson.getAddresses().get(position).setProvince(postalCodeDTO.getUf());
+                legalPerson.getAddresses().get(position).setNeighborhood(postalCodeDTO.getBairro());
+
+            }
+        }
+
         legalPerson = personUserSystemService.saveLegalPerson(legalPerson);
 
         return new ResponseEntity<LegalPerson>(legalPerson, HttpStatus.OK);
@@ -97,6 +111,8 @@ public class PersonController {
         if ( !SinNumberValidator.isCPF(naturalPerson.getSinNumber())) {
             throw new EcommerceException(INVALID_SIN_NUMBER + "[" + naturalPerson.getSinNumber() + "]");
         }
+
+
 
         naturalPerson = personUserSystemService.saveNaturalPerson(naturalPerson);
 
