@@ -1,9 +1,11 @@
 package ca.com.rlsp.ecommerce.controller;
 
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
+import ca.com.rlsp.ecommerce.model.Address;
 import ca.com.rlsp.ecommerce.model.LegalPerson;
 import ca.com.rlsp.ecommerce.model.NaturalPerson;
 import ca.com.rlsp.ecommerce.model.dto.PostalCodeDTO;
+import ca.com.rlsp.ecommerce.repository.AddressRepository;
 import ca.com.rlsp.ecommerce.repository.LegalPersonRepository;
 import ca.com.rlsp.ecommerce.service.PersonUserSystemService;
 import ca.com.rlsp.ecommerce.util.BusinessNumberValidator;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 public class PersonController {
@@ -21,6 +24,7 @@ public class PersonController {
     private LegalPersonRepository personRepository;
     private PersonUserSystemService personUserSystemService;
 
+    private AddressRepository addressRepository;
     public static final String LEGAL_PERSON_CANT_BE_NULL = "Legal Person can't be NULL [RLSP]: ";
     public static final String EXIST_BUSINESS_NUMBER_INTO_DB = "BUSINESS NUMBER already exist on Database [RLSP]: ";
     public static final String EXIST_PROVINCE_REGISTRATION_NUMBER_INTO_DB  = "PROVINCIAL NUMBER already exist on Database [RLSP]: ";
@@ -29,9 +33,12 @@ public class PersonController {
     public static final String EXIST_SIN_NUMBER_INTO_DB = "SIN NUMBER already exist on Database [RLSP]: ";
     public static final String INVALID_SIN_NUMBER  = "Sin Number is INVALID [RLSP]: ";
 
-    public PersonController(LegalPersonRepository personRepository, PersonUserSystemService personUserSystemService) {
+    public PersonController(LegalPersonRepository personRepository,
+                            PersonUserSystemService personUserSystemService,
+                            AddressRepository addressRepository) {
         this.personRepository = personRepository;
         this.personUserSystemService = personUserSystemService;
+        this.addressRepository = addressRepository;
     }
 
     @ResponseBody
@@ -71,23 +78,37 @@ public class PersonController {
             throw new EcommerceException(INVALID_BUSINESS_NUMBER + "[" + legalPerson.getBusinessNumber() + "]");
         }
 
+        // Se um registro de LegalPerson for inserido no DB
         // Atraves do CEP/PostalCode completa automaticamente os valores do endereco da PJ
         if(legalPerson.getId() == null || legalPerson.getId() < 0 ) {
             for(int position=0; position < legalPerson.getAddresses().size(); position++) {
-                PostalCodeDTO postalCodeDTO = personUserSystemService.fetchPostalCode(legalPerson.getAddresses().get(position).getZipPostalCode());
+                populatePersonLegalAddress(legalPerson, position);
+            }
+        } else {
+            // Alteracao dos dados quando LegalPerson ja existir no DB
+            for(int position=0; position < legalPerson.getAddresses().size(); position++) {
+                Address addressTemp = addressRepository.findById(legalPerson.getAddresses().get(position).getId()).get();
 
-                legalPerson.getAddresses().get(position).setAddressLine01(postalCodeDTO.getLogradouro());
-                legalPerson.getAddresses().get(position).setAddressLine02(postalCodeDTO.getComplemento());
-                legalPerson.getAddresses().get(position).setCity(postalCodeDTO.getLocalidade());
-                legalPerson.getAddresses().get(position).setProvince(postalCodeDTO.getUf());
-                legalPerson.getAddresses().get(position).setNeighborhood(postalCodeDTO.getBairro());
-
+                // Quando dor inserido um PostalCode diferente do existente no DB ele fara a alteracao no DB
+                if(addressTemp.getZipPostalCode().equals(legalPerson.getAddresses().get(position).getZipPostalCode())){
+                    populatePersonLegalAddress(legalPerson, position);
+                }
             }
         }
 
         legalPerson = personUserSystemService.saveLegalPerson(legalPerson);
 
         return new ResponseEntity<LegalPerson>(legalPerson, HttpStatus.OK);
+    }
+
+    private void populatePersonLegalAddress(LegalPerson legalPerson, int position) {
+        PostalCodeDTO postalCodeDTO = personUserSystemService.fetchPostalCode(legalPerson.getAddresses().get(position).getZipPostalCode());
+
+        legalPerson.getAddresses().get(position).setAddressLine01(postalCodeDTO.getLogradouro());
+        legalPerson.getAddresses().get(position).setAddressLine02(postalCodeDTO.getComplemento());
+        legalPerson.getAddresses().get(position).setCity(postalCodeDTO.getLocalidade());
+        legalPerson.getAddresses().get(position).setProvince(postalCodeDTO.getUf());
+        legalPerson.getAddresses().get(position).setNeighborhood(postalCodeDTO.getBairro());
     }
 
 
