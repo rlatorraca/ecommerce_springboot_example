@@ -10,6 +10,7 @@ import java.util.Date;
 @PrimaryKeyJoinColumn(name = "id")
 public class NaturalPerson extends Person{
 
+    private static final long serialVersionUID = 1L;
     @CPF(message = "Sin Number is not valid")
     @Column(name = "sin_number", nullable = false)
     private String sinNumber;

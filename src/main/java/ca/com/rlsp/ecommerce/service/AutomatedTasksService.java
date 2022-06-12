@@ -38,7 +38,7 @@ public class AutomatedTasksService {
 
             sendEmailService.sendEmailHtml("Change your password", msg.toString(), userSystem.getPerson().getEmail());
 
-            Thread.sleep(500);
+            Thread.sleep(1000);
 
         }
     }

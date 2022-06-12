@@ -1,6 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
 import ca.com.rlsp.ecommerce.enums.PersonType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -45,6 +46,7 @@ public abstract class Person implements Serializable {
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
+    @JsonBackReference // Evita o Loop infinito, ja que Person esta chamando sempre Person (ao fazer consulta)
     private Person ecommerceCompany;
 
     @OneToMany(mappedBy = "person", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

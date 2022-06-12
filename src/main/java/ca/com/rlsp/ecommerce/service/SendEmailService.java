@@ -44,8 +44,6 @@ public class SendEmailService {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
                        // return new PasswordAuthentication(env.getRequiredProperty("email.username"), env.getRequiredProperty("email.pwd"));
-                        System.out.println(userName);
-                        System.out.println(pwd);
                         return new PasswordAuthentication(userName, pwd );
                     }
 
@@ -60,6 +58,7 @@ public class SendEmailService {
         message.setRecipients(Message.RecipientType.TO, toUser);
         message.setSubject(subject);
         message.setContent(msg,"text/html; charset=utf-8");
+
 
         Transport.send(message);
     }

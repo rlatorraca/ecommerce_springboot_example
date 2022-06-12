@@ -2,7 +2,11 @@ package ca.com.rlsp.ecommerce;
 
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.dto.ErrorObjectDTO;
+import ca.com.rlsp.ecommerce.service.SendEmailService;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,17 +19,28 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.List;
 
+@PropertySource(value="classpath:email.properties")
 @RestControllerAdvice
 public class ExceptionsController extends ResponseEntityExceptionHandler {
 
+    private SendEmailService sendEmailService;
+
+    @Value("${email.support}")
+    private String emailSupport;
 
     private static final String DB_INTEGRATY_ERROR = "Database Integraty Error";
     private static final String DB_CONSTRAINT_VIOLATION_ERROR = "Database Constrant Violation Error (Foreeign key error)";
     private static final String DB_SQL_ERROR = "Database SQL Error";
     public static final String NO_MESSAGE_SENT_INTO_THE_REQUEST_BODY = "No message sent into the Request Body [RLSP]";
+
+    public ExceptionsController(SendEmailService sendEmailService) {
+        this.sendEmailService = sendEmailService;
+    }
 
     /* Captura a EXCECAO Customizada EcommerceException */
     @ExceptionHandler(EcommerceException.class)
@@ -64,6 +79,9 @@ public class ExceptionsController extends ResponseEntityExceptionHandler {
         errorObjectDTO.setError(message);
         errorObjectDTO.setCode(status.value() + " - " + status.getReasonPhrase());
 
+        ex.printStackTrace();
+        sendEmailSupportErrorEcommerce(ex);
+
         return new ResponseEntity<Object>(errorObjectDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -92,7 +110,20 @@ public class ExceptionsController extends ResponseEntityExceptionHandler {
         errorObjectDTO.setError(message);
         errorObjectDTO.setCode(status.value() + " - " + status.getReasonPhrase());
 
+        ex.printStackTrace();
+        sendEmailSupportErrorEcommerce(ex);
+
         return new ResponseEntity<Object>(errorObjectDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private void sendEmailSupportErrorEcommerce(Exception ex) {
+        try {
+            sendEmailService.sendEmailHtml("Inexpected Error on Ecommerce [RLSP]",
+                                           ExceptionUtils.getStackTrace(ex),
+                                           emailSupport);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -99,7 +99,7 @@ class TestsPersonUserSystem extends TestCase {
     @Test
     public void testRestRegisterNormalUserSystem() throws EcommerceException, MessagingException {
 
-        LegalPerson legalPerson =  legalPersonRepository.existBusinessNumberRegistered("1648315302501");
+        LegalPerson legalPerson =  legalPersonRepository.queryByBusinessNumberRegistered("1648315302501");
 
         NaturalPerson naturalPerson = new NaturalPerson();
         Address address01 = new Address();

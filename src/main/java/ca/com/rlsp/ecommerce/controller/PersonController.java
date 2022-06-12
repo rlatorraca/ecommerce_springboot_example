@@ -7,24 +7,31 @@ import ca.com.rlsp.ecommerce.model.NaturalPerson;
 import ca.com.rlsp.ecommerce.model.dto.PostalCodeDTO;
 import ca.com.rlsp.ecommerce.repository.AddressRepository;
 import ca.com.rlsp.ecommerce.repository.LegalPersonRepository;
+import ca.com.rlsp.ecommerce.repository.NaturalPersonRepository;
+import ca.com.rlsp.ecommerce.service.CounterNumberAccessEndPointService;
 import ca.com.rlsp.ecommerce.service.PersonUserSystemService;
 import ca.com.rlsp.ecommerce.util.BusinessNumberValidator;
 import ca.com.rlsp.ecommerce.util.SinNumberValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 public class PersonController {
 
-    private LegalPersonRepository personRepository;
+    private LegalPersonRepository legalPersonRepository;
+    private NaturalPersonRepository naturalPersonRepository;
     private PersonUserSystemService personUserSystemService;
-
     private AddressRepository addressRepository;
+
+    private CounterNumberAccessEndPointService counterNumberAccessEndPointService;
+
+
     public static final String LEGAL_PERSON_CANT_BE_NULL = "Legal Person can't be NULL [RLSP]: ";
     public static final String EXIST_BUSINESS_NUMBER_INTO_DB = "BUSINESS NUMBER already exist on Database [RLSP]: ";
     public static final String EXIST_PROVINCE_REGISTRATION_NUMBER_INTO_DB  = "PROVINCIAL NUMBER already exist on Database [RLSP]: ";
@@ -33,20 +40,64 @@ public class PersonController {
     public static final String EXIST_SIN_NUMBER_INTO_DB = "SIN NUMBER already exist on Database [RLSP]: ";
     public static final String INVALID_SIN_NUMBER  = "Sin Number is INVALID [RLSP]: ";
 
-    public PersonController(LegalPersonRepository personRepository,
+    public PersonController(LegalPersonRepository legalPersonRepository,
+                            NaturalPersonRepository naturalPersonRepository,
                             PersonUserSystemService personUserSystemService,
-                            AddressRepository addressRepository) {
-        this.personRepository = personRepository;
+                            AddressRepository addressRepository,
+                            CounterNumberAccessEndPointService counterNumberAccessEndPointService) {
+        this.legalPersonRepository = legalPersonRepository;
+        this.naturalPersonRepository = naturalPersonRepository;
         this.personUserSystemService = personUserSystemService;
         this.addressRepository = addressRepository;
+        this.counterNumberAccessEndPointService = counterNumberAccessEndPointService;
+
     }
 
     @ResponseBody
-    @GetMapping(value = "/getPostalCode/{postalCode}")
-    public ResponseEntity<PostalCodeDTO> getPostalCode(@PathVariable String postalCode){
+    @GetMapping(value="/queryLegalPersonByBusinessNumber/{businessNumber}")
+    public ResponseEntity<List<LegalPerson>> queryLegalPersonByBusinessNumber(@PathVariable String businessNumber){
+        List<LegalPerson> legalPerson = legalPersonRepository.queryByBusinessNumberRegistered(businessNumber);
+        counterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryLegalPersonByBusinessNumber");
+        return new ResponseEntity<>(legalPerson, HttpStatus.OK);
+    }
+
+
+
+    @ResponseBody
+    @GetMapping(value="/queryLegalPersonByProvincialRegistration/{registration}")
+    public ResponseEntity<List<LegalPerson>> queryLegalPersonByProvincialRegistration(@PathVariable String registration){
+        List<LegalPerson> legalPerson = legalPersonRepository.queryByProvincialRegistration(registration);
+        counterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryLegalPersonByProvincialRegistration");
+        return new ResponseEntity<>(legalPerson, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping(value="/queryLegalPersonByName/{name}")
+    public ResponseEntity<List<LegalPerson>> queryLegalPersonByName(@PathVariable String name){
+        List<LegalPerson> legalPersonList = legalPersonRepository.queryLegalPersonByName(name.trim().toUpperCase());
+        counterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryLegalPersonByName");
+        return new ResponseEntity<>(legalPersonList, HttpStatus.OK);
+    }
+    @ResponseBody
+    @GetMapping(value="/queryNaturalPersonBySinNumber/{sin}")
+    public ResponseEntity<List<NaturalPerson>> queryNaturalPersonBySinNumber(@PathVariable String sin){
+        List<NaturalPerson> naturalPerson = naturalPersonRepository.queryNaturalPersonBySinNumber(sin);
+        counterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryNaturalPersonBySinNumber");
+        return new ResponseEntity<>(naturalPerson, HttpStatus.OK);
+    }
+    @ResponseBody
+    @GetMapping(value="/queryNaturalPersonByName/{name}")
+    public ResponseEntity<List<NaturalPerson>> queryNaturalPersonByName(@PathVariable String name){
+        List<NaturalPerson> naturalPersonList = naturalPersonRepository.queryNaturalPersonByName(name.trim().toUpperCase());
+        counterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryNaturalPersonByName");
+        return new ResponseEntity<>(naturalPersonList, HttpStatus.OK);
+    }
+    @ResponseBody
+    @GetMapping(value = "/queryPostalCode/{postalCode}")
+    public ResponseEntity<PostalCodeDTO> queryPostalCode(@PathVariable String postalCode){
 
         PostalCodeDTO postalCodeDTO = personUserSystemService.fetchPostalCode(postalCode);
-
+        counterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryPostalCode");
         return new ResponseEntity<PostalCodeDTO>(postalCodeDTO, HttpStatus.OK);
     }
 
@@ -62,13 +113,13 @@ public class PersonController {
 
         // Verifica se Legal Person é um nova pessoa (por ter id = null); OR
         // Se Legal Person com o BUSINNES NUMBER ja esta cadastrada no DB
-        if (legalPerson.getId() == null && personRepository.existBusinessNumberRegistered(legalPerson.getBusinessNumber()) != null) {
+        if (legalPerson.getId() == null && legalPersonRepository.queryByBusinessNumberRegistered(legalPerson.getBusinessNumber()) != null) {
             throw new EcommerceException(EXIST_BUSINESS_NUMBER_INTO_DB + legalPerson.getBusinessNumber());
         }
 
         // Verifica se Legal Person é um nova pessoa (por ter id = null); OR
         // Se Legal Person com o PROVINCIAL REGISTRATION NUMBER ja esta cadastrada no DB
-        if (legalPerson.getId() == null && personRepository.existProvincialRegistration(legalPerson.getBusinessNumber()) != null) {
+        if (legalPerson.getId() == null && legalPersonRepository.queryByProvincialRegistration(legalPerson.getBusinessNumber()) != null) {
             throw new EcommerceException(EXIST_PROVINCE_REGISTRATION_NUMBER_INTO_DB + legalPerson.getBusinessNumber());
         }
 
@@ -97,7 +148,7 @@ public class PersonController {
         }
 
         legalPerson = personUserSystemService.saveLegalPerson(legalPerson);
-
+        counterNumberAccessEndPointService.saveIntoDbEndPointAccess("saveLegalPerson");
         return new ResponseEntity<LegalPerson>(legalPerson, HttpStatus.OK);
     }
 
@@ -123,7 +174,7 @@ public class PersonController {
 
         // Verifica se Legal Person é um nova pessoa (por ter id = null); OR
         // Se Legal Person com o BUSINNES NUMBER ja esta cadastrada no DB
-        if (naturalPerson.getId() == null && personRepository.existBusinessNumberRegistered(naturalPerson.getSinNumber()) != null) {
+        if (naturalPerson.getId() == null && naturalPersonRepository.queryNaturalPersonBySinNumber(naturalPerson.getSinNumber()) != null) {
             throw new EcommerceException(EXIST_SIN_NUMBER_INTO_DB + naturalPerson.getSinNumber());
         }
 
@@ -133,10 +184,9 @@ public class PersonController {
             throw new EcommerceException(INVALID_SIN_NUMBER + "[" + naturalPerson.getSinNumber() + "]");
         }
 
-
-
         naturalPerson = personUserSystemService.saveNaturalPerson(naturalPerson);
-
+        counterNumberAccessEndPointService.saveIntoDbEndPointAccess("saveNaturalPerson");
         return new ResponseEntity<NaturalPerson>(naturalPerson, HttpStatus.OK);
     }
+
 }
