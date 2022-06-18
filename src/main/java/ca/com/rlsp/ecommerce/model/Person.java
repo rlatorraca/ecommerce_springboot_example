@@ -1,6 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
 import ca.com.rlsp.ecommerce.enums.PersonType;
+import ca.com.rlsp.ecommerce.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;

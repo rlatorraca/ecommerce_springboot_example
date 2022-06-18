@@ -2,7 +2,7 @@ package ca.com.rlsp.ecommerce;
 
 import ca.com.rlsp.ecommerce.controller.PersonController;
 import ca.com.rlsp.ecommerce.enums.AddressType;
-import ca.com.rlsp.ecommerce.enums.PersonType;
+import ca.com.rlsp.ecommerce.enums.UserType;
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.Address;
 import ca.com.rlsp.ecommerce.model.LegalPerson;
@@ -52,7 +52,7 @@ class TestsPersonUserSystem extends TestCase {
         }
         legalPerson.setProvinceRegistration("13123212");
         legalPerson.setTelephone("(647) 333-44444");
-        legalPerson.setPersonType(PersonType.USER);
+        legalPerson.setPersonType(UserType.USER);
         legalPerson.setCityRegistration("Halifax");
         legalPerson.setCategory("XxX");
 
@@ -118,7 +118,7 @@ class TestsPersonUserSystem extends TestCase {
         }
         naturalPerson.setEmail("email"+ Calendar.getInstance().getTimeInMillis()+"@simpletest.com.ca");
         naturalPerson.setTelephone("(647) 333-44444");
-        naturalPerson.setPersonType(PersonType.USER);
+        naturalPerson.setPersonType(UserType.USER);
         naturalPerson.setEcommerceCompany(legalPerson);
 
 

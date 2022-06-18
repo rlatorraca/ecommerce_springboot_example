@@ -1,12 +1,15 @@
 package ca.com.rlsp.ecommerce.enums;
 
-public enum PersonType {
-    LEGALPERSON("Legal Person"),
-    NATURALPERSON("Natural Person"),
-    SUPPLIER("Supplier");
+public enum UserType {
+
+    MANAGER("Manager"),
+    CLIENT("Client"),
+    EMPLOYEE("Employee"),
+    USER("USER");
 
     private String description;
-    PersonType(String description) {
+
+    private UserType(String description) {
         this.description = description;
     }
 
@@ -18,4 +21,5 @@ public enum PersonType {
     public String toString() {
         return this.description;
     }
+
 }

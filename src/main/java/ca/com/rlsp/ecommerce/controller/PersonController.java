@@ -31,6 +31,7 @@ public class PersonController {
     private UpdateCounterNumberAccessEndPointService updateCounterNumberAccessEndPointService;
 
 
+    private static final String INFORM_LEGAL_PERSON_TYPE = "Inform the type Legal or Supplier";
     public static final String LEGAL_PERSON_CANT_BE_NULL = "Legal Person can't be NULL [RLSP]: ";
     public static final String EXIST_BUSINESS_NUMBER_INTO_DB = "BUSINESS NUMBER already exist on Database [RLSP]: ";
     public static final String EXIST_PROVINCE_REGISTRATION_NUMBER_INTO_DB  = "PROVINCIAL NUMBER already exist on Database [RLSP]: ";
@@ -108,6 +109,10 @@ public class PersonController {
 
         if (legalPerson == null) {
             throw new EcommerceException(LEGAL_PERSON_CANT_BE_NULL);
+        }
+
+        if (legalPerson.getPersonType() == null) {
+            throw new EcommerceException(INFORM_LEGAL_PERSON_TYPE);
         }
 
         // Verifica se Legal Person é um nova pessoa (por ter id = null); OR
