@@ -5,6 +5,7 @@ import ca.com.rlsp.ecommerce.model.NaturalPerson;
 import ca.com.rlsp.ecommerce.model.Person;
 import ca.com.rlsp.ecommerce.model.UserSystem;
 import ca.com.rlsp.ecommerce.model.dto.PostalCodeDTO;
+import ca.com.rlsp.ecommerce.model.dto.QueryBusinessNumberDTO;
 import ca.com.rlsp.ecommerce.repository.LegalPersonRepository;
 import ca.com.rlsp.ecommerce.repository.NaturalPersonRepository;
 import ca.com.rlsp.ecommerce.repository.UserSystemRepository;
@@ -181,5 +182,11 @@ public class PersonUserSystemService {
         return new RestTemplate()
                         .getForEntity("https://viacep.com.br/ws/"+ postalCode +"/json/", PostalCodeDTO.class)
                         .getBody();
+    }
+
+    public QueryBusinessNumberDTO fetchBusinnesNumberReceitaFederalWS(String businnessNumber) {
+        return new RestTemplate()
+                .getForEntity("https://receitaws.com.br/v1/cnpj/"+ businnessNumber, QueryBusinessNumberDTO.class)
+                .getBody();
     }
 }

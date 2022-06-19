@@ -1,10 +1,13 @@
 package ca.com.rlsp.ecommerce.controller;
 
+import ca.com.rlsp.ecommerce.enums.PersonType;
+import ca.com.rlsp.ecommerce.enums.UserType;
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.Address;
 import ca.com.rlsp.ecommerce.model.LegalPerson;
 import ca.com.rlsp.ecommerce.model.NaturalPerson;
 import ca.com.rlsp.ecommerce.model.dto.PostalCodeDTO;
+import ca.com.rlsp.ecommerce.model.dto.QueryBusinessNumberDTO;
 import ca.com.rlsp.ecommerce.repository.AddressRepository;
 import ca.com.rlsp.ecommerce.repository.LegalPersonRepository;
 import ca.com.rlsp.ecommerce.repository.NaturalPersonRepository;
@@ -92,6 +95,8 @@ public class PersonController {
         updateCounterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryNaturalPersonByName");
         return new ResponseEntity<>(naturalPersonList, HttpStatus.OK);
     }
+
+
     @ResponseBody
     @GetMapping(value = "/queryPostalCode/{postalCode}")
     public ResponseEntity<PostalCodeDTO> queryPostalCode(@PathVariable String postalCode){
@@ -100,6 +105,16 @@ public class PersonController {
         updateCounterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryPostalCode");
         return new ResponseEntity<PostalCodeDTO>(postalCodeDTO, HttpStatus.OK);
     }
+
+    @ResponseBody
+    @GetMapping(value="/queryBusinessNumberReceitaFederal/{businessNumber}")
+    public ResponseEntity<QueryBusinessNumberDTO> queryBusinessNumberReceitaFederal(@PathVariable String businessNumber){
+
+        QueryBusinessNumberDTO businessNumberDTO = personUserSystemService.fetchBusinnesNumberReceitaFederalWS(businessNumber);
+        updateCounterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryBusinessNumberReceitaFederal");
+        return new ResponseEntity<QueryBusinessNumberDTO>(businessNumberDTO, HttpStatus.OK);
+    }
+
 
     /* end-point é microsservicos numa API*/
     @ResponseBody
@@ -174,6 +189,10 @@ public class PersonController {
 
         if (naturalPerson == null) {
             throw new EcommerceException(NATURAL_PERSON_CANT_BE_NULL);
+        }
+
+        if (naturalPerson.getPersonType() == null) {
+            naturalPerson.setPersonType(PersonType.NATURALPERSON);
         }
 
         // Verifica se Legal Person é um nova pessoa (por ter id = null); OR

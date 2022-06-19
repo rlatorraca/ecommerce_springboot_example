@@ -50,7 +50,7 @@ public interface UserSystemRepository extends JpaRepository<UserSystem, Long> {
     void insertStandardUserLegalPerson(Long id, String role);
 
     /* Pega todos os usuarios que ja tem 90 dias sem trocar a senha*/
-    @Query(value = "SELECT us from UserSystem us WHERE us.lastPasswordDate > (current_date - 90)")
+    @Query(value = "SELECT us from UserSystem us WHERE (current_date - 90) > us.lastPasswordDate  ")
     List<UserSystem> userPasswordMoreThan90Days();
 
 }

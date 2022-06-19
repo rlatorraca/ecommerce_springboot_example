@@ -1,5 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
+import ca.com.rlsp.ecommerce.enums.PersonType;
+import ca.com.rlsp.ecommerce.enums.UserType;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
@@ -14,6 +16,10 @@ public class NaturalPerson extends Person{
     @CPF(message = "Sin Number is not valid")
     @Column(name = "sin_number", nullable = false)
     private String sinNumber;
+
+    @Column(name = "user_type")
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
     @Temporal(TemporalType.DATE)
     private Date birthday;
@@ -32,5 +38,13 @@ public class NaturalPerson extends Person{
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }

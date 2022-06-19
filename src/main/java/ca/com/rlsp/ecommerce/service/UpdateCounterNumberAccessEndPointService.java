@@ -13,6 +13,6 @@ public class UpdateCounterNumberAccessEndPointService {
     }
 
     public void saveIntoDbEndPointAccess(String endPointName) {
-        jdbcTemplate.execute("begin; update end_points_counter set quantity_access = quantity_access + 1 where endpoint_name = '"+ endPointName +"'; commit;");
+        jdbcTemplate.execute("begin; update endpoint_access_counter set quantity_access = quantity_access + 1 where endpoint_name = '"+ endPointName +"'; commit;");
     }
 }
