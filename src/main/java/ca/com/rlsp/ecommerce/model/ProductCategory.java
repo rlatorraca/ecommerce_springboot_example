@@ -23,7 +23,7 @@ public class ProductCategory implements Serializable {
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
 
     public Long getId() {
         return id;
@@ -41,11 +41,11 @@ public class ProductCategory implements Serializable {
         this.description = description;
     }
 
-    public Person getEcommerceCompany() {
+    public LegalPerson getEcommerceCompany() {
         return ecommerceCompany;
     }
 
-    public void setEcommerceCompany(Person ecommerceCompany) {
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
 }
