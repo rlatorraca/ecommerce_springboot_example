@@ -14,7 +14,7 @@ import java.util.List;
 public class RoleAccessController {
 
     private static final String ERROR_GETTING_ROLE_ACCESS_BY_ID = "Error getting ROLE_ACESS by id/code [RLSP] : ";
-    private static final String ERROR_ROLE_ACCESS_EXIST_ON_DB = "Role Access already existed on DB [RLSP] : ";
+    private static final String ERROR_ROLE_ACCESS_EXIST_ON_DB = "Role Access already exist on DB [RLSP] : ";
     private final RoleAccessService roleAccessService;
 
     public RoleAccessController(RoleAccessService roleAccessService) {
@@ -43,7 +43,7 @@ public class RoleAccessController {
     }
 
     @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
-    @PostMapping(path = "/roleAccess")
+    @PostMapping(path = "/saveProductroleAccess")
     public ResponseEntity<RoleAccess> saveRoleAccess(@RequestBody RoleAccess roleAccess) throws EcommerceException {
 
         if(roleAccess.getId() == null) {

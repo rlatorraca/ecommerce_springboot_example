@@ -3,6 +3,8 @@ package ca.com.rlsp.ecommerce.model;
 import ca.com.rlsp.ecommerce.enums.UnitType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -17,33 +19,43 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_product")
     private Long id;
 
+    @NotNull(message = "Unit type must be inserted")
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UnitType unitType;
 
+    @Size(min = 10, message = "Product name must have at least 10(ten) characters")
+    @NotNull(message = "Product name must be inserted")
     @Column(name = "ṕroduct_name", nullable = false)
     private String name;
 
+    @NotNull(message = "Description must be inserted")
     @Column(columnDefinition = "text", length = 2000, nullable = false)
     private String description;
 
     /* NOT ITEM NOT Producto - Associar */
 
+    @NotNull(message = "Weight must be inserted")
     @Column(name = "product_weight", nullable = false)
     private Double weight;
 
+    @NotNull(message = "Width must be inserted")
     @Column(name = "product_width", nullable = false)
     private Double width;
 
+    @NotNull(message = "Height must be inserted")
     @Column(name = "product_height", nullable = false)
     private Double height;
 
+    @NotNull(message = "Depth must be inserted")
     @Column(name = "product_depth", nullable = false)
     private Double depth;
 
+    @NotNull(message = "Product value must be inserted")
     @Column(name = "product_value", nullable = false)
     private BigDecimal value = BigDecimal.ZERO;
 
+    @NotNull(message = "Stock quantity must be inserted")
     @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity = 0;
 
@@ -60,13 +72,44 @@ public class Product implements Serializable {
     private Boolean active = Boolean.TRUE;
 
     /* COMPANY | EMPRESA */
+    @NotNull(message = "Legal Person must be inserted")
     @ManyToOne(targetEntity = Person.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
+
+    /* CATEGORY | CATEGORIA */
+    @NotNull(message = "Product Category must be inserted")
+    @ManyToOne(targetEntity = ProductCategory.class)
+    @JoinColumn(name = "product_category_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "product_category_fk"))
+    private ProductCategory productCategory;
+
+    /* PRODUCT_BRAND | MARCA_CATEGORIA */
+    @NotNull(message = "Product Brand must be inserted")
+    @ManyToOne(targetEntity = ProductBrand.class)
+    @JoinColumn(name = "product_brand_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "product_brand_fk"))
+    private ProductBrand productBrand;
+
+    /* INVOICE ITEM PRODUCT | NOTA_ITEM_PRODUTO */
+    @NotNull(message = "Invoice for each Item product must be inserted")
+    @ManyToOne(targetEntity = ProductBrand.class)
+    @JoinColumn(name = "invoice_item_product_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "invoice_item_product_fk"))
+    private InvoiceItemProduct invoiceItemProduct;
 
     @Override
     public boolean equals(Object o) {
@@ -183,5 +226,45 @@ public class Product implements Serializable {
 
     public void setClickQuantity(Integer clickQuantity) {
         this.clickQuantity = clickQuantity;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public LegalPerson getEcommerceCompany() {
+        return ecommerceCompany;
+    }
+
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
+        this.ecommerceCompany = ecommerceCompany;
+    }
+
+    public ProductCategory getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public ProductBrand getProductBrand() {
+        return productBrand;
+    }
+
+    public void setProductBrand(ProductBrand productBrand) {
+        this.productBrand = productBrand;
+    }
+
+    public InvoiceItemProduct getInvoiceItemProduct() {
+        return invoiceItemProduct;
+    }
+
+    public void setInvoiceItemProduct(InvoiceItemProduct invoiceItemProduct) {
+        this.invoiceItemProduct = invoiceItemProduct;
     }
 }
