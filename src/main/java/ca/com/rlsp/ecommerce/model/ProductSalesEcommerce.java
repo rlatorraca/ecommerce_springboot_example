@@ -15,22 +15,22 @@ public class ProductSalesEcommerce implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_product_sales_ecommerce")
     private Long id;
 
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = NaturalPerson.class)
     @JoinColumn(name = "person_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "person_fk"))
-    private Person person;
+    private NaturalPerson person;
 
     /* COMPANY | EMPRESA */
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
 
     @ManyToOne
     @JoinColumn(name = "billing_address_id",
@@ -103,7 +103,7 @@ public class ProductSalesEcommerce implements Serializable {
         return person;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(NaturalPerson person) {
         this.person = person;
     }
 
@@ -199,7 +199,7 @@ public class ProductSalesEcommerce implements Serializable {
         return ecommerceCompany;
     }
 
-    public void setEcommerceCompany(Person ecommerceCompany) {
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
 }
