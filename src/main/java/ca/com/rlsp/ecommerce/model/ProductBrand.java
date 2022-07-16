@@ -1,6 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,17 +15,18 @@ public class ProductBrand implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @NotNull(message = "Inform product brand name or description")
     @Column(nullable = false)
     private String description;
 
     /* COMPANY | EMPRESA */
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
 
     public Long getId() {
         return id;
@@ -42,11 +44,11 @@ public class ProductBrand implements Serializable {
         this.description = description;
     }
 
-    public Person getEcommerceCompany() {
+    public LegalPerson getEcommerceCompany() {
         return ecommerceCompany;
     }
 
-    public void setEcommerceCompany(Person ecommerceCompany) {
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
 

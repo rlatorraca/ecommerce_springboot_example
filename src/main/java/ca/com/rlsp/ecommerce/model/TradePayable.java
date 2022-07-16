@@ -1,8 +1,13 @@
 package ca.com.rlsp.ecommerce.model;
 
 import ca.com.rlsp.ecommerce.enums.StatusPayable;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,49 +22,54 @@ public class TradePayable implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_trade_payable")
     private Long id;
 
-    @Column(nullable = false)
+    @NotEmpty(message = "Trade payable description must be informed, not empty")
+    @Column(nullable = false, name="description")
     private String description;
 
-    @Column(nullable = false)
+
+    @Column(nullable = false,name = "status_debtor")
     @Enumerated(EnumType.STRING)
     private StatusPayable statusDebtor;
 
-    @Column(nullable = false)
+
+    @Column(nullable = false, name = "due_date")
     @Temporal(TemporalType.DATE)
     private Date dueDate;
 
+    @Column(name = "payment_date")
     @Temporal(TemporalType.DATE)
     private Date paymentDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "total_value")
     private BigDecimal totalValue;
 
+    @Column(name = "total_discount")
     private BigDecimal totalDiscount;
 
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = NaturalPerson.class)
     @JoinColumn(name = "person_id",
                 nullable = false,
                 foreignKey = @ForeignKey(
                         value = ConstraintMode.CONSTRAINT,
                         name = "person_fk"))
-    private Person person;
+    private NaturalPerson person;
 
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "person_provider_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "person_provider_fk"))
-    private Person person_provider;
+    private LegalPerson person_provider;
 
     /* COMPANY | EMPRESA */
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
 
     @Override
     public boolean equals(Object o) {
@@ -130,27 +140,27 @@ public class TradePayable implements Serializable {
         this.totalDiscount = totalDiscount;
     }
 
-    public Person getPerson() {
+    public NaturalPerson getPerson() {
         return person;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(NaturalPerson person) {
         this.person = person;
     }
 
-    public Person getPerson_provider() {
+    public LegalPerson getPerson_provider() {
         return person_provider;
     }
 
-    public void setPerson_provider(Person person_provider) {
+    public void setPerson_provider(LegalPerson person_provider) {
         this.person_provider = person_provider;
     }
 
-    public Person getEcommerceCompany() {
+    public LegalPerson getEcommerceCompany() {
         return ecommerceCompany;
     }
 
-    public void setEcommerceCompany(Person ecommerceCompany) {
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
 }

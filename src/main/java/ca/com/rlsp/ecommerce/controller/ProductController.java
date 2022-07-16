@@ -28,7 +28,7 @@ public class ProductController {
 
     @ResponseBody /* Retorno da api - de JSON para um objeto JAVA*/
     @GetMapping(value = "/getAllProducts")
-    public ResponseEntity<Collection<Product>> getRoleAccess(){
+    public ResponseEntity<Collection<Product>> getAllProducts(){
 
         Collection<Product> allProductsSave = productService.getAll();
         return new ResponseEntity<>(allProductsSave, HttpStatus.OK);
