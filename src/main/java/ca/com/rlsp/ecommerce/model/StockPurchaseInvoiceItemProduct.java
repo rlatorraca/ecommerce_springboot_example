@@ -5,9 +5,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "invoice_item_product")
+@Table(name = "stock_purchase_invoice_item_product")
 @SequenceGenerator(name = "seq_invoice_item_product", sequenceName = "seq_invoice_item_product", initialValue = 1 , allocationSize = 1)
-public class InvoiceItemProduct implements Serializable {
+public class StockPurchaseInvoiceItemProduct implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -46,7 +46,7 @@ public class InvoiceItemProduct implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        InvoiceItemProduct that = (InvoiceItemProduct) o;
+        StockPurchaseInvoiceItemProduct that = (StockPurchaseInvoiceItemProduct) o;
         return Objects.equals(id, that.id);
     }
 
