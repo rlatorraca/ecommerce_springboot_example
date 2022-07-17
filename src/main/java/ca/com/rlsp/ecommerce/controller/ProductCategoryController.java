@@ -3,8 +3,6 @@ package ca.com.rlsp.ecommerce.controller;
 
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.ProductCategory;
-import ca.com.rlsp.ecommerce.model.RoleAccess;
-import ca.com.rlsp.ecommerce.model.dto.ProductCategoryDTO;
 import ca.com.rlsp.ecommerce.service.ProductCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,10 +34,10 @@ public class ProductCategoryController {
         }
 
         if(productCategory.getId() == null &&
-           productCategoryService.isProductCategoryIntoDB(productCategory.getDescription().toUpperCase())){
+           productCategoryService.isIntoDB(productCategory.getDescription().toUpperCase())){
             throw new EcommerceException(CAN_T_INSERT_PRODUCT_CATEGORY_USING_SAME_NAME);
         }
-        ProductCategory productCategorySaved = productCategoryService.saveProductCategory(productCategory);
+        ProductCategory productCategorySaved = productCategoryService.save(productCategory);
 
 //        ProductCategoryDTO productCategoryDTO = new ProductCategoryDTO();
 //        productCategoryDTO.setId(productCategory.getId());
@@ -54,11 +52,11 @@ public class ProductCategoryController {
     @DeleteMapping(path = "/deleteProductCategory")
     public ResponseEntity<?> deleteProductCategory(@RequestBody ProductCategory productCategory){
 
-        if (!productCategoryService.isProductCategoryPresentIntoDB(productCategory)) {
+        if (!productCategoryService.isPresentIntoDB(productCategory)) {
             return new ResponseEntity(PRODUCT_CATEGORY_DOESNT_EXIST_INTO_DB,HttpStatus.NO_CONTENT);
         }
 
-        productCategoryService.deleteProductCategoryById(productCategory.getId());
+        productCategoryService.deleteById(productCategory.getId());
         return new ResponseEntity<>(DELETED_PRODUCT_CATEGORY, HttpStatus.OK);
     }
 
@@ -66,7 +64,7 @@ public class ProductCategoryController {
     @GetMapping(value = "/getProductCategoryByDescription/{desc}")
     public ResponseEntity<List<ProductCategory>> getProductCategoryByDescription(@PathVariable("desc") String description) {
 
-        List<ProductCategory> productCategories = productCategoryService.getProductCategoryByDescription(description.toUpperCase());
+        List<ProductCategory> productCategories = productCategoryService.getByDescription(description.toUpperCase());
 
         return new ResponseEntity<List<ProductCategory>>(productCategories,HttpStatus.OK);
     }

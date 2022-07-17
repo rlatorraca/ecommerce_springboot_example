@@ -332,7 +332,7 @@ ALTER TABLE public.product_sales_ecommerce OWNER TO postgres;
 -- Name: purchase_invoice; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.purchase_invoice (
+CREATE TABLE public.stock_purchase_invoice (
                                          id bigint NOT NULL,
                                          date_sale date NOT NULL,
                                          description character varying(255),

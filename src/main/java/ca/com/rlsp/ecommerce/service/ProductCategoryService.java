@@ -5,7 +5,6 @@ import ca.com.rlsp.ecommerce.repository.ProductCategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductCategoryService {
@@ -16,23 +15,23 @@ public class ProductCategoryService {
         this.productCategoryRepository = productCategoryRepository;
     }
 
-    public ProductCategory saveProductCategory(ProductCategory productCategory){
+    public ProductCategory save(ProductCategory productCategory){
         return productCategoryRepository.save(productCategory);
     }
 
-    public Boolean isProductCategoryIntoDB(String productCategory){
-        return productCategoryRepository.isProductCategoryIntoDB(productCategory);
+    public Boolean isIntoDB(String description){
+        return productCategoryRepository.isProductCategoryIntoDB(description);
     }
 
-    public void deleteProductCategoryById(Long id) {
+    public void deleteById(Long id) {
         productCategoryRepository.deleteById(id);
     }
 
-   public boolean isProductCategoryPresentIntoDB(ProductCategory productCategory) {
+   public boolean isPresentIntoDB(ProductCategory productCategory) {
         return productCategoryRepository.findById(productCategory.getId()).isPresent() == true;
     }
 
-    public List<ProductCategory> getProductCategoryByDescription(String description) {
+    public List<ProductCategory> getByDescription(String description) {
         return productCategoryRepository.getProductCategoryByDescription(description);
     }
 }

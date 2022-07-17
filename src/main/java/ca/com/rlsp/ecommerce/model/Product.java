@@ -103,7 +103,7 @@ public class Product implements Serializable {
 
     /* INVOICE ITEM PRODUCT | NOTA_ITEM_PRODUTO */
     @NotNull(message = "Invoice for each Item product must be inserted")
-    @ManyToOne(targetEntity = ProductBrand.class)
+    @ManyToOne(targetEntity = InvoiceItemProduct.class)
     @JoinColumn(name = "invoice_item_product_id",
             nullable = false,
             foreignKey = @ForeignKey(

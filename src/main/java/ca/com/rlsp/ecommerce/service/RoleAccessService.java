@@ -41,6 +41,6 @@ public class RoleAccessService {
     }
 
     public List<RoleAccess> getByDescription(String description) {
-        return roleAccessRepository.findDescriptionAccess((description));
+        return roleAccessRepository.getDescriptionAccess((description));
     }
 }

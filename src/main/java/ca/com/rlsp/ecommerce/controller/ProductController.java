@@ -56,7 +56,7 @@ public class ProductController {
         }
 
         if(product.getId() == null) {
-            List<Product> productList = productService.getProductByNameAndEcommerce(product.getName().toUpperCase(), product.getEcommerceCompany().getId());
+            List<Product> productList = productService.getByNameAndEcommerce(product.getName().toUpperCase(), product.getEcommerceCompany().getId());
 
             if(!productList.isEmpty()) {
                 throw new EcommerceException(ERROR_PRODUCT_EXIST_ON_DB + product.getName());
@@ -80,7 +80,7 @@ public class ProductController {
     @DeleteMapping(path = "/deleteProduct")
     public ResponseEntity<?> deleteProduct(@RequestBody Product product){
 
-        productService.deleteProductById(product.getId());
+        productService.deleteById(product.getId());
         return new ResponseEntity<>("Deleted Role Access By Object", HttpStatus.OK);
     }
 
@@ -88,7 +88,7 @@ public class ProductController {
     @DeleteMapping(value = "/deleteProduct/{productId}")
     public ResponseEntity<?> deleteProductById(@PathVariable Long productId){
 
-        productService.deleteProductById(productId);
+        productService.deleteById(productId);
 
         return new ResponseEntity<>("Deleted Product By Id", HttpStatus.OK);
     }
@@ -97,7 +97,7 @@ public class ProductController {
     @GetMapping(value = "/getProduct/byDescription/{description}")
     public ResponseEntity<List<Product>> getByDescriptionRoleAccess(@PathVariable String description){
 
-        List<Product> productList = productService.getProductByDescription(description.toUpperCase());
+        List<Product> productList = productService.getByDescription(description.toUpperCase());
 
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }

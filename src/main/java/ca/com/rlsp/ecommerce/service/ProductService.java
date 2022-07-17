@@ -1,7 +1,6 @@
 package ca.com.rlsp.ecommerce.service;
 
 import ca.com.rlsp.ecommerce.model.Product;
-import ca.com.rlsp.ecommerce.model.RoleAccess;
 import ca.com.rlsp.ecommerce.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,7 @@ public class ProductService {
 
         return Optional.ofNullable(productRepository.findById(roleAccessId).orElse(null));
     }
-    public void deleteProductById(Long id) {
+    public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 
@@ -39,7 +38,7 @@ public class ProductService {
         return productRepository.findById(productCategory.getId()).isPresent() == true;
     }
 
-    public List<Product> getProductByDescription(String description) {
+    public List<Product> getByDescription(String description) {
         return productRepository.getProductByDescription(description);
     }
 
@@ -47,7 +46,7 @@ public class ProductService {
         return productRepository.getProductByName(name);
     }
 
-    public List<Product>  getProductByNameAndEcommerce(String productCategory, Long ecommerceId){
+    public List<Product> getByNameAndEcommerce(String productCategory, Long ecommerceId){
         return productRepository.getProductByNameAndEcommerceCompany(productCategory, ecommerceId);
     }
 

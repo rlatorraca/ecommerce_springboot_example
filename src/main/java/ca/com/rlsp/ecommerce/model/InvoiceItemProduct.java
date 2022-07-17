@@ -26,12 +26,12 @@ public class InvoiceItemProduct implements Serializable {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "purchase_invoice_id",
+    @JoinColumn(name = "stock_purchase_invoice_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
-                    name = "purchase_invoice_fk"))
-    private PurchaseInvoice purchaseInvoice;
+                    name = "stock_purchase_invoice_fk"))
+    private StockPurchaseInvoice stockPurchaseInvoice;
 
     /* COMPANY | EMPRESA */
     @ManyToOne(targetEntity = Person.class)
@@ -79,12 +79,12 @@ public class InvoiceItemProduct implements Serializable {
         this.product = product;
     }
 
-    public PurchaseInvoice getPurchaseInvoice() {
-        return purchaseInvoice;
+    public StockPurchaseInvoice getPurchaseInvoice() {
+        return stockPurchaseInvoice;
     }
 
-    public void setPurchaseInvoice(PurchaseInvoice purchaseInvoice) {
-        this.purchaseInvoice = purchaseInvoice;
+    public void setPurchaseInvoice(StockPurchaseInvoice stockPurchaseInvoice) {
+        this.stockPurchaseInvoice = stockPurchaseInvoice;
     }
 
     public Person getEcommerceCompany() {

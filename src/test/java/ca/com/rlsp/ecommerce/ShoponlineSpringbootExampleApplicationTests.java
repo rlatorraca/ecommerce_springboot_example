@@ -269,7 +269,7 @@ class EcommercepringbootExampleApplicationTests extends TestCase {
 
         roleAccess_01 = roleAccessController.saveRoleAccess(roleAccess_01).getBody();
 
-        List<RoleAccess> roleAccessList = roleAccessRepository.findDescriptionAccess("STUDENT".trim().toUpperCase());
+        List<RoleAccess> roleAccessList = roleAccessRepository.getDescriptionAccess("STUDENT".trim().toUpperCase());
 
         assertEquals(1, roleAccessList.size());
 

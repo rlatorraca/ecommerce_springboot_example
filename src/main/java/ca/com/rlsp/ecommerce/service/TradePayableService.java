@@ -1,8 +1,6 @@
 package ca.com.rlsp.ecommerce.service;
 
-import ca.com.rlsp.ecommerce.model.Product;
 import ca.com.rlsp.ecommerce.model.TradePayable;
-import ca.com.rlsp.ecommerce.repository.ProductRepository;
 import ca.com.rlsp.ecommerce.repository.TradePayableRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +17,12 @@ public class TradePayableService {
         this.tradePayableRepository = tradePayableRepository;
     }
 
-    public TradePayable saveTradePayable(TradePayable tradePayable) {
+    public TradePayable save(TradePayable tradePayable) {
 
         return tradePayableRepository.save(tradePayable);
     }
 
-    public Boolean isTradePayableIntoDB(String tradePayable){
+    public Boolean isIntoDB(String tradePayable){
         return tradePayableRepository.isTradePayableIntoDB(tradePayable);
     }
 
@@ -32,20 +30,20 @@ public class TradePayableService {
 
         return Optional.ofNullable(tradePayableRepository.findById(tradePayableId).orElse(null));
     }
-    public void deleteTradePayableByIdById(Long id) {
+    public void deleteById(Long id) {
         tradePayableRepository.deleteById(id);
     }
 
-   public boolean isTradePayablePresentIntoDB(TradePayable productCategory) {
+   public boolean isIntoDB(TradePayable productCategory) {
         return tradePayableRepository.findById(productCategory.getId()).isPresent() == true;
     }
 
-   public List<TradePayable> getTradePayableByDescription(String description) {
+   public List<TradePayable> getByDescription(String description) {
         return tradePayableRepository.getTradePayableByDescription(description);
     }
 
 
-    public Collection<TradePayable> getAllTradePayable() {
+    public Collection<TradePayable> getAll() {
 
         return tradePayableRepository.findAll();
     }

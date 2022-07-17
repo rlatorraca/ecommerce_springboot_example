@@ -13,5 +13,5 @@ import java.util.List;
 public interface RoleAccessRepository extends JpaRepository<RoleAccess, Long> {
 
     @Query("SELECT ra FROM RoleAccess ra where upper(trim(ra.description)) like %?1%")
-    List<RoleAccess> findDescriptionAccess(String description);
+    List<RoleAccess> getDescriptionAccess(String description);
 }

@@ -1,9 +1,7 @@
 package ca.com.rlsp.ecommerce.controller;
 
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
-import ca.com.rlsp.ecommerce.model.Product;
 import ca.com.rlsp.ecommerce.model.TradePayable;
-import ca.com.rlsp.ecommerce.service.ProductService;
 import ca.com.rlsp.ecommerce.service.TradePayableService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +29,7 @@ public class TradePayableController {
     @GetMapping(value = "/getAllTradePayable")
     public ResponseEntity<Collection<TradePayable>> getAllTradePayable(){
 
-        Collection<TradePayable> allTradePayable = tradePayableService.getAllTradePayable();
+        Collection<TradePayable> allTradePayable = tradePayableService.getAll();
         return new ResponseEntity<>(allTradePayable, HttpStatus.OK);
 
     }
@@ -53,7 +51,7 @@ public class TradePayableController {
     public ResponseEntity<TradePayable> savingTradePayable(@RequestBody @Valid TradePayable tradePayable) throws EcommerceException {
 
         if (tradePayable.getId() == null) {
-            List<TradePayable> tradePayableList = tradePayableService.getTradePayableByDescription(tradePayable.getDescription().toUpperCase().trim());
+            List<TradePayable> tradePayableList = tradePayableService.getByDescription(tradePayable.getDescription().toUpperCase().trim());
 
             if (!tradePayableList.isEmpty()) {
                 throw new EcommerceException(ERROR_TRADE_PAYABLE_EXIST_ON_DB + tradePayable.getDescription());
@@ -69,7 +67,7 @@ public class TradePayableController {
         }
 
 
-        TradePayable tradePayableSaved = tradePayableService.saveTradePayable(tradePayable);
+        TradePayable tradePayableSaved = tradePayableService.save(tradePayable);
 
         return new ResponseEntity<TradePayable>(tradePayableSaved, HttpStatus.OK);
 
@@ -81,7 +79,7 @@ public class TradePayableController {
     @DeleteMapping(path = "/deleteTradePayable")
     public ResponseEntity<?> deleteTradePayable(@RequestBody TradePayable tradePayable){
 
-        tradePayableService.deleteTradePayableByIdById(tradePayable.getId());
+        tradePayableService.deleteById(tradePayable.getId());
         return new ResponseEntity<>("Deleted Trade Payable By Object", HttpStatus.OK);
     }
 
@@ -89,7 +87,7 @@ public class TradePayableController {
     @DeleteMapping(value = "/deleteTradePayable/{tradePayableId}")
     public ResponseEntity<?> deleteTradepayableById(@PathVariable Long tradePayableId){
 
-        tradePayableService.deleteTradePayableByIdById(tradePayableId);
+        tradePayableService.deleteById(tradePayableId);
 
         return new ResponseEntity<>("Deleted Trade Payable By Id: " + tradePayableId, HttpStatus.OK);
     }
@@ -98,7 +96,7 @@ public class TradePayableController {
     @GetMapping(value = "/getTradePayable/description/{description}")
     public ResponseEntity<List<TradePayable>> getByDescriptionTradePayable(@PathVariable String description){
 
-        List<TradePayable> tradePayableList = tradePayableService.getTradePayableByDescription(description.toUpperCase());
+        List<TradePayable> tradePayableList = tradePayableService.getByDescription(description.toUpperCase());
 
         return new ResponseEntity<>(tradePayableList, HttpStatus.OK);
     }
