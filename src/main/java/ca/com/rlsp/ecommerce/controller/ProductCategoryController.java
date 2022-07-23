@@ -44,7 +44,7 @@ public class ProductCategoryController {
 //        productCategoryDTO.setDescription(productCategory.getDescription());
 //        productCategoryDTO.setEcommerceCompany(productCategory.getEcommerceCompany().getId());
 
-        return new ResponseEntity<ProductCategory>(productCategorySaved, HttpStatus.OK);
+        return new ResponseEntity<ProductCategory>(productCategorySaved, HttpStatus.CREATED);
     }
 
 

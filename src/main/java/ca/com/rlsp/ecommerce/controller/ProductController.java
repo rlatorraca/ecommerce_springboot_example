@@ -19,6 +19,8 @@ public class ProductController {
     private static final String ERROR_ECOMMERCE_COMPANY_MUST_BE_INFORMED= "Ecommerce Company must be informed [RLSP] : ";
     private static final String ERROR_PRODUCT_BRAND_MUST_BE_INFORMED= "Product Brand doesnt must be informed [RLSP] : ";
     private static final String ERROR_PRODUCT_CATEGORY_MUST_BE_INFORMED = "Product Category must be informed [RLSP] : ";
+    public static final String UNIT_TYPE_MUST_BE_INFORMED_RLSP = "Unit type must be informed [RLSP]";
+    public static final String PRODUCT_NAME_MUST_BE_MORE_THAN_10_CHARACTERS_RLSP = "Product name must be more than 10 characters [RLSP]";
 
     private final ProductService productService;
 
@@ -31,7 +33,7 @@ public class ProductController {
     public ResponseEntity<Collection<Product>> getAllProducts(){
 
         Collection<Product> allProductsSave = productService.getAll();
-        return new ResponseEntity<>(allProductsSave, HttpStatus.OK);
+        return new ResponseEntity<>(allProductsSave, HttpStatus.CREATED);
 
     }
 
@@ -51,6 +53,14 @@ public class ProductController {
     @PostMapping(path = "/saveProduct")
     public ResponseEntity<Product> saveProduct(@RequestBody @Valid Product product) throws EcommerceException {
 
+
+        if (product.getUnitType() == null || product.getUnitType().toString().isEmpty()) {
+            throw new EcommerceException(UNIT_TYPE_MUST_BE_INFORMED_RLSP);
+        }
+
+        if (product.getName().length() < 10) {
+            throw new EcommerceException(PRODUCT_NAME_MUST_BE_MORE_THAN_10_CHARACTERS_RLSP);
+        }
         if(product.getEcommerceCompany() == null && product.getEcommerceCompany().getId() <= 0) {
             throw new EcommerceException(ERROR_ECOMMERCE_COMPANY_MUST_BE_INFORMED );
         }

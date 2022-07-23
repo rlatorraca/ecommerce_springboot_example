@@ -93,7 +93,7 @@ public class PersonController {
     public ResponseEntity<List<NaturalPerson>> queryNaturalPersonByName(@PathVariable String name){
         List<NaturalPerson> naturalPersonList = naturalPersonRepository.queryNaturalPersonByName(name.trim().toUpperCase());
         updateCounterNumberAccessEndPointService.saveIntoDbEndPointAccess("queryNaturalPersonByName");
-        return new ResponseEntity<>(naturalPersonList, HttpStatus.OK);
+        return new ResponseEntity<>(naturalPersonList, HttpStatus.CREATED);
     }
 
 

@@ -10,26 +10,31 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public interface StockPurchaseInvoiceItemProductRepository extends JpaRepository<StockPurchaseInvoiceItemProduct, Long> {
 
     // return a invoice having a specific product
-    @Query("SELECT spiip FROM StockPurchaseInvoiceItemProduct spiip WHERE spiip.product.id = ?1 AND spiip.stockPurchaseInvoice.id = ?2")
-    StockPurchaseInvoiceItemProduct getStockPurchaseInvoiceItemByProductAndByInvoice(Long productId, Long invoiceId);
+    // avoid duplicates
+    @Query("SELECT spiip FROM StockPurchaseInvoiceItemProduct spiip WHERE spiip.product.id = ?1 AND spiip.stockPurchaseinvoice.id = ?2")
+    List<StockPurchaseInvoiceItemProduct> fetchStockPurchaseInvoiceItemByProductAndByInvoice(Long productId, Long invoiceId);
 
 
     // get a list of invoices that have a specific product
     @Query("SELECT spiip FROM StockPurchaseInvoiceItemProduct spiip WHERE spiip.product.id = ?1")
-    List<StockPurchaseInvoiceItemProduct> getStockPurchaseInvoiceItemProductByProduct(Long productId);
+    List<StockPurchaseInvoiceItemProduct> fetchStockPurchaseInvoiceItemProductByProduct(Long productId);
 
 
     // return a invoice
-    @Query("SELECT spiip FROM StockPurchaseInvoiceItemProduct spiip WHERE spiip.stockPurchaseInvoice.id = ?1")
-    StockPurchaseInvoiceItemProduct getStockPurchaseInvoiceItemProductByInvoice(Long invoiceId);
+    @Query("SELECT spiip FROM StockPurchaseInvoiceItemProduct spiip WHERE spiip.stockPurchaseinvoice.id = ?1")
+    StockPurchaseInvoiceItemProduct fetchStockPurchaseInvoiceItemProductByInvoice(Long invoiceId);
+
+    @Query(value = "SELECT COUNT(1) > 0 FROM stock_purchase_invoice_item_product WHERE id = ?1", nativeQuery = true)
+    Boolean existStockPurchaseInvoiceItemProduct(Long existStockPurchaseInvoiceItemProductId);
 
 
     // returna a list of invoices by Ecommerce (company)
     @Query("SELECT spiip FROM StockPurchaseInvoiceItemProduct spiip WHERE spiip.ecommerceCompany.id = ?1")
-    List<StockPurchaseInvoiceItemProduct> getStockPurchaseInvoiceItemProductByEcommerce(Long ecommerceId);
+    List<StockPurchaseInvoiceItemProduct> fetchStockPurchaseInvoiceItemProductByEcommerce(Long ecommerceId);
 
 
     // delete a selected invoice

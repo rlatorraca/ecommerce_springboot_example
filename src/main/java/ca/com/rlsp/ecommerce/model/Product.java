@@ -26,7 +26,7 @@ public class Product implements Serializable {
 
     @Size(min = 10, message = "Product name must have at least 10(ten) characters")
     @NotNull(message = "Product name must be inserted")
-    @Column(name = "ṕroduct_name", nullable = false)
+    @Column(name = "product_name", nullable = false)
     private String name;
 
     @NotNull(message = "Description must be inserted")
@@ -101,15 +101,6 @@ public class Product implements Serializable {
                     name = "product_brand_fk"))
     private ProductBrand productBrand;
 
-    /* INVOICE ITEM PRODUCT | NOTA_ITEM_PRODUTO */
-    @NotNull(message = "Invoice for each Item product must be inserted")
-    @ManyToOne(targetEntity = StockPurchaseInvoiceItemProduct.class)
-    @JoinColumn(name = "invoice_item_product_id",
-            nullable = false,
-            foreignKey = @ForeignKey(
-                    value = ConstraintMode.CONSTRAINT,
-                    name = "invoice_item_product_fk"))
-    private StockPurchaseInvoiceItemProduct stockPurchaseInvoiceItemProduct;
 
     @Override
     public boolean equals(Object o) {
@@ -260,11 +251,5 @@ public class Product implements Serializable {
         this.productBrand = productBrand;
     }
 
-    public StockPurchaseInvoiceItemProduct getInvoiceItemProduct() {
-        return stockPurchaseInvoiceItemProduct;
-    }
 
-    public void setInvoiceItemProduct(StockPurchaseInvoiceItemProduct stockPurchaseInvoiceItemProduct) {
-        this.stockPurchaseInvoiceItemProduct = stockPurchaseInvoiceItemProduct;
-    }
 }

@@ -57,7 +57,7 @@ public class ProductAccessController {
             }
         }
         ProductBrand productBrandSaved  = productBrandService.save(productBrand);
-        return new ResponseEntity<>(productBrandSaved, HttpStatus.OK);
+        return new ResponseEntity<>(productBrandSaved, HttpStatus.CREATED);
     }
 
 

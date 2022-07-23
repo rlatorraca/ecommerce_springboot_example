@@ -1,5 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,6 +16,7 @@ public class StockPurchaseInvoiceItemProduct implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_address")
     private Long id;
 
+    @Range(min=1, message = "Insert product quantity")
     @Column(nullable = false)
     private Double quantity;
 
@@ -25,22 +28,22 @@ public class StockPurchaseInvoiceItemProduct implements Serializable {
                     name = "product_fk"))
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = StockPurchaseInvoice.class)
     @JoinColumn(name = "stock_purchase_invoice_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "stock_purchase_invoice_fk"))
-    private StockPurchaseInvoice stockPurchaseInvoice;
+    private StockPurchaseInvoice stockPurchaseinvoice;
 
     /* COMPANY | EMPRESA */
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
 
     @Override
     public boolean equals(Object o) {
@@ -79,19 +82,19 @@ public class StockPurchaseInvoiceItemProduct implements Serializable {
         this.product = product;
     }
 
-    public StockPurchaseInvoice getPurchaseInvoice() {
-        return stockPurchaseInvoice;
+    public StockPurchaseInvoice getStockPurchaseinvoice() {
+        return stockPurchaseinvoice;
     }
 
-    public void setPurchaseInvoice(StockPurchaseInvoice stockPurchaseInvoice) {
-        this.stockPurchaseInvoice = stockPurchaseInvoice;
+    public void setStockPurchaseinvoice(StockPurchaseInvoice stockPurchaseinvoice) {
+        this.stockPurchaseinvoice = stockPurchaseinvoice;
     }
 
-    public Person getEcommerceCompany() {
+    public LegalPerson getEcommerceCompany() {
         return ecommerceCompany;
     }
 
-    public void setEcommerceCompany(Person ecommerceCompany) {
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
 }

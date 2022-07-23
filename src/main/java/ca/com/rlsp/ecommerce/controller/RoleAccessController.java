@@ -26,7 +26,7 @@ public class RoleAccessController {
     public ResponseEntity<Collection<RoleAccess>> getRoleAccess(){
 
         Collection<RoleAccess> allRolesSaved = roleAccessService.getAll();
-        return new ResponseEntity<>(allRolesSaved, HttpStatus.OK);
+        return new ResponseEntity<>(allRolesSaved, HttpStatus.CREATED);
 
     }
 
