@@ -7,6 +7,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -100,6 +102,9 @@ public class Product implements Serializable {
                     value = ConstraintMode.CONSTRAINT,
                     name = "product_brand_fk"))
     private ProductBrand productBrand;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ProductImage> images = new ArrayList<ProductImage>();
 
 
     @Override
@@ -251,5 +256,11 @@ public class Product implements Serializable {
         this.productBrand = productBrand;
     }
 
+    public List<ProductImage> getImages() {
+        return images;
+    }
 
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
+    }
 }

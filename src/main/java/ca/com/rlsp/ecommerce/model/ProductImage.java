@@ -89,4 +89,6 @@ public class ProductImage implements Serializable {
     public void setEcommerceCompany(Person ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
+
+
 }
