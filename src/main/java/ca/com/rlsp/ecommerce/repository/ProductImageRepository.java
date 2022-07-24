@@ -10,16 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
 
-    @Query("SELECT pi FROM ProductImage pi where pi.product.id = ?1")
-    List<ProductImage> fetchProductImages(Long productId);
+    @Query("SELECT pi FROM ProductImage pi WHERE pi.product.id = ?1")
+    List<ProductImage> fetchAllProductImagesByProduct(Long productId);
 
     @Transactional
     @Modifying(flushAutomatically = true)
-    @Query(nativeQuery = true, value = "DELETE FROM product_image WHERE id = ?1")
+    @Query(nativeQuery = true, value = "DELETE FROM product_image pi WHERE pi.product_id = ?1")
     void deleteAllImages(Long productId);
 
-    @Query(value = "SELECT COUNT(1) > 0 FROM product_image WHERE id = productImageId ", nativeQuery = true)
-    Boolean isImageSavedIntoDB(Long productImageId);
+    @Query(value = "SELECT COUNT(1) > 0 FROM product_image pi WHERE pi.product_id = ?1 ", nativeQuery = true)
+    Boolean isImageSavedByProductIntoDB(Long productId);
+
+    @Query(value = "SELECT COUNT(1) > 0 FROM product_image pi WHERE pi.id = ?1 ", nativeQuery = true)
+    Boolean isImageSavedByProductImageIdIntoDB(Long productImageId);
 }

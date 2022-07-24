@@ -1,6 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class ProductImage implements Serializable {
     @Column(columnDefinition = "text", nullable = false)
     private String thumbnail;
 
-    @JsonIgnore
+    @JsonIgnoreProperties(allowSetters = true)
     @ManyToOne
     @JoinColumn(name = "product_id",
             nullable = false,
@@ -32,7 +33,7 @@ public class ProductImage implements Serializable {
     private Product product;
 
     /* COMPANY | EMPRESA */
-    @JsonIgnore
+    @JsonIgnoreProperties(allowSetters = true)
     @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,

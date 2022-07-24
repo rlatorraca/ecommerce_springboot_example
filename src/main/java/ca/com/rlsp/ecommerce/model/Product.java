@@ -1,6 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
 import ca.com.rlsp.ecommerce.enums.UnitType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -102,6 +103,7 @@ public class Product implements Serializable {
                     value = ConstraintMode.CONSTRAINT,
                     name = "product_brand_fk"))
     private ProductBrand productBrand;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<ProductImage>();

@@ -12,6 +12,10 @@ public class ProductImageService {
 
     private ProductImageRepository productImageRepository;
 
+    public ProductImageService(ProductImageRepository productImageRepository) {
+        this.productImageRepository = productImageRepository;
+    }
+
     public ProductImage save(ProductImage productImage) {
 
         return productImageRepository.save(productImage);
@@ -31,13 +35,16 @@ public class ProductImageService {
     }
 
 
-    public Boolean existsImageSavedById(Long productImageId){
-        return productImageRepository.isImageSavedIntoDB(productImageId);
+    public Boolean isImageSavedByProductIdIntoDB(Long productId){
+        return productImageRepository.isImageSavedByProductIntoDB(productId);
+    }
+    public Boolean isImageSavedByProductImageIdIntoDB(Long productImageId){
+        return productImageRepository.isImageSavedByProductImageIdIntoDB(productImageId);
     }
 
 
-    public List<ProductImage> fetchProductImages(Long productImageId) {
-        return productImageRepository.fetchProductImages(productImageId);
+    public List<ProductImage> fetchAllProductImagesByProduct(Long productId) {
+        return productImageRepository.fetchAllProductImagesByProduct(productId);
     }
 
 }
