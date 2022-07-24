@@ -149,11 +149,14 @@ public class ProductController {
                     g.drawImage(bufferedImage, 0, 0, width, height, null);
                     g.dispose(); // Print graphic in memory
 
+                    // Output - save any image type to png
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ImageIO.write(resizedImage, "png", baos);
 
+                    // (thumbnail => png and Base64)
                     String miniImgBase64 = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
 
+                    // Save thumbnail
                     product.getImages().get(x).setThumbnail(miniImgBase64);
 
                     bufferedImage.flush();

@@ -1,5 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -20,6 +22,7 @@ public class ProductImage implements Serializable {
     @Column(columnDefinition = "text", nullable = false)
     private String thumbnail;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id",
             nullable = false,
@@ -29,13 +32,14 @@ public class ProductImage implements Serializable {
     private Product product;
 
     /* COMPANY | EMPRESA */
-    @ManyToOne(targetEntity = Person.class)
+    @JsonIgnore
+    @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
 
     @Override
     public boolean equals(Object o) {
@@ -86,7 +90,7 @@ public class ProductImage implements Serializable {
         return ecommerceCompany;
     }
 
-    public void setEcommerceCompany(Person ecommerceCompany) {
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
 
