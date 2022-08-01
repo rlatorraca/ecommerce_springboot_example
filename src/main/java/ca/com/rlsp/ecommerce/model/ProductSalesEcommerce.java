@@ -99,7 +99,7 @@ public class ProductSalesEcommerce implements Serializable {
         this.id = id;
     }
 
-    public Person getPerson() {
+    public NaturalPerson getPerson() {
         return person;
     }
 
@@ -195,7 +195,7 @@ public class ProductSalesEcommerce implements Serializable {
         this.discountCoupon = discountCoupon;
     }
 
-    public Person getEcommerceCompany() {
+    public LegalPerson getEcommerceCompany() {
         return ecommerceCompany;
     }
 

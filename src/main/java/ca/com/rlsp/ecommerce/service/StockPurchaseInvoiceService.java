@@ -1,6 +1,7 @@
 package ca.com.rlsp.ecommerce.service;
 
 import ca.com.rlsp.ecommerce.model.ProductCategory;
+import ca.com.rlsp.ecommerce.model.ProductImage;
 import ca.com.rlsp.ecommerce.model.RoleAccess;
 import ca.com.rlsp.ecommerce.model.StockPurchaseInvoice;
 import ca.com.rlsp.ecommerce.repository.RoleAccessRepository;
@@ -34,6 +35,11 @@ public class StockPurchaseInvoiceService {
     public StockPurchaseInvoice save(StockPurchaseInvoice stockPurchaseInvoice) {
 
         return stockPurchaseInvoiceRepository.save(stockPurchaseInvoice);
+    }
+
+    public StockPurchaseInvoice saveAndFlush(StockPurchaseInvoice stockPurchaseInvoice) {
+
+        return stockPurchaseInvoiceRepository.saveAndFlush(stockPurchaseInvoice);
     }
 
 
