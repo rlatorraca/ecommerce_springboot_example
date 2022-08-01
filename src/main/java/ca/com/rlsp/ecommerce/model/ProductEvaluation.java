@@ -1,6 +1,13 @@
 package ca.com.rlsp.ecommerce.model;
 
+
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 @Entity
@@ -13,11 +20,14 @@ public class ProductEvaluation implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_item_sale_ecommerce")
     private Long id;
 
+    @Min(value = 1, message = "Minimum evaluation is 1")
+    @Max(value = 10, message = "Maximum evaluation is 10")
     @Column(nullable = false)
     private Integer grade;
 
     @Column(nullable = false)
     private String description;
+
 
     @ManyToOne
     @JoinColumn(name = "product_id",
@@ -27,22 +37,22 @@ public class ProductEvaluation implements Serializable {
                     name = "product_fk"))
     private Product product;
 
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = NaturalPerson.class)
     @JoinColumn(name = "person_id",
                 nullable = false,
                 foreignKey = @ForeignKey(
                         value = ConstraintMode.CONSTRAINT,
                         name = "person_fk"))
-    private Person person;
+    private NaturalPerson person;
 
     /* COMPANY | EMPRESA */
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
 
     @Override
     public boolean equals(Object o) {
@@ -75,6 +85,7 @@ public class ProductEvaluation implements Serializable {
         this.grade = grade;
     }
 
+    @JsonIgnore
     public Product getProduct() {
         return product;
     }
@@ -83,11 +94,12 @@ public class ProductEvaluation implements Serializable {
         this.product = product;
     }
 
-    public Person getPerson() {
+    @JsonIgnore
+    public NaturalPerson getPerson() {
         return person;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(NaturalPerson person) {
         this.person = person;
     }
 
@@ -99,11 +111,12 @@ public class ProductEvaluation implements Serializable {
         this.description = description;
     }
 
-    public Person getEcommerceCompany() {
+    @JsonIgnore
+    public LegalPerson getEcommerceCompany() {
         return ecommerceCompany;
     }
 
-    public void setEcommerceCompany(Person ecommerceCompany) {
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
 }
