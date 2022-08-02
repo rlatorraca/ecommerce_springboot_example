@@ -1,6 +1,7 @@
 package ca.com.rlsp.ecommerce.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,17 +15,19 @@ public class PaymentMethod implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_payment_method")
     private Long id;
 
+    @NotNull(message = "Description must be informed")
     @Column(nullable = false)
     private String description;
 
     /* COMPANY | EMPRESA */
-    @ManyToOne(targetEntity = Person.class)
+    @NotNull(message = "Ecommerce must be informed")
+    @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
 
     public Long getId() {
         return id;
@@ -57,11 +60,11 @@ public class PaymentMethod implements Serializable {
         return Objects.hash(id);
     }
 
-    public Person getEcommerceCompany() {
+    public LegalPerson getEcommerceCompany() {
         return ecommerceCompany;
     }
 
-    public void setEcommerceCompany(Person ecommerceCompany) {
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
 }

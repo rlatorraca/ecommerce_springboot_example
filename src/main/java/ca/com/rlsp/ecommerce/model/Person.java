@@ -3,6 +3,8 @@ package ca.com.rlsp.ecommerce.model;
 import ca.com.rlsp.ecommerce.enums.PersonType;
 import ca.com.rlsp.ecommerce.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -18,6 +20,9 @@ import java.util.List;
 public abstract class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    public Person() {
+    }
 
     @Id
     @Column(name = "id", nullable = false)

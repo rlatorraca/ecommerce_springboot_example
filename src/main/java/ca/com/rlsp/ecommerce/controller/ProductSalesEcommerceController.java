@@ -8,6 +8,7 @@ import ca.com.rlsp.ecommerce.model.StockPurchaseInvoice;
 import ca.com.rlsp.ecommerce.model.dto.ProductSalesEcommerceDTO;
 import ca.com.rlsp.ecommerce.repository.AddressRepository;
 import ca.com.rlsp.ecommerce.repository.ProductSalesEcommerceRepository;
+import ca.com.rlsp.ecommerce.repository.SalesInvoiceRepository;
 import ca.com.rlsp.ecommerce.service.ProductSalesEcommerceService;
 import ca.com.rlsp.ecommerce.service.StockPurchaseInvoiceService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,14 @@ public class ProductSalesEcommerceController {
 
     private PersonController personController;
 
-    private StockPurchaseInvoiceService stockPurchaseInvoiceService;
+    private SalesInvoiceRepository salesInvoiceRepository;
+
+    public ProductSalesEcommerceController(ProductSalesEcommerceRepository productSalesEcommerceRepository, AddressRepository addressRepository, PersonController personController, SalesInvoiceRepository salesInvoiceRepository) {
+        this.productSalesEcommerceRepository = productSalesEcommerceRepository;
+        this.addressRepository = addressRepository;
+        this.personController = personController;
+        this.salesInvoiceRepository = salesInvoiceRepository;
+    }
 
     @ResponseBody
     @PostMapping(value = "/saveSalesEcommerce")
@@ -52,14 +60,15 @@ public class ProductSalesEcommerceController {
         productSalesEcommerce.setShippingAddress(deliveryAddress);
 
         productSalesEcommerce.getSalesInvoice().setEcommerceCompany(productSalesEcommerce.getEcommerceCompany());
-        /*Salva primeiro a venda e todo os dados*/
+
+        /*Salva primeiro a venda e os demais dados*/
         productSalesEcommerce = productSalesEcommerceRepository.saveAndFlush(productSalesEcommerce);
 
         /*Associa a venda gravada no banco com a nota fiscal*/
         productSalesEcommerce.getSalesInvoice().setProductSalesEcommerce(productSalesEcommerce);
 
         /*Persiste novamente as nota fiscal novamente pra ficar amarrada na venda*/
-        stockPurchaseInvoiceService.saveAndFlush(productSalesEcommerce.getSalesInvoice());
+        salesInvoiceRepository.saveAndFlush(productSalesEcommerce.getSalesInvoice());
 
         ProductSalesEcommerceDTO productSalesEcommerceDTO = new ProductSalesEcommerceDTO();
         productSalesEcommerceDTO.setTotalValue(productSalesEcommerce.getTotalValue());

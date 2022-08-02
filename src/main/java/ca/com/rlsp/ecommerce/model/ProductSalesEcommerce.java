@@ -1,6 +1,10 @@
 package ca.com.rlsp.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,7 +19,8 @@ public class ProductSalesEcommerce implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_product_sales_ecommerce")
     private Long id;
 
-    @ManyToOne(targetEntity = NaturalPerson.class)
+    @NotNull(message = "Buyer must be informed")
+    @ManyToOne(targetEntity = NaturalPerson.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id",
             nullable = false,
             foreignKey = @ForeignKey(
@@ -24,6 +29,7 @@ public class ProductSalesEcommerce implements Serializable {
     private NaturalPerson person;
 
     /* COMPANY | EMPRESA */
+    @NotNull(message = "Ecommerce owner of the sale must be informed")
     @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
@@ -32,7 +38,9 @@ public class ProductSalesEcommerce implements Serializable {
                     name = "ecommerce_company_fk"))
     private LegalPerson ecommerceCompany;
 
-    @ManyToOne
+
+    @NotNull(message = "Billing address must be informed")
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "billing_address_id",
             nullable = false,
             foreignKey = @ForeignKey(
@@ -40,7 +48,8 @@ public class ProductSalesEcommerce implements Serializable {
                     name = "billing_address_fk"))
     private Address billingAddress ;
 
-    @ManyToOne
+    @NotNull(message = "Shipping address must be informed")
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shipping_address_id",
             nullable = false,
             foreignKey = @ForeignKey(
@@ -48,24 +57,31 @@ public class ProductSalesEcommerce implements Serializable {
                     name = "shipping_address_fk"))
     private Address shippingAddress ;
 
+    @NotNull(message = "Total value must be informed")
     @Column(name = "total_value" , nullable = false)
     private BigDecimal totalValue;
 
     @Column(name = "total_discount")
     private BigDecimal totalDiscount;
 
+    @Min(value = 5, message = "Delivery value is invalid")
+    @NotNull(message = "Delivery value must be informed")
     @Column(name = "delivery_value", nullable = false)
     private BigDecimal deliveryValue;
 
+    @Min(value = 1, message = "Days to delivery is invalid")
     @Column(name = "days_to_delivery", nullable = false)
     private Integer daysToDelivery;
 
+    @NotNull(message = "Sales date must be informed")
     @Column(name = "sale_date", nullable = false)
     private Date saleDate;
 
+    @NotNull(message = "Delivery date must be informed")
     @Column(name = "delivery_date", nullable = false)
     private Date deliveryDate;
 
+    @NotNull(message = "Payment method must be informed")
     @ManyToOne
     @JoinColumn(name = "payment_method_id",
             nullable = false,
@@ -74,9 +90,11 @@ public class ProductSalesEcommerce implements Serializable {
                     name = "payment_method_fk"))
     private PaymentMethod paymentMethod;
 
-    @OneToOne
+    @JsonIgnoreProperties(allowGetters = true)
+    @NotNull(message = "Sales invoice must be informad")
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sales_invoice_id",
-            nullable = false,
+            nullable = true,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "sales_invoice_fk"))

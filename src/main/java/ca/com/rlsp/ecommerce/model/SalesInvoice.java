@@ -32,7 +32,7 @@ public class SalesInvoice implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "product_sales_ecommerce_id",
-            nullable = false,
+            nullable = true,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "product_sales_ecommerce_fk"))
