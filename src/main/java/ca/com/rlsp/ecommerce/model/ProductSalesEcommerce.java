@@ -7,7 +7,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "product_sales_ecommerce")
@@ -107,7 +109,8 @@ public class ProductSalesEcommerce implements Serializable {
                     name = "discount_coupon_fk"))
     private DiscountCoupon discountCoupon;
 
-
+    @OneToMany(mappedBy = "productSalesEcommerce", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ItemSaleEcommerce> itemsSaleEcommerce = new ArrayList<ItemSaleEcommerce>();
 
     public Long getId() {
         return id;
@@ -219,5 +222,13 @@ public class ProductSalesEcommerce implements Serializable {
 
     public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
+    }
+
+    public List<ItemSaleEcommerce> getItemsSaleEcommerce() {
+        return itemsSaleEcommerce;
+    }
+
+    public void setItemsSaleEcommerce(List<ItemSaleEcommerce> itemsSaleEcommerce) {
+        this.itemsSaleEcommerce = itemsSaleEcommerce;
     }
 }
