@@ -8,6 +8,7 @@ import ca.com.rlsp.ecommerce.model.dto.ProductSalesEcommerceDTO;
 import ca.com.rlsp.ecommerce.repository.AddressRepository;
 import ca.com.rlsp.ecommerce.repository.SalesInvoiceRepository;
 import ca.com.rlsp.ecommerce.service.ProductSalesEcommerceService;
+import ca.com.rlsp.ecommerce.service.TrackingStatusService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,10 @@ import javax.validation.Valid;
 @RestController
 public class ProductSalesEcommerceController {
 
+    public static final String SALE_SUCCESSFULLY_DELETED_FROM_DATABASE_RLSP = "Sale successfully deleted from Database [RLSP]";
     private ProductSalesEcommerceService productSalesEcommerceService;
+
+    private TrackingStatusService trackingStatusService;
 
     private AddressRepository addressRepository;
 
@@ -26,11 +30,16 @@ public class ProductSalesEcommerceController {
 
     private SalesInvoiceRepository salesInvoiceRepository;
 
-    public ProductSalesEcommerceController(ProductSalesEcommerceService productSalesEcommerceService, AddressRepository addressRepository, PersonController personController, SalesInvoiceRepository salesInvoiceRepository) {
+    public ProductSalesEcommerceController(ProductSalesEcommerceService productSalesEcommerceService,
+                                           AddressRepository addressRepository,
+                                           PersonController personController,
+                                           SalesInvoiceRepository salesInvoiceRepository,
+                                           TrackingStatusService trackingStatusService) {
         this.productSalesEcommerceService = productSalesEcommerceService;
         this.addressRepository = addressRepository;
         this.personController = personController;
         this.salesInvoiceRepository = salesInvoiceRepository;
+        this.trackingStatusService=trackingStatusService;
     }
 
     @ResponseBody
@@ -60,8 +69,20 @@ public class ProductSalesEcommerceController {
             productSalesEcommerce.getItemsSaleEcommerce().get(i).setEcommerceCompany(productSalesEcommerce.getEcommerceCompany());
             productSalesEcommerce.getItemsSaleEcommerce().get(i).setProductSalesEcommerce(productSalesEcommerce);
         }
-        /*Salva primeiro a venda e os demais dados*/
+        /* First save Sale and all your data */
         productSalesEcommerce = productSalesEcommerceService.saveAndFlush(productSalesEcommerce);
+
+
+        TrackingStatus trackingStatus = new TrackingStatus();
+        trackingStatus.setDistributionHub("Loja Local");
+        trackingStatus.setCity("Toronto");
+        trackingStatus.setEcommerceCompany(productSalesEcommerce.getEcommerceCompany());
+        trackingStatus.setProvince("Ontario");
+        trackingStatus.setCountry("Canada");
+        trackingStatus.setStatus("Started Sales");
+        trackingStatus.setProductSalesEcommerce(productSalesEcommerce);
+
+        trackingStatusService.save(trackingStatus);
 
         /*Associa a venda gravada no banco com a nota fiscal*/
         productSalesEcommerce.getSalesInvoice().setProductSalesEcommerce(productSalesEcommerce);
@@ -98,7 +119,7 @@ public class ProductSalesEcommerceController {
             productSalesEcommerceDTO.getItemsSaleEccommerceDTO().add(itemSaleEcommerceDTO);
         }
 
-        return new ResponseEntity<ProductSalesEcommerceDTO>(productSalesEcommerceDTO, HttpStatus.OK);
+        return new ResponseEntity<ProductSalesEcommerceDTO>(productSalesEcommerceDTO, HttpStatus.CREATED);
     }
 
 
@@ -140,6 +161,16 @@ public class ProductSalesEcommerceController {
         }
 
         return new ResponseEntity<ProductSalesEcommerceDTO>(productSalesEcommerceDTO, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @DeleteMapping(value = "/deleteSaleFromDB/{saleId}")
+    public ResponseEntity<String> deleteSaleFromDB(@PathVariable(value = "saleId") Long saleId) {
+
+        trackingStatusService.deleteSaleFromDB(saleId);
+
+        return new ResponseEntity<String>(SALE_SUCCESSFULLY_DELETED_FROM_DATABASE_RLSP,HttpStatus.OK);
+
     }
 
 }
