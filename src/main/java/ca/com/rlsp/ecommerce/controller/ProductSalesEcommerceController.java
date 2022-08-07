@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ProductSalesEcommerceController {
 
     public static final String SALE_SUCCESSFULLY_DELETED_FROM_DATABASE_RLSP = "Sale successfully deleted from Database [RLSP]";
+    public static final String SALE_SUCCESSFULLY_LOGICAL_DELETED_FROM_DATABASE_RLSP = "Sale successfully logically deleted from Database [RLSP]";
+    public static final String SALE_SUCCESSFULLY_REVERTED_LOGICAL_DELETED_FROM_DATABASE_RLSP = "Sale successfully reverted logical deletion from Database [RLSP]";
     private ProductSalesEcommerceService productSalesEcommerceService;
-
     private TrackingStatusService trackingStatusService;
 
     private AddressRepository addressRepository;
@@ -124,10 +128,11 @@ public class ProductSalesEcommerceController {
 
 
     @ResponseBody
-    @GetMapping(value = "/getSaleById/{id}")
-    public ResponseEntity<ProductSalesEcommerceDTO> getSaleById(@PathVariable("id") Long saleId) {
+    @GetMapping(value = "/getSaleBySaleId/{id}")
+    public ResponseEntity<ProductSalesEcommerceDTO> getSaleBySaleId(@PathVariable("id") Long saleId) {
 
-        ProductSalesEcommerce productSalesEcommerce = productSalesEcommerceService.findById(saleId);
+        ProductSalesEcommerce productSalesEcommerce = productSalesEcommerceService.findNotDeletedSaleById(saleId);
+
 
         ProductSalesEcommerceDTO productSalesEcommerceDTO = new ProductSalesEcommerceDTO();
 
@@ -164,12 +169,84 @@ public class ProductSalesEcommerceController {
     }
 
     @ResponseBody
+    @GetMapping(value = "/getSaleByProductId/{id}")
+    public ResponseEntity<List<ProductSalesEcommerceDTO>> getSaleByProductId(@PathVariable("id") Long saleId) {
+
+        List<ProductSalesEcommerce> listProductSalesEcommerce = productSalesEcommerceService.salesByProduct(saleId);
+
+        if (listProductSalesEcommerce == null) {
+            listProductSalesEcommerce = new ArrayList<ProductSalesEcommerce>();
+        }
+
+        List<ProductSalesEcommerceDTO> listProductSalesEcommerceDTO = new ArrayList<ProductSalesEcommerceDTO>();
+
+
+        for (ProductSalesEcommerce sale : listProductSalesEcommerce) {
+
+            ProductSalesEcommerceDTO productSalesEcommerceDTO = new ProductSalesEcommerceDTO();
+
+            productSalesEcommerceDTO.setPerson(sale.getPerson());
+
+            productSalesEcommerceDTO.setTotalValue(sale.getTotalValue());
+            productSalesEcommerceDTO.setTotalDiscount(sale.getTotalDiscount());
+
+            productSalesEcommerceDTO.setBilling(sale.getBillingAddress());
+            productSalesEcommerceDTO.setDelivering(sale.getShippingAddress());
+
+            productSalesEcommerceDTO.setDeliveryValue(sale.getDeliveryValue());
+            productSalesEcommerceDTO.setDelivering(sale.getShippingAddress());
+
+            productSalesEcommerceDTO.setId(sale.getId());
+
+            for (ItemSaleEcommerce item : sale.getItemsSaleEcommerce()) {
+
+                ItemSaleEcommerceDTO itemSaleEcommerceDTO = new ItemSaleEcommerceDTO();
+                itemSaleEcommerceDTO.setQuantity(item.getQuantity());
+
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setId(item.getProduct().getId());
+                productDTO.setDescription(item.getProduct().getDescription());
+                productDTO.setName(item.getProduct().getName());
+                productDTO.setStockQuantity(item.getProduct().getStockQuantity());
+
+                itemSaleEcommerceDTO.setProduct(productDTO);
+
+                productSalesEcommerceDTO.getItemsSaleEccommerceDTO().add(itemSaleEcommerceDTO);
+            }
+
+            listProductSalesEcommerceDTO.add(productSalesEcommerceDTO);
+        }
+
+        return new ResponseEntity<List<ProductSalesEcommerceDTO>>(listProductSalesEcommerceDTO, HttpStatus.OK);
+    }
+
+    @ResponseBody
     @DeleteMapping(value = "/deleteSaleFromDB/{saleId}")
     public ResponseEntity<String> deleteSaleFromDB(@PathVariable(value = "saleId") Long saleId) {
 
-        trackingStatusService.deleteSaleFromDB(saleId);
+        productSalesEcommerceService.deleteSaleFromDB(saleId);
 
         return new ResponseEntity<String>(SALE_SUCCESSFULLY_DELETED_FROM_DATABASE_RLSP,HttpStatus.OK);
+
+    }
+
+    @ResponseBody
+    @PutMapping(value = "/deleteLogicalSaleFromDB/{saleId}")
+    public ResponseEntity<String> deleteLogicalSaleFromDB(@PathVariable(value = "saleId") Long saleId) {
+
+        productSalesEcommerceService.deleteLogicalSaleFromDB(saleId);
+
+        return new ResponseEntity<String>(SALE_SUCCESSFULLY_LOGICAL_DELETED_FROM_DATABASE_RLSP,HttpStatus.OK);
+
+    }
+
+    @ResponseBody
+    @PutMapping(value = "/revertDeleteLogicalSaleFromDB/{saleId}")
+    public ResponseEntity<String> revertDeleteLogicalSaleFromDB(@PathVariable(value = "saleId") Long saleId) {
+
+        productSalesEcommerceService.revertDeleteLogicalSaleFromDB(saleId);
+
+        return new ResponseEntity<String>(SALE_SUCCESSFULLY_REVERTED_LOGICAL_DELETED_FROM_DATABASE_RLSP,HttpStatus.OK);
 
     }
 

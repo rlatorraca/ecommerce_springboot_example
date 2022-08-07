@@ -112,6 +112,8 @@ public class ProductSalesEcommerce implements Serializable {
     @OneToMany(mappedBy = "productSalesEcommerce", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ItemSaleEcommerce> itemsSaleEcommerce = new ArrayList<ItemSaleEcommerce>();
 
+    private Boolean deleted = Boolean.FALSE;
+
     public Long getId() {
         return id;
     }
@@ -230,5 +232,13 @@ public class ProductSalesEcommerce implements Serializable {
 
     public void setItemsSaleEcommerce(List<ItemSaleEcommerce> itemsSaleEcommerce) {
         this.itemsSaleEcommerce = itemsSaleEcommerce;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
