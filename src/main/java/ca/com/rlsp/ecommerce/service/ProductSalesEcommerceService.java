@@ -6,6 +6,7 @@ import ca.com.rlsp.ecommerce.repository.ProductSalesEcommerceRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,5 +60,26 @@ public class ProductSalesEcommerceService {
     public List<ProductSalesEcommerce> salesByProduct(Long productId) {
 
         return productSalesEcommerceRepository.salesByProduct(productId);
+    }
+
+    public List<ProductSalesEcommerce> salesByProductName(String value) {
+        return productSalesEcommerceRepository.salesByProductName(value);
+    }
+
+    public List<ProductSalesEcommerce> salesByCustomerName(String value) {
+        return productSalesEcommerceRepository.salesByCustomerName(value);
+    }
+
+    public List<ProductSalesEcommerce> salesByBillingAddress(String value) {
+        return  productSalesEcommerceRepository.salesByBillingAddress(value);
+    }
+
+    public List<ProductSalesEcommerce> salesByShippingAddress(String value) {
+        return productSalesEcommerceRepository.salesByShippingAddress(value);
+    }
+
+    public List<ProductSalesEcommerce> getSalesDynamicallyBetweenDates(Date after, Date before) {
+
+        return productSalesEcommerceRepository.getSalesDynamicallyBetweenDates(after, before);
     }
 }

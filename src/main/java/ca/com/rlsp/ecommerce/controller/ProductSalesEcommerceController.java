@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class ProductSalesEcommerceController {
@@ -219,6 +221,137 @@ public class ProductSalesEcommerceController {
 
         return new ResponseEntity<List<ProductSalesEcommerceDTO>>(listProductSalesEcommerceDTO, HttpStatus.OK);
     }
+
+    @ResponseBody
+    @GetMapping(value = "/getSalesDynamicly/{parameter}/{querytype}")
+    public ResponseEntity<List<ProductSalesEcommerceDTO>> getSalesDynamically (@PathVariable("parameter") String parameter,
+                                                                            @PathVariable("querytype") String querytype) {
+
+        List<ProductSalesEcommerce> salesEcommerce = null;
+
+        if (querytype.equalsIgnoreCase("BY_ID_PROD")) {
+            salesEcommerce =   productSalesEcommerceService.salesByProduct(Long.parseLong(parameter));
+
+        }else if (querytype.equalsIgnoreCase("BY_NAME_PROD")) {
+            salesEcommerce = productSalesEcommerceService.salesByProductName(parameter.toUpperCase().trim());
+        }
+        else if (querytype.equalsIgnoreCase("BY_CLIENT_NAME")) {
+            salesEcommerce = productSalesEcommerceService.salesByCustomerName(parameter.toUpperCase().trim());
+        }
+        else if (querytype.equalsIgnoreCase("BY_BILLING_ADDRESS")) {
+            salesEcommerce = productSalesEcommerceService.salesByBillingAddress(parameter.toUpperCase().trim());
+        }
+        else if (querytype.equalsIgnoreCase("BY_DELIVERING_ADDRESS")) {
+            salesEcommerce = productSalesEcommerceService.salesByShippingAddress(parameter.toUpperCase().trim());
+        }
+
+        if (salesEcommerce == null) {
+            salesEcommerce = new ArrayList<ProductSalesEcommerce>();
+        }
+
+        List<ProductSalesEcommerceDTO> productSalesEcommerceDTOList = new ArrayList<ProductSalesEcommerceDTO>();
+
+        for (ProductSalesEcommerce se : salesEcommerce) {
+
+            ProductSalesEcommerceDTO productSalesEcommerceDTO = new ProductSalesEcommerceDTO();
+
+            productSalesEcommerceDTO.setTotalValue(se.getTotalValue());
+            productSalesEcommerceDTO.setPerson(se.getPerson());
+
+            productSalesEcommerceDTO.setDelivering(se.getShippingAddress());
+            productSalesEcommerceDTO.setBilling(se.getBillingAddress());
+
+            productSalesEcommerceDTO.setTotalDiscount(se.getTotalDiscount());
+            productSalesEcommerceDTO.setDeliveryValue(se.getDeliveryValue());
+            productSalesEcommerceDTO.setId(se.getId());
+
+            for (ItemSaleEcommerce item : se.getItemsSaleEcommerce()) {
+
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setName(item.getProduct().getName());
+                productDTO.setStockQuantity(item.getProduct().getStockQuantity());
+                productDTO.setDescription(item.getProduct().getDescription());
+                productDTO.setId(item.getProduct().getId());
+
+                ItemSaleEcommerceDTO itemSaleEcommerceDTO = new ItemSaleEcommerceDTO();
+                itemSaleEcommerceDTO.setQuantity(item.getQuantity());
+
+                itemSaleEcommerceDTO.setProduct(productDTO);
+
+                productSalesEcommerceDTO.getItemsSaleEccommerceDTO().add(itemSaleEcommerceDTO);
+            }
+
+            productSalesEcommerceDTOList.add(productSalesEcommerceDTO);
+
+        }
+
+        return new ResponseEntity<List<ProductSalesEcommerceDTO>>(productSalesEcommerceDTOList, HttpStatus.OK);
+    }
+
+
+
+    @ResponseBody
+    @GetMapping(value = "/getSalesDynamicallyBetweenDates/{date1}/{date2}")
+    public ResponseEntity<List<ProductSalesEcommerceDTO>> getSalesDynamicallyBetweenDates(
+            @PathVariable("date1") String dateAfter,
+            @PathVariable("date2") String dateBefore) throws ParseException {
+
+        List<ProductSalesEcommerce> salesEcommerce = null;
+
+        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
+
+        Date before = df.parse(dateBefore);
+        Date after = df.parse(dateAfter);
+
+        salesEcommerce = productSalesEcommerceService.getSalesDynamicallyBetweenDates(after, before);
+
+
+        if (salesEcommerce == null) {
+            salesEcommerce = new ArrayList<ProductSalesEcommerce>();
+        }
+
+        List<ProductSalesEcommerceDTO> productSalesEcommerceDTOList = new ArrayList<ProductSalesEcommerceDTO>();
+
+        for (ProductSalesEcommerce se : salesEcommerce) {
+
+            ProductSalesEcommerceDTO productSalesEcommerceDTO = new ProductSalesEcommerceDTO();
+
+            productSalesEcommerceDTO.setTotalValue(se.getTotalValue());
+            productSalesEcommerceDTO.setPerson(se.getPerson());
+
+            productSalesEcommerceDTO.setDelivering(se.getShippingAddress());
+            productSalesEcommerceDTO.setBilling(se.getBillingAddress());
+
+            productSalesEcommerceDTO.setTotalDiscount(se.getTotalDiscount());
+            productSalesEcommerceDTO.setDeliveryValue(se.getDeliveryValue());
+            productSalesEcommerceDTO.setId(se.getId());
+
+            for (ItemSaleEcommerce item : se.getItemsSaleEcommerce()) {
+
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setName(item.getProduct().getName());
+                productDTO.setStockQuantity(item.getProduct().getStockQuantity());
+                productDTO.setDescription(item.getProduct().getDescription());
+                productDTO.setId(item.getProduct().getId());
+
+                ItemSaleEcommerceDTO itemSaleEcommerceDTO = new ItemSaleEcommerceDTO();
+                itemSaleEcommerceDTO.setQuantity(item.getQuantity());
+
+                itemSaleEcommerceDTO.setProduct(productDTO);
+
+                productSalesEcommerceDTO.getItemsSaleEccommerceDTO().add(itemSaleEcommerceDTO);
+            }
+
+            productSalesEcommerceDTOList.add(productSalesEcommerceDTO);
+
+        }
+
+        return new ResponseEntity<List<ProductSalesEcommerceDTO>>(productSalesEcommerceDTOList, HttpStatus.OK);
+
+    }
+
+
+    
 
     @ResponseBody
     @DeleteMapping(value = "/deleteSaleFromDB/{saleId}")
