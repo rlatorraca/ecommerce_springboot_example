@@ -30,8 +30,28 @@ public interface ProductSalesEcommerceRepository extends JpaRepository<ProductSa
     List<ProductSalesEcommerce> salesByProductName(String value);
 
     @Query(value="SELECT distinct(i.productSalesEcommerce) FROM ItemSaleEcommerce i "
+            + " WHERE i.productSalesEcommerce.deleted = false "
+            + " and i.productSalesEcommerce.person.name = ?1 ")
+    List<ProductSalesEcommerce> salesByCustomerId(String personName);
+
+    @Query(value="SELECT distinct(i.productSalesEcommerce) FROM ItemSaleEcommerce i "
+            + " WHERE i.productSalesEcommerce.deleted = false "
+            + " and upper(trim(i.productSalesEcommerce.person.id)) like %?1%"
+            + " and trim(i.productSalesEcommerce.person.sinNumber) like %?2%")
+    List<ProductSalesEcommerce> salesByCustomerNameAndSIN(String personName, String sinNumber);
+
+    @Query(value="SELECT distinct(i.productSalesEcommerce) FROM ItemSaleEcommerce i "
             + " WHERE i.productSalesEcommerce.deleted = false and upper(trim(i.productSalesEcommerce.person.name)) like %?1%")
     List<ProductSalesEcommerce> salesByCustomerName(String personName);
+
+    @Query(value="select distinct(i.productSalesEcommerce) from ItemSaleEcommerce i "
+            + " where i.productSalesEcommerce.deleted = false and upper(trim(i.productSalesEcommerce.person.sinNumber)) like %?1%")
+    List<ProductSalesEcommerce> salesByContainSIN(String cpf);
+
+
+    @Query(value="select distinct(i.productSalesEcommerce) from ItemSaleEcommerce i "
+            + " where i.productSalesEcommerce.deleted = false and upper(trim(i.productSalesEcommerce.person.sinNumber)) = ?1")
+    List<ProductSalesEcommerce> salesBySIN(String cpf);
 
     @Query(value="SELECT distinct(i.productSalesEcommerce) FROM ItemSaleEcommerce i "
             + " WHERE i.productSalesEcommerce.deleted = false and upper(trim(i.productSalesEcommerce.billingAddress.addressLine01)) "

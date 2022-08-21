@@ -6,6 +6,8 @@ import ca.com.rlsp.ecommerce.repository.ProductSalesEcommerceRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -75,11 +77,17 @@ public class ProductSalesEcommerceService {
     }
 
     public List<ProductSalesEcommerce> salesByShippingAddress(String value) {
+
         return productSalesEcommerceRepository.salesByShippingAddress(value);
     }
 
-    public List<ProductSalesEcommerce> getSalesDynamicallyBetweenDates(Date after, Date before) {
+    public List<ProductSalesEcommerce> getSalesDynamicallyBetweenDates(String after, String before) throws ParseException {
 
-        return productSalesEcommerceRepository.getSalesDynamicallyBetweenDates(after, before);
+        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
+
+        Date dateBefore = df.parse(before);
+        Date dateAfter = df.parse(after);
+
+        return productSalesEcommerceRepository.getSalesDynamicallyBetweenDates(dateAfter, dateBefore);
     }
 }

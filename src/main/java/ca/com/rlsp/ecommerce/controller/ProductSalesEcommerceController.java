@@ -298,12 +298,9 @@ public class ProductSalesEcommerceController {
 
         List<ProductSalesEcommerce> salesEcommerce = null;
 
-        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
 
-        Date before = df.parse(dateBefore);
-        Date after = df.parse(dateAfter);
 
-        salesEcommerce = productSalesEcommerceService.getSalesDynamicallyBetweenDates(after, before);
+        salesEcommerce = productSalesEcommerceService.getSalesDynamicallyBetweenDates(dateAfter, dateBefore);
 
 
         if (salesEcommerce == null) {
