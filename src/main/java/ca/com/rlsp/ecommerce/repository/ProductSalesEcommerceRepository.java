@@ -31,8 +31,8 @@ public interface ProductSalesEcommerceRepository extends JpaRepository<ProductSa
 
     @Query(value="SELECT distinct(i.productSalesEcommerce) FROM ItemSaleEcommerce i "
             + " WHERE i.productSalesEcommerce.deleted = false "
-            + " and i.productSalesEcommerce.person.name = ?1 ")
-    List<ProductSalesEcommerce> salesByCustomerId(String personName);
+            + " and i.productSalesEcommerce.person.id = ?1 ")
+    List<ProductSalesEcommerce> salesByCustomerId(Long customerId);
 
     @Query(value="SELECT distinct(i.productSalesEcommerce) FROM ItemSaleEcommerce i "
             + " WHERE i.productSalesEcommerce.deleted = false "

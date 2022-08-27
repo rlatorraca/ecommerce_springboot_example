@@ -223,6 +223,58 @@ public class ProductSalesEcommerceController {
     }
 
     @ResponseBody
+    @GetMapping(value = "/getSalesByCustomerId/{id}")
+    public ResponseEntity<List<ProductSalesEcommerceDTO>> getSalesByCustomerId(@PathVariable("id") Long customerId) {
+
+        List<ProductSalesEcommerce> listSalesByCustomer = productSalesEcommerceService.salesByCustomerId(customerId);
+
+        if (listSalesByCustomer == null) {
+            listSalesByCustomer = new ArrayList<ProductSalesEcommerce>();
+        }
+
+        List<ProductSalesEcommerceDTO> listProductSalesEcommerceDTO = new ArrayList<ProductSalesEcommerceDTO>();
+
+
+        for (ProductSalesEcommerce sale : listSalesByCustomer) {
+
+            ProductSalesEcommerceDTO productSalesEcommerceDTO = new ProductSalesEcommerceDTO();
+
+            productSalesEcommerceDTO.setPerson(sale.getPerson());
+
+            productSalesEcommerceDTO.setTotalValue(sale.getTotalValue());
+            productSalesEcommerceDTO.setTotalDiscount(sale.getTotalDiscount());
+
+            productSalesEcommerceDTO.setBilling(sale.getBillingAddress());
+            productSalesEcommerceDTO.setDelivering(sale.getShippingAddress());
+
+            productSalesEcommerceDTO.setDeliveryValue(sale.getDeliveryValue());
+            productSalesEcommerceDTO.setDelivering(sale.getShippingAddress());
+
+            productSalesEcommerceDTO.setId(sale.getId());
+
+            for (ItemSaleEcommerce item : sale.getItemsSaleEcommerce()) {
+
+                ItemSaleEcommerceDTO itemSaleEcommerceDTO = new ItemSaleEcommerceDTO();
+                itemSaleEcommerceDTO.setQuantity(item.getQuantity());
+
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setId(item.getProduct().getId());
+                productDTO.setDescription(item.getProduct().getDescription());
+                productDTO.setName(item.getProduct().getName());
+                productDTO.setStockQuantity(item.getProduct().getStockQuantity());
+
+                itemSaleEcommerceDTO.setProduct(productDTO);
+
+                productSalesEcommerceDTO.getItemsSaleEccommerceDTO().add(itemSaleEcommerceDTO);
+            }
+
+            listProductSalesEcommerceDTO.add(productSalesEcommerceDTO);
+        }
+
+        return new ResponseEntity<List<ProductSalesEcommerceDTO>>(listProductSalesEcommerceDTO, HttpStatus.OK);
+    }
+
+    @ResponseBody
     @GetMapping(value = "/getSalesDynamicly/{parameter}/{querytype}")
     public ResponseEntity<List<ProductSalesEcommerceDTO>> getSalesDynamically (@PathVariable("parameter") String parameter,
                                                                             @PathVariable("querytype") String querytype) {

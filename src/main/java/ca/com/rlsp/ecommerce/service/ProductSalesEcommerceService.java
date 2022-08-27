@@ -90,4 +90,8 @@ public class ProductSalesEcommerceService {
 
         return productSalesEcommerceRepository.getSalesDynamicallyBetweenDates(dateAfter, dateBefore);
     }
+
+    public List<ProductSalesEcommerce> salesByCustomerId(Long customerId) {
+        return productSalesEcommerceRepository.salesByCustomerId(customerId);
+    }
 }

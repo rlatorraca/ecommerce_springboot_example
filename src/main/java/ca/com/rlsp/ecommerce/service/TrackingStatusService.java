@@ -6,6 +6,8 @@ import ca.com.rlsp.ecommerce.repository.TrackingStatusRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TrackingStatusService {
 
@@ -21,4 +23,7 @@ public class TrackingStatusService {
     }
 
 
+    public List<TrackingStatus> getAllTrackingStatus(Long salesId) {
+        return trackingStatusRepository.getAllTrackingStatus(salesId);
+    }
 }
