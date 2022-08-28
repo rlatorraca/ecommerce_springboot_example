@@ -28,13 +28,13 @@ public class DiscountCoupon implements Serializable {
     private Date couponValidate;
 
     /* COMPANY | EMPRESA */
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne(targetEntity = LegalPerson.class)
     @JoinColumn(name = "ecommerce_company_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     value = ConstraintMode.CONSTRAINT,
                     name = "ecommerce_company_fk"))
-    private Person ecommerceCompany;
+    private LegalPerson ecommerceCompany;
 
     @Override
     public boolean equals(Object o) {
@@ -77,11 +77,11 @@ public class DiscountCoupon implements Serializable {
         return percentualValueDiscount;
     }
 
-    public Person getEcommerceCompany() {
+    public LegalPerson getEcommerceCompany() {
         return ecommerceCompany;
     }
 
-    public void setEcommerceCompany(Person ecommerceCompany) {
+    public void setEcommerceCompany(LegalPerson ecommerceCompany) {
         this.ecommerceCompany = ecommerceCompany;
     }
 

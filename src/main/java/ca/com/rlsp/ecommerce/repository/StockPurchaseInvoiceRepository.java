@@ -1,5 +1,6 @@
 package ca.com.rlsp.ecommerce.repository;
 
+import ca.com.rlsp.ecommerce.model.SalesInvoice;
 import ca.com.rlsp.ecommerce.model.StockPurchaseInvoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,6 +24,7 @@ public interface StockPurchaseInvoiceRepository extends JpaRepository<StockPurch
 
     @Query("SELECT pse FROM StockPurchaseInvoice pse where pse.tradePayable.id = ?1")
     List<StockPurchaseInvoice> getInvoiceByTradePayable(Long tradePayableId);
+
 
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)

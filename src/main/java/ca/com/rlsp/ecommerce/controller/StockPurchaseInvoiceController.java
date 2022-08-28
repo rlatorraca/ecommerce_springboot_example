@@ -83,10 +83,9 @@ public class StockPurchaseInvoiceController {
     }
 
 
-
     @ResponseBody
-    @GetMapping(value = "/getStockPurchaseInvoice/{desc}")
-    public ResponseEntity<List<StockPurchaseInvoice>> getStockPurchaseInvoice(@PathVariable("desc") String description) {
+    @GetMapping(value = "/getStockPurchaseInvoiceByDisc/{desc}")
+    public ResponseEntity<List<StockPurchaseInvoice>> getStockPurchaseInvoiceByDisc(@PathVariable("desc") String description) {
 
         List<StockPurchaseInvoice> stockPurchasesInvoice = stockPurchaseInvoiceService.getByDescription(description.toUpperCase().trim());
 

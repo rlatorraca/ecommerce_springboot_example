@@ -5,6 +5,8 @@ import ca.com.rlsp.ecommerce.model.Product;
 import ca.com.rlsp.ecommerce.repository.PaymentMethodRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class PaymentMethodService {
@@ -19,5 +21,13 @@ public class PaymentMethodService {
     public PaymentMethod save(PaymentMethod paymentMethod) {
 
         return paymentMethodRepository.save(paymentMethod);
+    }
+
+    public List<PaymentMethod> findAllPaymentsMethodByCompanyId(Long ecommerceid) {
+        return paymentMethodRepository.findAllPaymentsMethodByCompanyId(ecommerceid);
+    }
+
+    public List<PaymentMethod> findAllPaymentsMethods() {
+        return paymentMethodRepository.findAll();
     }
 }

@@ -5,12 +5,10 @@ import ca.com.rlsp.ecommerce.model.PaymentMethod;
 import ca.com.rlsp.ecommerce.service.PaymentMethodService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class PaymentMethodController {
@@ -31,4 +29,23 @@ public class PaymentMethodController {
 
         return new ResponseEntity<PaymentMethod>(paymentMethod, HttpStatus.CREATED);
     }
+
+
+    @ResponseBody
+    @GetMapping(value = "/listPaymentMethodByCompany/{companyId}")
+    public ResponseEntity<List<PaymentMethod>> listPaymentMethodByCompany(@PathVariable(value = "companyId") Long ecommerceid){
+
+        return new ResponseEntity<List<PaymentMethod>>(paymentMethodService.findAllPaymentsMethodByCompanyId(ecommerceid), HttpStatus.OK);
+
+    }
+
+
+    @ResponseBody
+    @GetMapping(value = "/listAllPaymentMethod")
+    public ResponseEntity<List<PaymentMethod>> listAllPaymentMethod(){
+
+        return new ResponseEntity<List<PaymentMethod>>(paymentMethodService.findAllPaymentsMethods(), HttpStatus.OK);
+
+    }
+
 }

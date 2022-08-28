@@ -63,4 +63,5 @@ public class StockPurchaseInvoiceService {
     public void deleteInvoiceItemProduct(Long purchaseInvoiceId){
         stockPurchaseInvoiceRepository.deleteInvoiceItemProduct(purchaseInvoiceId);
     }
+
 }

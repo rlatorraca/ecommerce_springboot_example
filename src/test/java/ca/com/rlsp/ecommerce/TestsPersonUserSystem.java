@@ -2,6 +2,7 @@ package ca.com.rlsp.ecommerce;
 
 import ca.com.rlsp.ecommerce.controller.PersonController;
 import ca.com.rlsp.ecommerce.enums.AddressType;
+import ca.com.rlsp.ecommerce.enums.PersonType;
 import ca.com.rlsp.ecommerce.enums.UserType;
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.Address;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Profile;
 
 import javax.mail.MessagingException;
 import java.util.Calendar;
+import java.util.List;
 
 
 @Profile("ut")
@@ -52,7 +54,7 @@ class TestsPersonUserSystem extends TestCase {
         }
         legalPerson.setProvinceRegistration("13123212");
         legalPerson.setTelephone("(647) 333-44444");
-        legalPerson.setPersonType(UserType.USER);
+        legalPerson.setPersonType(PersonType.LEGALPERSON);
         legalPerson.setCityRegistration("Halifax");
         legalPerson.setCategory("XxX");
 
@@ -99,7 +101,7 @@ class TestsPersonUserSystem extends TestCase {
     @Test
     public void testRestRegisterNormalUserSystem() throws EcommerceException, MessagingException {
 
-        LegalPerson legalPerson =  legalPersonRepository.queryByBusinessNumberRegistered("1648315302501");
+        List<LegalPerson> legalPerson =  legalPersonRepository.queryByBusinessNumberRegistered("1648315302501");
 
         NaturalPerson naturalPerson = new NaturalPerson();
         Address address01 = new Address();
@@ -118,8 +120,8 @@ class TestsPersonUserSystem extends TestCase {
         }
         naturalPerson.setEmail("email"+ Calendar.getInstance().getTimeInMillis()+"@simpletest.com.ca");
         naturalPerson.setTelephone("(647) 333-44444");
-        naturalPerson.setPersonType(UserType.USER);
-        naturalPerson.setEcommerceCompany(legalPerson);
+        naturalPerson.setPersonType(PersonType.NATURALPERSON);
+        naturalPerson.setEcommerceCompany(legalPerson.get(0));
 
 
 
