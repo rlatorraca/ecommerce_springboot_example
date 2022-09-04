@@ -24,4 +24,18 @@ public class DiscountCouponService {
     public List<DiscountCoupon> findAllDiscountCoupon() {
         return discountCupomRepository.findAll();
     }
+
+    public DiscountCoupon saveAndFlush(DiscountCoupon discountCoupon) {
+
+        return discountCupomRepository.saveAndFlush(discountCoupon);
+    }
+
+    public void deleteById(Long id) {
+
+        discountCupomRepository.deleteById(id);
+    }
+
+    public DiscountCoupon getOneDiscoutnCoupon(Long id) {
+        return discountCupomRepository.findById(id).get();
+    }
 }

@@ -1,6 +1,9 @@
 package ca.com.rlsp.ecommerce.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +19,7 @@ public class DiscountCoupon implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_discount_coupon")
     private Long id;
 
+    @NotEmpty(message = "Enter a coupon code")
     @Column(name = "coupon_description", nullable = false)
     private String couponDescription;
 
@@ -23,6 +27,7 @@ public class DiscountCoupon implements Serializable {
 
     private BigDecimal percentualValueDiscount;
 
+    @NotEmpty(message = "Enter a valide date")
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date couponValidate;
