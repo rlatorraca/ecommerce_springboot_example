@@ -2,9 +2,7 @@ package ca.com.rlsp.ecommerce.controller;
 
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.ProductBrand;
-import ca.com.rlsp.ecommerce.model.RoleAccess;
 import ca.com.rlsp.ecommerce.service.ProductBrandService;
-import ca.com.rlsp.ecommerce.service.RoleAccessService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +12,13 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-public class ProductAccessController {
+public class ProductBrandController {
 
     private static final String ERROR_GETTING_PRODUCT_BRAND_BY_ID = "Error getting Product Brand by id/code [RLSP] : ";
     private static final String ERROR_PRODUCT_BRAND_EXIST_ON_DB = "Product Brand already exist on DB [RLSP] : ";
     private final ProductBrandService productBrandService;
 
-    public ProductAccessController(ProductBrandService productBrandService) {
+    public ProductBrandController(ProductBrandService productBrandService) {
         this.productBrandService = productBrandService;
     }
 
