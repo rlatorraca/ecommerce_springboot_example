@@ -47,4 +47,8 @@ public class TradePayableService {
 
         return tradePayableRepository.findAll();
     }
+
+    public TradePayable saveAndFlush(TradePayable tradePayable) {
+        return tradePayableRepository.saveAndFlush(tradePayable);
+    }
 }

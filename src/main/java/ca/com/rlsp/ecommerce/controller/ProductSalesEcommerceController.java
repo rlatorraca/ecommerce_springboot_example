@@ -1,5 +1,6 @@
 package ca.com.rlsp.ecommerce.controller;
 
+import ca.com.rlsp.ecommerce.enums.StatusPayable;
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.*;
 import ca.com.rlsp.ecommerce.model.dto.ItemSaleEcommerceDTO;
@@ -7,17 +8,19 @@ import ca.com.rlsp.ecommerce.model.dto.ProductDTO;
 import ca.com.rlsp.ecommerce.model.dto.ProductSalesEcommerceDTO;
 import ca.com.rlsp.ecommerce.repository.AddressRepository;
 import ca.com.rlsp.ecommerce.repository.SalesInvoiceRepository;
-import ca.com.rlsp.ecommerce.service.ProductSalesEcommerceService;
-import ca.com.rlsp.ecommerce.service.TrackingStatusService;
+import ca.com.rlsp.ecommerce.repository.StockPurchaseInvoiceRepository;
+import ca.com.rlsp.ecommerce.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,21 +39,27 @@ public class ProductSalesEcommerceController {
 
     private SalesInvoiceRepository salesInvoiceRepository;
 
+    private TradePayableService tradePayableService;
+
+    private SendEmailService sendEmailService;
+
     public ProductSalesEcommerceController(ProductSalesEcommerceService productSalesEcommerceService,
                                            AddressRepository addressRepository,
                                            PersonController personController,
                                            SalesInvoiceRepository salesInvoiceRepository,
-                                           TrackingStatusService trackingStatusService) {
+                                           TrackingStatusService trackingStatusService,
+                                           TradePayableService tradePayableService) {
         this.productSalesEcommerceService = productSalesEcommerceService;
         this.addressRepository = addressRepository;
         this.personController = personController;
         this.salesInvoiceRepository = salesInvoiceRepository;
         this.trackingStatusService=trackingStatusService;
+        this.tradePayableService = tradePayableService;
     }
 
     @ResponseBody
     @PostMapping(value = "/saveSalesEcommerce")
-    public ResponseEntity<ProductSalesEcommerceDTO> saveSalesEcommerce(@RequestBody @Valid ProductSalesEcommerce productSalesEcommerce) throws EcommerceException, MessagingException {
+    public ResponseEntity<ProductSalesEcommerceDTO> saveSalesEcommerce(@RequestBody @Valid ProductSalesEcommerce productSalesEcommerce) throws EcommerceException, MessagingException, UnsupportedEncodingException {
 
 
 
@@ -124,6 +133,33 @@ public class ProductSalesEcommerceController {
 
             productSalesEcommerceDTO.getItemsSaleEccommerceDTO().add(itemSaleEcommerceDTO);
         }
+
+
+        TradePayable tradePayable = new TradePayable();
+        tradePayable.setDescription("Venda da loja virtual nº: " + productSalesEcommerce.getId());
+        tradePayable.setPaymentDate(Calendar.getInstance().getTime());
+        tradePayable.setDueDate(Calendar.getInstance().getTime());
+        tradePayable.setEcommerceCompany(productSalesEcommerce.getEcommerceCompany());
+        tradePayable.setPerson(productSalesEcommerce.getPerson());
+        tradePayable.setStatusDebtor(StatusPayable.PAID);
+        tradePayable.setTotalDiscount(productSalesEcommerce.getTotalDiscount());
+        tradePayable.setTotalValue(productSalesEcommerce.getTotalValue());
+
+        tradePayableService.saveAndFlush(tradePayable);
+
+        /*Email to buyer*/
+        StringBuilder msgemail = new StringBuilder();
+        msgemail.append("Hi, ").append(naturalPerson.getName()).append("</br>");
+        msgemail.append("You made a purchase nº: ").append(productSalesEcommerce.getId()).append("</br>");
+        msgemail.append("At store ").append(productSalesEcommerce.getEcommerceCompany().getComercialName());
+
+        /* Subject, msg, to*/
+        sendEmailService.sendEmailHtml("Purchase done", msgemail.toString(), naturalPerson.getEmail());
+
+        /*Email to seller*/
+        msgemail = new StringBuilder();
+        msgemail.append("You made a purchase nº: ").append(productSalesEcommerce.getId());
+        sendEmailService.sendEmailHtml("Sale donea", msgemail.toString(), productSalesEcommerce.getEcommerceCompany().getEmail());
 
         return new ResponseEntity<ProductSalesEcommerceDTO>(productSalesEcommerceDTO, HttpStatus.CREATED);
     }
