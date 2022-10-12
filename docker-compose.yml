@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   db:
-    image: postgres:9.5
+    image: postgres:12
     container_name: rlsp_ecommerce_postgres9_5
 
     ports:

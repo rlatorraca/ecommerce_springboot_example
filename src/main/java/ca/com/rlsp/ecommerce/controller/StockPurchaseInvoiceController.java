@@ -2,12 +2,14 @@ package ca.com.rlsp.ecommerce.controller;
 
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.StockPurchaseInvoice;
+import ca.com.rlsp.ecommerce.model.dto.report.ReportStockPurchaseInvoiceDTO;
 import ca.com.rlsp.ecommerce.service.StockPurchaseInvoiceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,6 +25,21 @@ public class StockPurchaseInvoiceController {
 
     public StockPurchaseInvoiceController(StockPurchaseInvoiceService stockPurchaseInvoiceService) {
         this.stockPurchaseInvoiceService = stockPurchaseInvoiceService;
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/reportStockPurchaseInvoice")
+    public ResponseEntity<List<ReportStockPurchaseInvoiceDTO>> reportStockPurchaseInvoice
+            (@Valid @RequestBody ReportStockPurchaseInvoiceDTO reportStockPurchaseInvoiceDTO){
+
+        List<ReportStockPurchaseInvoiceDTO> response =
+                new ArrayList<ReportStockPurchaseInvoiceDTO>();
+
+        response = stockPurchaseInvoiceService.generateReportStockPurchaseInvoice(reportStockPurchaseInvoiceDTO);
+
+
+        return new ResponseEntity<List<ReportStockPurchaseInvoiceDTO>>(response, HttpStatus.OK);
+
     }
 
     @ResponseBody
