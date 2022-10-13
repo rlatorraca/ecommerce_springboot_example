@@ -70,7 +70,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
                                             UsernamePasswordAuthenticationFilter.class)
         ;
 
-        /* Ativa o ACESSO LIVRO para o contexto Principal do App - TELA DE LOGIN */
+        /* Ativa o ACESSO LIVRE para o contexto Principal do App - TELA DE LOGIN */
 
 
 

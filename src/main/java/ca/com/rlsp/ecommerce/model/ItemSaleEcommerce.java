@@ -41,6 +41,14 @@ public class ItemSaleEcommerce implements Serializable {
                     name = "product_sales_ecommerce_fk"))
     private ProductSalesEcommerce productSalesEcommerce;
 
+    @ManyToOne
+    @JoinColumn(name = "stock_purchase_invoice_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    value = ConstraintMode.CONSTRAINT,
+                    name = "stock_purchase_invoice_fk"))
+    private StockPurchaseInvoice stockPurchaseInvoice;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

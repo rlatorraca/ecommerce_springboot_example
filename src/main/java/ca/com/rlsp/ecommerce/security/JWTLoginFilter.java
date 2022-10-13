@@ -20,7 +20,7 @@ import java.io.IOException;
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 
-    private static final String LOGIN_FAILED = "Erro logging [RLSP]";
+    private static final String LOGIN_FAILED = "Error logging [RLSP]";
     private static final String USER_NOT_FOUND = "USER not found [RLSP]";
 
     /* Configura o gerenciador de Autenticacao */

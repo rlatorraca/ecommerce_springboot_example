@@ -33,9 +33,7 @@ public class StockPurchaseInvoiceController {
             (@Valid @RequestBody ReportStockPurchaseInvoiceDTO reportStockPurchaseInvoiceDTO){
 
         List<ReportStockPurchaseInvoiceDTO> response =
-                new ArrayList<ReportStockPurchaseInvoiceDTO>();
-
-        response = stockPurchaseInvoiceService.generateReportStockPurchaseInvoice(reportStockPurchaseInvoiceDTO);
+                stockPurchaseInvoiceService.generateReportStockPurchaseInvoice(reportStockPurchaseInvoiceDTO);
 
 
         return new ResponseEntity<List<ReportStockPurchaseInvoiceDTO>>(response, HttpStatus.OK);

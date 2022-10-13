@@ -9,14 +9,14 @@ public class ReportStockPurchaseInvoiceDTO implements Serializable {
 
     private String productName ="";
 
-    @NotEmpty(message = "Enter a initial date")
+    @NotEmpty(message = "Enter a initial date ")
     private String initialDate;
 
-    @NotEmpty(message = "Enter a final date")
+    @NotEmpty(message = "Enter a final date ")
     private String finalDate;
     private String invoiceCode ="";
     private String productCode ="";
-    private String productSaleValue ="";
+    private String valueProductSale ="";
     private String quantityPurchased ="";
     private String ProviderCode ="";
     private String ProviderName ="";
@@ -62,12 +62,12 @@ public class ReportStockPurchaseInvoiceDTO implements Serializable {
         this.productCode = productCode;
     }
 
-    public String getProductSaleValue() {
-        return productSaleValue;
+    public String getValueProductSale() {
+        return valueProductSale;
     }
 
-    public void setProductSaleValue(String productSaleValue) {
-        this.productSaleValue = productSaleValue;
+    public void setValueProductSale(String valueProductSale) {
+        this.valueProductSale = valueProductSale;
     }
 
     public String getQuantityPurchased() {

@@ -22,11 +22,14 @@ import java.util.Optional;
 public class StockPurchaseInvoiceService {
 
     private StockPurchaseInvoiceRepository stockPurchaseInvoiceRepository;
-
-
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    public StockPurchaseInvoiceService(StockPurchaseInvoiceRepository stockPurchaseInvoiceRepository,
+                                       JdbcTemplate jdbcTemplate) {
+        this.stockPurchaseInvoiceRepository = stockPurchaseInvoiceRepository;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
 
     public List<ReportStockPurchaseInvoiceDTO> generateReportStockPurchaseInvoice(
             ReportStockPurchaseInvoiceDTO reportStockPurchaseInvoiceDTO) {
@@ -35,30 +38,30 @@ public class StockPurchaseInvoiceService {
 
         String sql = "select p.id as productCode, p.product_name as productName, "
                    + " p.product_value as productValue, ise.quantity as quantityPurchased, "
-                   + " lp.id as codigoFornecedor, lp.name as nameProvider, spi.date_sale as dateSale "
+                   + " lp.id as ProviderCode, lp.name as providerName, spi.date_sale as dateSale "
                    + " from stock_purchase_invoice as spi "
-                   + " inner join item_sale_ecommerce as ise on  spi.id = invoice_number "
+                   + " inner join item_sale_ecommerce as ise on  spi.id = stock_purchase_invoice_id "
                    + " inner join product as p on p.id = ise.product_id "
                    + " inner join legal_person as lp on lp.id = spi.legal_person_vendor_id where ";
 
-        sql += " cfc.data_compra >='"+reportStockPurchaseInvoiceDTO.getDataInicial()+"' and ";
-        sql += " cfc.data_compra <= '" + reportStockPurchaseInvoiceDTO.getDataFinal() +"' ";
+        sql += " spi.date_sale >='"+reportStockPurchaseInvoiceDTO.getInitialDate()+"' and ";
+        sql += " spi.date_sale <= '" + reportStockPurchaseInvoiceDTO.getFinalDate() +"' ";
 
-        if (!reportStockPurchaseInvoiceDTO.getCodigoNota().isEmpty()) {
-            sql += " and cfc.id = " + reportStockPurchaseInvoiceDTO.getCodigoNota() + " ";
+        if (!reportStockPurchaseInvoiceDTO.getInvoiceCode().isEmpty()) {
+            sql += " and spi.id = " + reportStockPurchaseInvoiceDTO.getInvoiceCode() + " ";
         }
 
 
-        if (!reportStockPurchaseInvoiceDTO.getCodigoProduto().isEmpty()) {
-            sql += " and p.id = " + reportStockPurchaseInvoiceDTO.getCodigoProduto() + " ";
+        if (!reportStockPurchaseInvoiceDTO.getProductCode().isEmpty()) {
+            sql += " and p.id = " + reportStockPurchaseInvoiceDTO.getProductCode() + " ";
         }
 
-        if (!reportStockPurchaseInvoiceDTO.getNomeProduto().isEmpty()) {
-            sql += " upper(p.nome) like upper('%"+reportStockPurchaseInvoiceDTO.getNomeProduto()+"')";
+        if (!reportStockPurchaseInvoiceDTO.getProductName().isEmpty()) {
+            sql += " upper(p.nome) like upper('%"+reportStockPurchaseInvoiceDTO.getProductName()+"')";
         }
 
-        if (!reportStockPurchaseInvoiceDTO.getNomeFornecedor().isEmpty()) {
-            sql += " upper(pj.nome) like upper('%"+reportStockPurchaseInvoiceDTO.getNomeFornecedor()+"')";
+        if (!reportStockPurchaseInvoiceDTO.getProviderName().isEmpty()) {
+            sql += " upper(lp.nome) like upper('%"+reportStockPurchaseInvoiceDTO.getProviderName()+"')";
         }
 
         response = jdbcTemplate.query(sql, new BeanPropertyRowMapper(ReportStockPurchaseInvoiceDTO.class));
@@ -66,9 +69,7 @@ public class StockPurchaseInvoiceService {
         return response;
     }
 
-    public StockPurchaseInvoiceService(StockPurchaseInvoiceRepository stockPurchaseInvoiceRepository) {
-        this.stockPurchaseInvoiceRepository = stockPurchaseInvoiceRepository;
-    }
+
 
     public Collection<StockPurchaseInvoice> getAll() {
 
