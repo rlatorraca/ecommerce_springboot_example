@@ -2,6 +2,7 @@ package ca.com.rlsp.ecommerce.controller;
 
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.StockPurchaseInvoice;
+import ca.com.rlsp.ecommerce.model.dto.report.ReportLowStockProductDTO;
 import ca.com.rlsp.ecommerce.model.dto.report.ReportStockPurchaseInvoiceDTO;
 import ca.com.rlsp.ecommerce.service.StockPurchaseInvoiceService;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,19 @@ public class StockPurchaseInvoiceController {
 
 
         return new ResponseEntity<List<ReportStockPurchaseInvoiceDTO>>(response, HttpStatus.OK);
+
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/reportLowStockProduct")
+    public ResponseEntity<List<ReportLowStockProductDTO>> reportStockPurchaseInvoice
+            (@Valid @RequestBody ReportLowStockProductDTO reportLowStockProductDTO){
+
+        List<ReportLowStockProductDTO> response =
+                stockPurchaseInvoiceService.generateReportSLowStockProduct(reportLowStockProductDTO);
+
+
+        return new ResponseEntity<List<ReportLowStockProductDTO>>(response, HttpStatus.OK);
 
     }
 

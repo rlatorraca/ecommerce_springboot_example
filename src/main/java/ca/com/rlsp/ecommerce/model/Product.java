@@ -62,6 +62,10 @@ public class Product implements Serializable {
     @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity = 0;
 
+    @NotNull(message = "Low Stock quantity must be inserted")
+    @Column(name = "minimum_stock_quantity", nullable = false)
+    private Integer minimumStockQuantity = 0;
+
     @Column(name = "link_youtube")
     private String linkYoutube;
 
@@ -264,5 +268,13 @@ public class Product implements Serializable {
 
     public void setImages(List<ProductImage> images) {
         this.images = images;
+    }
+
+    public Integer getMinimumStockQuantity() {
+        return minimumStockQuantity;
+    }
+
+    public void setMinimumStockQuantity(Integer minimumStockQuantity) {
+        this.minimumStockQuantity = minimumStockQuantity;
     }
 }
