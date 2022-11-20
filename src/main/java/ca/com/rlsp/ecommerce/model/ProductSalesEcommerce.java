@@ -1,5 +1,6 @@
 package ca.com.rlsp.ecommerce.model;
 
+import ca.com.rlsp.ecommerce.enums.StatusProductSalesEcommerce;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -82,6 +83,11 @@ public class ProductSalesEcommerce implements Serializable {
     @NotNull(message = "Delivery date must be informed")
     @Column(name = "delivery_date", nullable = false)
     private Date deliveryDate;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Sales status must be entered")
+    @Column(name = "status_sales_Ecommerce", nullable = false)
+    private StatusProductSalesEcommerce statusProductSalesEcommerce;
 
     @NotNull(message = "Payment method must be informed")
     @ManyToOne
@@ -240,5 +246,13 @@ public class ProductSalesEcommerce implements Serializable {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public StatusProductSalesEcommerce getStatusProductSalesEcommerce() {
+        return statusProductSalesEcommerce;
+    }
+
+    public void setStatusProductSalesEcommerce(StatusProductSalesEcommerce statusProductSalesEcommerce) {
+        this.statusProductSalesEcommerce = statusProductSalesEcommerce;
     }
 }

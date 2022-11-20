@@ -3,7 +3,9 @@ package ca.com.rlsp.ecommerce.controller;
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.StockPurchaseInvoice;
 import ca.com.rlsp.ecommerce.model.dto.report.ReportLowStockProductDTO;
+import ca.com.rlsp.ecommerce.model.dto.report.ReportProductStatusSalesDTO;
 import ca.com.rlsp.ecommerce.model.dto.report.ReportStockPurchaseInvoiceDTO;
+import ca.com.rlsp.ecommerce.service.ReportService;
 import ca.com.rlsp.ecommerce.service.StockPurchaseInvoiceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,29 @@ public class StockPurchaseInvoiceController {
     public static final String STOCK_PURCHASE_REMOVED_ID = "Stock Purchase removed. Id: ";
     public static final String NOT_FOUND_STOCK_PURCHASE_WITH_ID = "Not found Stock purchase with id: ";
     private StockPurchaseInvoiceService stockPurchaseInvoiceService;
+    private ReportService reportService;
 
-    public StockPurchaseInvoiceController(StockPurchaseInvoiceService stockPurchaseInvoiceService) {
+
+
+    public StockPurchaseInvoiceController(StockPurchaseInvoiceService stockPurchaseInvoiceService,
+                                          ReportService reportService) {
         this.stockPurchaseInvoiceService = stockPurchaseInvoiceService;
+        this.reportService = reportService;
     }
+
+    @ResponseBody
+    @PostMapping(value = "**/reportStatusSale")
+    public ResponseEntity<List<ReportProductStatusSalesDTO>> reportStatusSale (@Valid
+                                                                                    @RequestBody  ReportProductStatusSalesDTO reportProductStatusSalesDTO){
+
+        List<ReportProductStatusSalesDTO> response = new ArrayList<ReportProductStatusSalesDTO>();
+
+        response = reportService.reportProductStatusSales(reportProductStatusSalesDTO);
+
+        return new ResponseEntity<List<ReportProductStatusSalesDTO>>(response, HttpStatus.OK);
+
+    }
+
 
     @ResponseBody
     @PostMapping(value = "/reportStockPurchaseInvoice")
@@ -34,7 +55,7 @@ public class StockPurchaseInvoiceController {
             (@Valid @RequestBody ReportStockPurchaseInvoiceDTO reportStockPurchaseInvoiceDTO){
 
         List<ReportStockPurchaseInvoiceDTO> response =
-                stockPurchaseInvoiceService.generateReportStockPurchaseInvoice(reportStockPurchaseInvoiceDTO);
+                reportService.generateReportStockPurchaseInvoice(reportStockPurchaseInvoiceDTO);
 
 
         return new ResponseEntity<List<ReportStockPurchaseInvoiceDTO>>(response, HttpStatus.OK);
@@ -47,7 +68,7 @@ public class StockPurchaseInvoiceController {
             (@Valid @RequestBody ReportLowStockProductDTO reportLowStockProductDTO){
 
         List<ReportLowStockProductDTO> response =
-                stockPurchaseInvoiceService.generateReportSLowStockProduct(reportLowStockProductDTO);
+                reportService.generateReportSLowStockProduct(reportLowStockProductDTO);
 
 
         return new ResponseEntity<List<ReportLowStockProductDTO>>(response, HttpStatus.OK);
