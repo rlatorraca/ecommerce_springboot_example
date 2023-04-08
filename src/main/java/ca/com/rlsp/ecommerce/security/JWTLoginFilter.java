@@ -1,7 +1,7 @@
 package ca.com.rlsp.ecommerce.security;
 
 import ca.com.rlsp.ecommerce.model.UserSystem;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

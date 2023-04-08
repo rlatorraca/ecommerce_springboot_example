@@ -36,7 +36,7 @@ public class StockPurchaseInvoiceController {
     }
 
     @ResponseBody
-    @PostMapping(value = "**/reportStatusSale")
+    @PostMapping(value = "/reportStatusSale")
     public ResponseEntity<List<ReportProductStatusSalesDTO>> reportStatusSale (@Valid
                                                                                     @RequestBody  ReportProductStatusSalesDTO reportProductStatusSalesDTO){
 
