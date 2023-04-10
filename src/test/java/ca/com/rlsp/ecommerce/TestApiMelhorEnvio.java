@@ -1,17 +1,13 @@
 package ca.com.rlsp.ecommerce;
 
 import ca.com.rlsp.ecommerce.model.dto.TransportationCompanyDTO;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
-import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -71,7 +67,7 @@ public class TestApiMelhorEnvio {
 
                 if (node.get("company") != null) {
                     transportationCompanyDTO.setCompany(node.get("company").get("name").asText());
-                    transportationCompanyDTO.setCompanyLog(node.get("company").get("picture").asText());
+                    transportationCompanyDTO.setCompanyLogo(node.get("company").get("picture").asText());
                 }
                 if(transportationCompanyDTO.dataOk()) {
                     transportationCompanyDTOS.add(transportationCompanyDTO);

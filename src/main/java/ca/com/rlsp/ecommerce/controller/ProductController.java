@@ -174,9 +174,10 @@ public class ProductController {
         if (product.getAlertStockQuantity() && product.getStockQuantity() <= 1) {
 
             StringBuilder html = new StringBuilder();
-            html.append("<h2>")
-                    .append("Product: " + product.getName())
-                    .append(" has a low stock quantity: " + product.getStockQuantity());
+            html.append("<h2>").append("Product: ")
+                               .append(product.getName())
+                               .append(" has a low stock quantity: ")
+                               .append(product.getStockQuantity());
             html.append("<p>Product ID:").append(product.getId()).append("</p>");
 
             if (product.getEcommerceCompany().getEmail() != null) {

@@ -1,7 +1,5 @@
 package ca.com.rlsp.ecommerce.model.dto;
 
-import ca.com.rlsp.ecommerce.model.Product;
-
 public class ItemSaleEcommerceDTO {
 
     private Double quantity;

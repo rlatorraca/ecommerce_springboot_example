@@ -1,0 +1,336 @@
+/* JSON para ENVIAR dados para o INSERIR o frente na MelhorEnvio */
+{
+    "service": 3,
+    "agency": 49,
+    "from": {
+        "name": "Nome do remetente",
+        "phone": "53984470102",
+        "email": "contato@melhorenvio.com.br",
+        "document": "16571478358",
+        "company_document": "89794131000100",
+        "state_register": "123456",
+        "address": "Endereço do remetente",
+        "complement": "Complemento",
+        "number": "1",
+        "district": "Bairro",
+        "city": "São Paulo",
+        "country_id": "BR",
+        "postal_code": "01002001",
+        "note": "observação"
+    },
+    "to": {
+        "name": "Nome do destinatário",
+        "phone": "53984470102",
+        "email": "contato@melhorenvio.com.br",
+        "document": "25404918047",
+        "company_document": "07595604000177",
+        "state_register": "123456",
+        "address": "Endereço do destinatário",
+        "complement": "Complemento",
+        "number": "2",
+        "district": "Bairro",
+        "city": "Porto Alegre",
+        "state_abbr": "RS",
+        "country_id": "BR",
+        "postal_code": "90570020",
+        "note": "observação"
+    },
+    "products": [
+        {
+            "name": "Papel adesivo para etiquetas 1",
+            "quantity": 3,
+            "unitary_value": 100.00
+        },
+        {
+            "name": "Papel adesivo para etiquetas 2",
+            "quantity": 1,
+            "unitary_value": 700.00
+        }
+    ],
+    "volumes": [
+        {
+            "height": 15,
+            "width": 20,
+            "length": 10,
+            "weight": 3.5
+        }
+    ],
+    "options": {
+        "insurance_value": 1000.00,
+        "receipt": false,
+        "own_hand": false,
+        "reverse": false,
+        "non_commercial": false,
+        "invoice": {
+            "key": "31190307586261000184550010000092481404848162"
+        },
+        "platform": "Nome da Plataforma",
+        "tags": [
+            {
+                "tag": "Identificação do pedido na plataforma, exemplo: 1000007",
+                "url": "Link direto para o pedido na plataforma, se possível, caso contrário pode ser passado o valor null"
+            }
+        ]
+    }
+}
+
+/* RETURN para JSON para ENVIAR dados para o INSERIR o frente na MelhorEnvio */
+
+[
+   {
+      "id":1,
+      "name":"PAC",
+      "price":"20.49",
+      "custom_price":"20.49",
+      "discount":"4.31",
+      "currency":"R$",
+      "delivery_time":7,
+      "delivery_range":{
+         "min":6,
+         "max":7
+      },
+      "custom_delivery_time":7,
+      "custom_delivery_range":{
+         "min":6,
+         "max":7
+      },
+      "packages":[
+         {
+            "price":"20.49",
+            "discount":"4.31",
+            "format":"box",
+            "dimensions":{
+               "height":2,
+               "width":11,
+               "length":16
+            },
+            "weight":"0.10",
+            "insurance_value":"0.00",
+            "products":[
+               {
+                  "id":"1",
+                  "quantity":3
+               },
+               {
+                  "id":"2",
+                  "quantity":1
+               }
+            ]
+         }
+      ],
+      "additional_services":{
+         "receipt":false,
+         "own_hand":false,
+         "collect":false
+      },
+      "company":{
+         "id":1,
+         "name":"Correios",
+         "picture":"http:\/\/sandbox.melhorenvio.com.br\/images\/shipping-companies\/correios.png"
+      }
+   },
+   {
+      "id":2,
+      "name":"SEDEX",
+      "price":"28.92",
+      "custom_price":"28.92",
+      "discount":"6.18",
+      "currency":"R$",
+      "delivery_time":2,
+      "delivery_range":{
+         "min":1,
+         "max":2
+      },
+      "custom_delivery_time":2,
+      "custom_delivery_range":{
+         "min":1,
+         "max":2
+      },
+      "packages":[
+         {
+            "price":"28.92",
+            "discount":"6.18",
+            "format":"box",
+            "dimensions":{
+               "height":2,
+               "width":11,
+               "length":16
+            },
+            "weight":"0.10",
+            "insurance_value":"0.00",
+            "products":[
+               {
+                  "id":"1",
+                  "quantity":3
+               },
+               {
+                  "id":"2",
+                  "quantity":1
+               }
+            ]
+         }
+      ],
+      "additional_services":{
+         "receipt":false,
+         "own_hand":false,
+         "collect":false
+      },
+      "company":{
+         "id":1,
+         "name":"Correios",
+         "picture":"http:\/\/sandbox.melhorenvio.com.br\/images\/shipping-companies\/correios.png"
+      }
+   },
+   {
+      "id":3,
+      "name":".Package",
+      "price":"18.99",
+      "custom_price":"18.99",
+      "discount":"5.93",
+      "currency":"R$",
+      "delivery_time":6,
+      "delivery_range":{
+         "min":5,
+         "max":6
+      },
+      "custom_delivery_time":6,
+      "custom_delivery_range":{
+         "min":5,
+         "max":6
+      },
+      "packages":[
+         {
+            "format":"box",
+            "dimensions":{
+               "height":1,
+               "width":2,
+               "length":2
+            },
+            "weight":"0.10",
+            "insurance_value":"0.00",
+            "products":[
+               {
+                  "id":"1",
+                  "quantity":3
+               },
+               {
+                  "id":"2",
+                  "quantity":1
+               }
+            ]
+         }
+      ],
+      "additional_services":{
+         "receipt":false,
+         "own_hand":false,
+         "collect":false
+      },
+      "company":{
+         "id":2,
+         "name":"Jadlog",
+         "picture":"http:\/\/sandbox.melhorenvio.com.br\/images\/shipping-companies\/jadlog.png"
+      }
+   },
+   {
+      "id":4,
+      "name":".Com",
+      "price":"17.57",
+      "custom_price":"17.57",
+      "discount":"8.86",
+      "currency":"R$",
+      "delivery_time":5,
+      "delivery_range":{
+         "min":4,
+         "max":5
+      },
+      "custom_delivery_time":5,
+      "custom_delivery_range":{
+         "min":4,
+         "max":5
+      },
+      "packages":[
+         {
+            "format":"box",
+            "dimensions":{
+               "height":1,
+               "width":2,
+               "length":2
+            },
+            "weight":"0.10",
+            "insurance_value":"0.00",
+            "products":[
+               {
+                  "id":"1",
+                  "quantity":3
+               },
+               {
+                  "id":"2",
+                  "quantity":1
+               }
+            ]
+         }
+      ],
+      "additional_services":{
+         "receipt":false,
+         "own_hand":false,
+         "collect":false
+      },
+      "company":{
+         "id":2,
+         "name":"Jadlog",
+         "picture":"http:\/\/sandbox.melhorenvio.com.br\/images\/shipping-companies\/jadlog.png"
+      }
+   },
+   {
+      "id":17,
+      "name":"Mini Envios",
+      "price":"14.32",
+      "custom_price":"14.32",
+      "discount":"0.00",
+      "currency":"R$",
+      "delivery_time":8,
+      "delivery_range":{
+         "min":7,
+         "max":8
+      },
+      "custom_delivery_time":8,
+      "custom_delivery_range":{
+         "min":7,
+         "max":8
+      },
+      "packages":[
+         {
+            "price":"14.32",
+            "discount":"0.00",
+            "format":"box",
+            "dimensions":{
+               "height":1,
+               "width":11,
+               "length":16
+            },
+            "weight":"0.00",
+            "insurance_value":"0.00",
+            "products":[
+               {
+                  "id":"1",
+                  "quantity":3
+               },
+               {
+                  "id":"2",
+                  "quantity":1
+               }
+            ]
+         }
+      ],
+      "additional_services":{
+         "receipt":false,
+         "own_hand":false,
+         "collect":false
+      },
+      "company":{
+         "id":1,
+         "name":"Correios",
+         "picture":"http:\/\/sandbox.melhorenvio.com.br\/images\/shipping-companies\/correios.png"
+      }
+   }
+]

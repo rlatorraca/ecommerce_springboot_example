@@ -1,17 +1,22 @@
 package ca.com.rlsp.ecommerce.model.dto;
 
-public class ProductDTO {
+import java.io.Serializable;
 
-    private Long id;
+public class ProductDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+
+    private String id;
     private String name;
     private String description;
     private Integer stockQuantity;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

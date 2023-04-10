@@ -3,26 +3,24 @@ package ca.com.rlsp.ecommerce.controller;
 import ca.com.rlsp.ecommerce.enums.StatusPayable;
 import ca.com.rlsp.ecommerce.exception.EcommerceException;
 import ca.com.rlsp.ecommerce.model.*;
-import ca.com.rlsp.ecommerce.model.dto.ItemSaleEcommerceDTO;
-import ca.com.rlsp.ecommerce.model.dto.ProductDTO;
-import ca.com.rlsp.ecommerce.model.dto.ProductSalesEcommerceDTO;
+import ca.com.rlsp.ecommerce.model.dto.*;
 import ca.com.rlsp.ecommerce.repository.AddressRepository;
 import ca.com.rlsp.ecommerce.repository.SalesInvoiceRepository;
-import ca.com.rlsp.ecommerce.repository.StockPurchaseInvoiceRepository;
 import ca.com.rlsp.ecommerce.service.*;
+import okhttp3.OkHttpClient;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class ProductSalesEcommerceController {
@@ -30,6 +28,7 @@ public class ProductSalesEcommerceController {
     public static final String SALE_SUCCESSFULLY_DELETED_FROM_DATABASE_RLSP = "Sale successfully deleted from Database [RLSP]";
     public static final String SALE_SUCCESSFULLY_LOGICAL_DELETED_FROM_DATABASE_RLSP = "Sale successfully logically deleted from Database [RLSP]";
     public static final String SALE_SUCCESSFULLY_REVERTED_LOGICAL_DELETED_FROM_DATABASE_RLSP = "Sale successfully reverted logical deletion from Database [RLSP]";
+
     private ProductSalesEcommerceService productSalesEcommerceService;
     private TrackingStatusService trackingStatusService;
 
@@ -53,9 +52,85 @@ public class ProductSalesEcommerceController {
         this.addressRepository = addressRepository;
         this.personController = personController;
         this.salesInvoiceRepository = salesInvoiceRepository;
-        this.trackingStatusService=trackingStatusService;
+        this.trackingStatusService = trackingStatusService;
         this.tradePayableService = tradePayableService;
     }
+
+    @ResponseBody
+    @GetMapping(value = "/queryShippingEcommerce")
+    public ResponseEntity<List<TransportationCompanyDTO>>  queryShippingEcommerce(@RequestBody @Valid QueryShippingDTO queryShippingDTO)
+            throws Exception {
+
+        List<TransportationCompanyDTO> transportationCompanyDTOs = new ArrayList<TransportationCompanyDTO>();
+
+        try (InputStream input = ProductSalesEcommerceService.class.getClassLoader().getResourceAsStream("tokensapi.properties")) {
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(queryShippingDTO);
+
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+            okhttp3.MediaType mediaType = okhttp3.MediaType.parse("application/json");
+            okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, json);
+
+            Properties prop = new Properties();
+            // load a properties file
+            prop.load(input);
+
+            okhttp3.Request request = new okhttp3.Request.Builder()
+                    .url(prop.getProperty("url.melhorenvio.sandbox") + "/api/v2/me/shipment/calculate")
+                    .method("POST", body)
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "Bearer " + prop.getProperty("token.melhorenvio.sandbox"))
+                    .addHeader("User-Agent", "suporte@jdevtreinamento.com.br")
+                    .build();
+
+
+            okhttp3.Response response = client.newCall(request).execute();
+
+            JsonNode jsonNode = new ObjectMapper().readTree(response.body() != null ? response.body().string() : "");
+
+            Iterator<JsonNode> iterator = jsonNode.iterator();
+
+
+
+            while (iterator.hasNext()) {
+                JsonNode node = iterator.next();
+
+                TransportationCompanyDTO transportationCompanyDTO = new TransportationCompanyDTO();
+
+                if (node.get("id") != null) {
+                    transportationCompanyDTO.setId(node.get("id").asText());
+                }
+
+                if (node.get("name") != null) {
+                    transportationCompanyDTO.setName(node.get("name").asText());
+                }
+
+                if (node.get("price") != null) {
+                    transportationCompanyDTO.setPrice(node.get("price").asText());
+                }
+
+                if (node.get("company") != null) {
+                    transportationCompanyDTO.setCompany(node.get("company").get("name").asText());
+                    transportationCompanyDTO.setCompanyLogo(node.get("company").get("picture").asText());
+                }
+
+                if (transportationCompanyDTO.dataOk()) {
+                    transportationCompanyDTOs.add(transportationCompanyDTO);
+                }
+            }
+
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return new ResponseEntity<List<TransportationCompanyDTO>>(transportationCompanyDTOs, HttpStatus.OK);
+    }
+
+
 
     @ResponseBody
     @PostMapping(value = "/saveSalesEcommerce")
@@ -124,7 +199,7 @@ public class ProductSalesEcommerceController {
             itemSaleEcommerceDTO.setQuantity(item.getQuantity());
 
             ProductDTO productDTO = new ProductDTO();
-            productDTO.setId(item.getProduct().getId());
+            productDTO.setId(item.getProduct().getId().toString());
             productDTO.setDescription(item.getProduct().getDescription());
             productDTO.setName(item.getProduct().getName());
             productDTO.setStockQuantity(item.getProduct().getStockQuantity());
@@ -149,12 +224,12 @@ public class ProductSalesEcommerceController {
 
         /*Email to buyer*/
         StringBuilder msgemail = new StringBuilder();
-        msgemail.append("Hi, ").append(naturalPerson.getName()).append("</br>");
+        msgemail.append("Hi, ").append(naturalPerson != null ? naturalPerson.getName() : "").append("</br>");
         msgemail.append("You made a purchase nº: ").append(productSalesEcommerce.getId()).append("</br>");
         msgemail.append("At store ").append(productSalesEcommerce.getEcommerceCompany().getComercialName());
 
         /* Subject, msg, to*/
-        sendEmailService.sendEmailHtml("Purchase done", msgemail.toString(), naturalPerson.getEmail());
+        sendEmailService.sendEmailHtml("Purchase done", msgemail.toString(), naturalPerson != null ? naturalPerson.getEmail() : "");
 
         /*Email to seller*/
         msgemail = new StringBuilder();
@@ -193,7 +268,7 @@ public class ProductSalesEcommerceController {
             itemSaleEcommerceDTO.setQuantity(item.getQuantity());
 
             ProductDTO productDTO = new ProductDTO();
-            productDTO.setId(item.getProduct().getId());
+            productDTO.setId(item.getProduct().getId().toString());
             productDTO.setDescription(item.getProduct().getDescription());
             productDTO.setName(item.getProduct().getName());
             productDTO.setStockQuantity(item.getProduct().getStockQuantity());
@@ -242,7 +317,7 @@ public class ProductSalesEcommerceController {
                 itemSaleEcommerceDTO.setQuantity(item.getQuantity());
 
                 ProductDTO productDTO = new ProductDTO();
-                productDTO.setId(item.getProduct().getId());
+                productDTO.setId(item.getProduct().getId().toString());
                 productDTO.setDescription(item.getProduct().getDescription());
                 productDTO.setName(item.getProduct().getName());
                 productDTO.setStockQuantity(item.getProduct().getStockQuantity());
@@ -294,7 +369,7 @@ public class ProductSalesEcommerceController {
                 itemSaleEcommerceDTO.setQuantity(item.getQuantity());
 
                 ProductDTO productDTO = new ProductDTO();
-                productDTO.setId(item.getProduct().getId());
+                productDTO.setId(item.getProduct().getId().toString());
                 productDTO.setDescription(item.getProduct().getDescription());
                 productDTO.setName(item.getProduct().getName());
                 productDTO.setStockQuantity(item.getProduct().getStockQuantity());
@@ -356,10 +431,11 @@ public class ProductSalesEcommerceController {
             for (ItemSaleEcommerce item : se.getItemsSaleEcommerce()) {
 
                 ProductDTO productDTO = new ProductDTO();
+                productDTO.setId(item.getProduct().getId().toString());
+                productDTO.setDescription(item.getProduct().getDescription());
                 productDTO.setName(item.getProduct().getName());
                 productDTO.setStockQuantity(item.getProduct().getStockQuantity());
-                productDTO.setDescription(item.getProduct().getDescription());
-                productDTO.setId(item.getProduct().getId());
+
 
                 ItemSaleEcommerceDTO itemSaleEcommerceDTO = new ItemSaleEcommerceDTO();
                 itemSaleEcommerceDTO.setQuantity(item.getQuantity());
@@ -414,10 +490,11 @@ public class ProductSalesEcommerceController {
             for (ItemSaleEcommerce item : se.getItemsSaleEcommerce()) {
 
                 ProductDTO productDTO = new ProductDTO();
+                productDTO.setId(item.getProduct().getId().toString());
+                productDTO.setDescription(item.getProduct().getDescription());
                 productDTO.setName(item.getProduct().getName());
                 productDTO.setStockQuantity(item.getProduct().getStockQuantity());
-                productDTO.setDescription(item.getProduct().getDescription());
-                productDTO.setId(item.getProduct().getId());
+
 
                 ItemSaleEcommerceDTO itemSaleEcommerceDTO = new ItemSaleEcommerceDTO();
                 itemSaleEcommerceDTO.setQuantity(item.getQuantity());

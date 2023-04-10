@@ -8,10 +8,10 @@ public class TransportationCompanyDTO implements Serializable {
     private String name;
     private String price;
     private String company;
-    private String companyLog;
+    private String companyLogo;
 
     public boolean dataOk() {
-        return this.id != null && this.name != null && this.price != null && this.company != null;
+        return id != null && name != null && price != null && company != null;
     }
 
     public String getId() {
@@ -46,11 +46,11 @@ public class TransportationCompanyDTO implements Serializable {
         this.company = company;
     }
 
-    public String getCompanyLog() {
-        return companyLog;
+    public String getCompanyLogo() {
+        return companyLogo;
     }
 
-    public void setCompanyLog(String companyLog) {
-        this.companyLog = companyLog;
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
     }
 }
