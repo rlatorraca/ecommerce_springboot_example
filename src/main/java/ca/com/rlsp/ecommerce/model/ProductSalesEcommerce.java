@@ -120,6 +120,13 @@ public class ProductSalesEcommerce implements Serializable {
 
     private Boolean deleted = Boolean.FALSE;
 
+    private String tagShippingCode;
+
+    private String urlPrintingTag;
+
+    /* Shipping Company chosen */
+    private String shippingCompany;
+
     public Long getId() {
         return id;
     }
@@ -254,5 +261,29 @@ public class ProductSalesEcommerce implements Serializable {
 
     public void setStatusProductSalesEcommerce(StatusProductSalesEcommerce statusProductSalesEcommerce) {
         this.statusProductSalesEcommerce = statusProductSalesEcommerce;
+    }
+
+    public String getTagShippingCode() {
+        return tagShippingCode;
+    }
+
+    public void setTagShippingCode(String tagShippingCode) {
+        this.tagShippingCode = tagShippingCode;
+    }
+
+    public String getUrlPrintingTag() {
+        return urlPrintingTag;
+    }
+
+    public void setUrlPrintingTag(String urlPrintingTag) {
+        this.urlPrintingTag = urlPrintingTag;
+    }
+
+    public String getShippingCompany() {
+        return shippingCompany;
+    }
+
+    public void setShippingCompany(String shippingCompany) {
+        this.shippingCompany = shippingCompany;
     }
 }
