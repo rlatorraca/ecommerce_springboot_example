@@ -1,0 +1,12 @@
+/* TOKEN pego na 01 - Json que inseriu dados para montar a TAG */
+1f0029e1-c107-4142-888f-28740fb834d0
+
+{
+    "mode": "private",
+    "orders": [
+        "{{1f0029e1-c107-4142-888f-28740fb834d0}}"
+    ]
+}
+
+/* JSON Compra do FRETE na melhorEnvio */
+{"url":"http:\/\/sandbox.melhorenvio.com.br\/imprimir\/FGOs0VFw9N2C"}ddd
